@@ -13,10 +13,8 @@ test('it should render the map', async () => {
 test('it should fill the whole screen', async () => {
 	render(Map);
 
-	// check if map is full screen
 	const map = screen.getByTestId('map');
 
-	// Check the element's dimensions
 	const { width, height } = map.getBoundingClientRect();
 	expect(width).toBe(window.innerWidth);
 	expect(height).toBe(window.innerHeight);
