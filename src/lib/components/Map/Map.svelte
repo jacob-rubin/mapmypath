@@ -31,4 +31,6 @@
 	});
 </script>
 
-<div data-testid="map" class="absolute h-screen w-screen" bind:this={mapContainer}></div>
+<div class="relative h-screen w-screen">
+	<div data-testid="map" class="absolute h-full w-full" bind:this={mapContainer}></div>
+</div>

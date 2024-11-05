@@ -10,25 +10,16 @@ test('it should render the map', async () => {
 	expect(map.getByTestId('map')).toBeDefined();
 });
 
-// Test: it should fill the whole screen
 test('it should fill the whole screen', async () => {
 	render(Map);
-	// set screen width/height
-	window.innerWidth = 1920;
-	window.innerHeight = 1080;
-
-	// trigger resize event
-	window.dispatchEvent(new Event('resize'));
 
 	// check if map is full screen
 	const map = screen.getByTestId('map');
-	const screenWidth = window.visualViewport?.width;
-	const screenHeight = window.visualViewport?.height;
 
-	expect(map).toHaveStyle({
-		width: screenWidth,
-		height: screenHeight
-	});
+	// Check the element's dimensions
+	const { width, height } = map.getBoundingClientRect();
+	expect(width).toBe(window.innerWidth);
+	expect(height).toBe(window.innerHeight);
 });
 
 test('it matches the snapshot', async () => {
