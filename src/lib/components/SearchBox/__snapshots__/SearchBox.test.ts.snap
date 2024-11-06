@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`it matches the snapshot 1`] = `
+<div>
+  <input
+    data-testid="search-box"
+    placeholder="Search"
+    type="text"
+  />
+  
+</div>
+`;
