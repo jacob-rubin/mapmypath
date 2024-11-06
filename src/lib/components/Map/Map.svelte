@@ -16,8 +16,7 @@
 
 		map = new mapboxgl.Map({
 			container: mapContainer,
-			accessToken:
-				'pk.eyJ1IjoiamFjcnViMTgiLCJhIjoiY20zNG5qeW1zMDA4dzJqcHkycnp1MWpjbyJ9.kEZAD4UR9b5lBNuRo9oUwg',
+			accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
 			style: `mapbox://styles/mapbox/outdoors-v11`,
 			center: [initialState.lng, initialState.lat],
 			zoom: initialState.zoom

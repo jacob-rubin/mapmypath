@@ -3,5 +3,9 @@
 	import SearchBox from '$lib/components/SearchBox/SearchBox.svelte';
 </script>
 
-<SearchBox />
-<Map />
+<div>
+	<Map />
+	<div class="absolute left-0 top-0 p-2">
+		<SearchBox />
+	</div>
+</div>
