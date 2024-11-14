@@ -19,3 +19,6 @@ jobs:
         run: pnpm exec playwright install chromium
       - name: Run Component Tests
         run: pnpm run test:unit
+        env:
+          CI: true
+          VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.VITE_MAPBOX_ACCESS_TOKEN }}
