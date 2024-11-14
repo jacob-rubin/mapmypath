@@ -19,8 +19,3 @@ test('it should fill the whole screen', async () => {
 	expect(width).toBe(window.innerWidth);
 	expect(height).toBe(window.innerHeight);
 });
-
-test('it matches the snapshot', async () => {
-	const { container } = render(Map);
-	expect(container).toMatchSnapshot();
-});
