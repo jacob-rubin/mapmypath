@@ -3,6 +3,7 @@
 exports[`it matches the snapshot 1`] = `
 <div>
   <input
+    class="input input-bordered w-full max-w-xs"
     data-testid="search-box"
     placeholder="Search"
     type="text"
