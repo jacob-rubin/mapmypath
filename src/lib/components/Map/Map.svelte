@@ -21,6 +21,11 @@
 			center: [initialState.lng, initialState.lat],
 			zoom: initialState.zoom
 		});
+
+		map.on('click', (e) => {
+			const { lng, lat } = e.lngLat;
+			new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+		});
 	});
 
 	onDestroy(() => {
