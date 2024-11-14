@@ -9,16 +9,36 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
         run: npm install -g pnpm && pnpm install
+
       - name: Install Chromium Browser for Playwright
         run: pnpm exec playwright install chromium
+
       - name: Run Component Tests
         run: pnpm run test:unit
         env:
           CI: true
           VITE_MAPBOX_ACCESS_TOKEN: ${{ secrets.VITE_MAPBOX_ACCESS_TOKEN }}
+
+      - name: Upload Test Results
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: vitest-results
+          path: test-results/ # Adjust if you have a custom output directory
+
+      - name: Archive Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/ # Adjust if your coverage report is in a different directory
