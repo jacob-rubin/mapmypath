@@ -13,8 +13,8 @@
 	<div class="w-{width}" transition:slide={{ axis: 'x' }}></div>
 {/snippet}
 
-<div class="card h-full bg-slate-200">
-	<button class="btn btn-square" on:click={toggleSidebar}>
+<div class="card h-full bg-neutral text-neutral-content">
+	<button class="btn btn-ghost" on:click={toggleSidebar}>
 		<MdiMenu class="text-white" />
 	</button>
 
