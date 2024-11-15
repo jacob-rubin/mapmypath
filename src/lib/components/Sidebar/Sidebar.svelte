@@ -1,7 +1,26 @@
 <script lang="ts">
-	import MdiArrowCollapseLeft from '~icons/mdi/arrow-collapse-left';
+	import MdiMenu from '~icons/mdi/menu';
+	import { slide } from 'svelte/transition';
+
+	let isOpen: boolean = true;
+
+	function toggleSidebar() {
+		isOpen = !isOpen;
+	}
 </script>
 
-<div class="card h-full w-full bg-orange-400">
-	<MdiArrowCollapseLeft class="absolute top-0 size-10 p-2 text-white" />
+{#snippet cardBody(width: string)}
+	<div class="w-{width}" transition:slide={{ axis: 'x' }}></div>
+{/snippet}
+
+<div class="card h-full bg-slate-200">
+	<button class="btn btn-square" on:click={toggleSidebar}>
+		<MdiMenu class="text-white" />
+	</button>
+
+	{#if isOpen}
+		{@render cardBody('72')}
+	{:else}
+		{@render cardBody('min')}
+	{/if}
 </div>
