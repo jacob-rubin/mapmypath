@@ -6,8 +6,10 @@
 
 <div>
 	<Map />
-	<div class="absolute left-0 top-0 p-2">
+	<div class="absolute left-0 top-0 h-full w-1/5 p-2 pb-10">
+		<Sidebar />
+	</div>
+	<div class="absolute right-0 top-0 p-2">
 		<SearchBox />
 	</div>
-	<Sidebar />
 </div>
