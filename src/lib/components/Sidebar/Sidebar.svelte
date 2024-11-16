@@ -1,6 +1,6 @@
 <script lang="ts">
 	import MdiMenu from '~icons/mdi/menu';
-	import { slide } from 'svelte/transition';
+	import { slide, fly } from 'svelte/transition';
 
 	let isOpen: boolean = true;
 
@@ -9,7 +9,23 @@
 	}
 </script>
 
-{#snippet cardBody(width: string)}
+<div class="h-screen p-2">
+	{#if isOpen}
+		<div class="card h-full w-72 bg-neutral text-neutral-content">
+			<button class="btn btn-ghost" on:click={toggleSidebar}>
+				<MdiMenu class="text-white" />
+			</button>
+		</div>
+	{:else}
+		<div class="card h-full w-min bg-neutral text-neutral-content">
+			<button class="btn btn-ghost" on:click={toggleSidebar}>
+				<MdiMenu class="text-white" />
+			</button>
+		</div>
+	{/if}
+</div>
+
+<!-- {#snippet cardBody(width: string)}
 	<div class="w-{width}" transition:slide={{ axis: 'x' }}></div>
 {/snippet}
 
@@ -18,9 +34,11 @@
 		<MdiMenu class="text-white" />
 	</button>
 
-	{#if isOpen}
-		{@render cardBody('72')}
-	{:else}
-		{@render cardBody('min')}
-	{/if}
-</div>
+	<div class="card-body">
+		{#if isOpen}
+			{@render cardBody('72')}
+		{:else}
+			{@render cardBody('min')}
+		{/if}
+	</div>
+</div> -->
