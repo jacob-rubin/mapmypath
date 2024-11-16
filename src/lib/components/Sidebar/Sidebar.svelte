@@ -9,18 +9,18 @@
 	}
 </script>
 
+{#snippet card(width: string)}
+	<div class="card h-full {width} bg-neutral-content">
+		<button class="btn btn-ghost" onclick={toggleSidebar}>
+			<MdiMenu class="text-neutral" />
+		</button>
+	</div>
+{/snippet}
+
 <div class="h-screen p-2">
 	{#if isOpen}
-		<div class="card h-full w-72 bg-neutral-content">
-			<button class="btn btn-ghost" on:click={toggleSidebar}>
-				<MdiMenu class="text-neutral" />
-			</button>
-		</div>
+		{@render card('w-72')}
 	{:else}
-		<div class="card h-full w-min bg-neutral-content">
-			<button class="btn btn-ghost" on:click={toggleSidebar}>
-				<MdiMenu class="text-neutral" />
-			</button>
-		</div>
+		{@render card('w-min')}
 	{/if}
 </div>
