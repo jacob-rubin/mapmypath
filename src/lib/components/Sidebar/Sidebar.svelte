@@ -10,14 +10,14 @@
 </script>
 
 {#snippet card(width: string)}
-	<div class="card h-full {width} bg-neutral-content">
-		<button class="btn btn-ghost" onclick={toggleSidebar}>
+	<div data-testid="sidebar" class="card h-full {width} bg-neutral-content">
+		<button data-testid="sidebar-button" class="btn btn-ghost" onclick={toggleSidebar}>
 			<MdiMenu class="text-neutral" />
 		</button>
 	</div>
 {/snippet}
 
-<div class="h-screen p-2">
+<div data-testid="sidebar-div" class="h-screen p-2">
 	{#if isOpen}
 		{@render card('w-72')}
 	{:else}
