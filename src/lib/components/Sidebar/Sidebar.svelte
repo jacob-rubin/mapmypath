@@ -24,21 +24,3 @@
 		</div>
 	{/if}
 </div>
-
-<!-- {#snippet cardBody(width: string)}
-	<div class="w-{width}" transition:slide={{ axis: 'x' }}></div>
-{/snippet}
-
-<div class="card h-full bg-neutral text-neutral-content">
-	<button class="btn btn-ghost" on:click={toggleSidebar}>
-		<MdiMenu class="text-white" />
-	</button>
-
-	<div class="card-body">
-		{#if isOpen}
-			{@render cardBody('72')}
-		{:else}
-			{@render cardBody('min')}
-		{/if}
-	</div>
-</div> -->
