@@ -11,15 +11,15 @@
 
 <div class="h-screen p-2">
 	{#if isOpen}
-		<div class="card h-full w-72 bg-neutral text-neutral-content">
+		<div class="card h-full w-72 bg-neutral-content">
 			<button class="btn btn-ghost" on:click={toggleSidebar}>
-				<MdiMenu class="text-white" />
+				<MdiMenu class="text-neutral" />
 			</button>
 		</div>
 	{:else}
-		<div class="card h-full w-min bg-neutral text-neutral-content">
+		<div class="card h-full w-min bg-neutral-content">
 			<button class="btn btn-ghost" on:click={toggleSidebar}>
-				<MdiMenu class="text-white" />
+				<MdiMenu class="text-neutral" />
 			</button>
 		</div>
 	{/if}
