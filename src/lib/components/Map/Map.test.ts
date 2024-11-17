@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { fireEvent, screen } from '@testing-library/svelte';
 import Map from './Map.svelte';
+import { mapState } from '$lib/shared/mapState.svelte';
 import '@testing-library/jest-dom/vitest';
 import '@testing-library/jest-dom/matchers';
 
@@ -42,6 +43,26 @@ test('it should add a marker when the map is clicked', async () => {
 		const markerPosition = marker.getBoundingClientRect();
 		expect(markerPosition.left).toBeCloseTo(clickEvent.clientX, 1);
 		expect(markerPosition.top).toBeCloseTo(clickEvent.clientY, 1);
+	}
+});
+
+// When map clicked, it should add element to the markers mapState
+test('it should add a marker to the mapState when the map is clicked', async () => {
+	const { container } = render(Map);
+
+	// Simulate a click event on the map
+	const mapContainer = container.querySelector('.map-container');
+	if (mapContainer) {
+		const clickEvent = new MouseEvent('click', {
+			clientX: 100,
+			clientY: 100,
+			bubbles: true,
+			cancelable: false
+		});
+
+		expect(mapState.getMarkers()).toHaveLength(0);
+		await fireEvent(mapContainer, clickEvent);
+		expect(mapState.getMarkers()).toHaveLength(1);
 	}
 });
 

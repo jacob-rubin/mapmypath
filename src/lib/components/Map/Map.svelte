@@ -2,6 +2,7 @@
 	import mapboxgl from 'mapbox-gl';
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy } from 'svelte';
+	import { mapState } from '$lib/shared/mapState.svelte';
 
 	let map: mapboxgl.Map;
 	let mapContainer: HTMLDivElement;
@@ -23,8 +24,8 @@
 		});
 
 		map.on('click', (e) => {
-			const { lng, lat } = e.lngLat;
-			new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+			new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+			mapState.addMarker(e.lngLat);
 		});
 	});
 

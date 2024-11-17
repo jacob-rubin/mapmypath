@@ -42,3 +42,5 @@ test('it should span the whole height of the screen', async () => {
 
 	expect(sidebarHeight).toBe(window.innerHeight - 16);
 });
+
+// When item added to map store, it should be displayed in the sidebar
