@@ -6,10 +6,7 @@ test('it should start out expanded', async () => {
 	const { getByTestId } = render(Sidebar);
 
 	const sidebar = getByTestId('sidebar');
-	const sidebarWidth: number = sidebar.element().getBoundingClientRect().width;
-
-	// In tailwind,  w-72	width: 18rem; /* 288px */
-	expect(sidebarWidth).toBe(288);
+	expect(sidebar.element()).toHaveClass('w-72');
 });
 
 test('it should close when button clicked', async () => {
@@ -19,8 +16,8 @@ test('it should close when button clicked', async () => {
 	await button.click();
 
 	const sidebar = getByTestId('sidebar');
-	const sidebarWidth: number = sidebar.element().getBoundingClientRect().width;
-	expect(sidebarWidth).toBe(50.125);
+
+	expect(sidebar.element()).toHaveClass('w-min');
 });
 
 test('it should reopen when clicked in close state', async () => {
@@ -32,10 +29,8 @@ test('it should reopen when clicked in close state', async () => {
 	await button.click();
 
 	const sidebar = getByTestId('sidebar');
-	const sidebarWidth: number = sidebar.element().getBoundingClientRect().width;
 
-	// In tailwind,  w-72	width: 18rem; /* 288px */
-	expect(sidebarWidth).toBe(288);
+	expect(sidebar.element()).toHaveClass('w-72');
 });
 
 // It should span the whole height of the screen, minues the padding of 8px
