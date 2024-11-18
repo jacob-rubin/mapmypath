@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Sidebar from './Sidebar.svelte';
+import { mapState } from '$lib/shared/mapState.svelte';
+import { LngLat } from 'mapbox-gl';
+import { screen } from '@testing-library/svelte';
+import { tick } from 'svelte';
 
 test('it should start out expanded', async () => {
 	const { getByTestId } = render(Sidebar);
@@ -41,4 +45,16 @@ test('it should span the whole height of the screen', async () => {
 	const sidebarHeight: number = sidebar.element().getBoundingClientRect().height;
 
 	expect(sidebarHeight).toBe(window.innerHeight - 16);
+});
+
+// When item added to map state, it should be displayed in the sidebar
+test('it should display the latitude and longitude when added to the map state', async () => {
+	render(Sidebar);
+
+	const sidebar = screen.getByTestId('sidebar');
+	mapState.addMarker(new LngLat(0, 0));
+
+	await tick();
+
+	expect(sidebar).toHaveTextContent('0, 0');
 });
