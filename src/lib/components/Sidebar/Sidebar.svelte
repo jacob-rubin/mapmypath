@@ -19,8 +19,7 @@
 			{#if isOpen}
 				{#each mapState.getMarkers() as marker}
 					<div class="card m-2 border-2 border-solid border-black p-2">
-						{marker.lng},
-						{marker.lat}
+						{marker.lng}, {marker.lat}
 					</div>
 				{/each}
 			{/if}
