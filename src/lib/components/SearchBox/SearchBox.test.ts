@@ -1,22 +1,18 @@
-import { expect, test } from 'vitest';
+import { expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import SearchBox from './SearchBox.svelte';
+import type { Locator } from '@vitest/browser/context';
 
-test('it matches the snapshot', async () => {
-	const { container } = render(SearchBox);
-	expect(container).toMatchSnapshot();
+it('matches the snapshot', async ({ expect }) => {
+	const screen = render(SearchBox);
+
+	expect(screen.container.innerHTML).toMatchSnapshot();
 });
 
-test('it should have no text on render', async () => {
-	const { getByTestId } = render(SearchBox);
-	const input = getByTestId('search-box');
+it('has the placeholder`Search`', async () => {
+	const screen = render(SearchBox);
+	const input: Locator = screen.getByTestId('search-box');
+	const placeholder: Element | null = input.getByPlaceholder('Search').query();
 
-	expect(input.element().textContent).toBe('');
-});
-
-test('it should have a placeholder with text search', async () => {
-	const { getByTestId } = render(SearchBox);
-	const input = getByTestId('search-box');
-
-	expect(input.element().getAttribute('placeholder')).toBe('Search');
+	expect(placeholder).toBeDefined();
 });

@@ -1,13 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`it matches the snapshot 1`] = `
-<div>
-  <input
-    class="input input-bordered w-full max-w-xs"
-    data-testid="search-box"
-    placeholder="Search"
-    type="text"
-  />
-  
-</div>
-`;
+exports[`it matches the snapshot 1`] = `"<input data-testid="search-box" type="text" placeholder="Search" class="input input-bordered w-full max-w-xs">"`;
+
+exports[`matches the snapshot 1`] = `"<input data-testid="search-box" type="text" placeholder="Search" class="input input-bordered w-full max-w-xs">"`;
