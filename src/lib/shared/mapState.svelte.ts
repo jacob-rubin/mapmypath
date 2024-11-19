@@ -9,7 +9,7 @@ class MapState {
 
 	addMarker(marker: LngLat) {
 		this.#markers.push(marker);
-		// console.log($state.snapshot(this.#markers));
+		console.log($state.snapshot(this.#markers));
 	}
 
 	getMarkers() {

@@ -2,9 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Map from './Map.svelte';
 import { mapState } from '$lib/shared/mapState.svelte';
-import { type Locator } from '@vitest/browser/context';
+import type { Locator } from '@vitest/browser/context';
 
-describe('Map', () => {
+describe('Map', async () => {
 	beforeEach(() => {
 		mapState.clear();
 	});
