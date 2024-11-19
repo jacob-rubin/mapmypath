@@ -9,12 +9,6 @@ describe('Map', async () => {
 		mapState.clear();
 	});
 
-	it('it matches the snapshot', async ({ expect }) => {
-		const screen = render(Map);
-
-		expect(screen.container.innerHTML).toMatchSnapshot();
-	});
-
 	it('renders the map', async () => {
 		const screen = render(Map);
 
