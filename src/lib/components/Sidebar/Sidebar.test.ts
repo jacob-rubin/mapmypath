@@ -1,60 +1,58 @@
-import { expect, test } from 'vitest';
+import { describe, expect, it, test } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Sidebar from './Sidebar.svelte';
 import { mapState } from '$lib/shared/mapState.svelte';
 import { LngLat } from 'mapbox-gl';
-import { screen } from '@testing-library/svelte';
 import { tick } from 'svelte';
+import type { Locator } from '@vitest/browser/context';
 
-test('it should start out expanded', async () => {
-	const { getByTestId } = render(Sidebar);
+describe('Sidebar', async () => {
+	it('matches the snapshot', async ({ expect }) => {
+		const screen = render(Sidebar);
 
-	const sidebar = getByTestId('sidebar');
-	expect(sidebar.element()).toHaveClass('w-72');
-});
+		expect(screen.container.innerHTML).toMatchSnapshot();
+	});
 
-test('it should close when button clicked', async () => {
-	const { getByTestId } = render(Sidebar);
+	it('is expanded by default', async () => {
+		const screen = render(Sidebar);
+		const sidebar: Locator = screen.getByTestId('sidebar');
 
-	const button = getByTestId('sidebar-button');
-	await button.click();
+		expect(sidebar.element()).toHaveClass('w-72');
+	});
 
-	const sidebar = getByTestId('sidebar');
+	it('collapses when button clicked', async () => {
+		const screen = render(Sidebar);
+		const button: Locator = screen.getByTestId('sidebar-button');
+		await button.click();
+		const sidebar: Locator = screen.getByTestId('sidebar');
 
-	expect(sidebar.element()).toHaveClass('w-min');
-});
+		expect(sidebar.element()).toHaveClass('w-min');
+	});
 
-test('it should reopen when clicked in close state', async () => {
-	const { getByTestId } = render(Sidebar);
+	it('reexpands when the button is clicked while collapsed', async () => {
+		const screen = render(Sidebar);
+		const button: Locator = screen.getByTestId('sidebar-button');
+		await button.click();
+		await button.click();
+		const sidebar: Locator = screen.getByTestId('sidebar');
 
-	// Click the button twice to simulate opening and closing
-	const button = getByTestId('sidebar-button');
-	await button.click();
-	await button.click();
+		expect(sidebar.element()).toHaveClass('w-72');
+	});
 
-	const sidebar = getByTestId('sidebar');
+	it('spans the height of the screen', async () => {
+		const screen = render(Sidebar);
+		const sidebar: Locator = screen.getByTestId('sidebar');
+		const sidebarHeight: number = sidebar.element().getBoundingClientRect().height;
 
-	expect(sidebar.element()).toHaveClass('w-72');
-});
+		expect(sidebarHeight).toBe(window.innerHeight - 16);
+	});
 
-// It should span the whole height of the screen, minues the padding of 8px
-test('it should span the whole height of the screen', async () => {
-	const { getByTestId } = render(Sidebar);
+	test('it should display the latitude and longitude when added to the map state', async () => {
+		const screen = render(Sidebar);
+		const sidebar: Locator = screen.getByTestId('sidebar');
+		mapState.addMarker(new LngLat(0, 0));
+		await tick();
 
-	const sidebar = getByTestId('sidebar');
-	const sidebarHeight: number = sidebar.element().getBoundingClientRect().height;
-
-	expect(sidebarHeight).toBe(window.innerHeight - 16);
-});
-
-// When item added to map state, it should be displayed in the sidebar
-test('it should display the latitude and longitude when added to the map state', async () => {
-	render(Sidebar);
-
-	const sidebar = screen.getByTestId('sidebar');
-	mapState.addMarker(new LngLat(0, 0));
-
-	await tick();
-
-	expect(sidebar).toHaveTextContent('0, 0');
+		expect(sidebar.element()).toHaveTextContent('0, 0');
+	});
 });

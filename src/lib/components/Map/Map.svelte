@@ -6,7 +6,7 @@
 
 	let map: mapboxgl.Map;
 	let mapContainer: HTMLDivElement;
-	let lng, lat, zoom;
+	let lng: number, lat: number, zoom: number;
 
 	lng = -71.224518;
 	lat = 42.213995;

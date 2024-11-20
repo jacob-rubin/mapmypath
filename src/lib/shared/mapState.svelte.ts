@@ -15,6 +15,10 @@ class MapState {
 	getMarkers() {
 		return this.#markers;
 	}
+
+	clear() {
+		this.#markers = [];
+	}
 }
 
 export const mapState = new MapState();
