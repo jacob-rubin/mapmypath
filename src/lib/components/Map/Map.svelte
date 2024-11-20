@@ -1,5 +1,5 @@
 <script lang="ts">
-	import mapboxgl from 'mapbox-gl';
+	import mapboxgl, { type LngLat, type Point } from 'mapbox-gl';
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy } from 'svelte';
 	import { mapState } from '$lib/shared/mapState.svelte';
@@ -26,6 +26,43 @@
 		map.on('click', (e) => {
 			new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
 			mapState.addMarker(e.lngLat);
+		});
+
+		map.on('load', () => {
+			const click1: Point = new mapboxgl.Point(400, 400);
+			const click2: Point = new mapboxgl.Point(500, 500);
+
+			const lngLat1: LngLat = map.unproject(click1);
+			const lngLat2: LngLat = map.unproject(click2);
+
+			map.addSource('line', {
+				type: 'geojson',
+				data: {
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'LineString',
+						coordinates: [lngLat1.toArray(), lngLat2.toArray()]
+					}
+				}
+			});
+
+			map.addLayer({
+				id: 'line',
+				type: 'line',
+				source: 'line',
+				layout: {
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				paint: {
+					'line-color': '#888',
+					'line-width': 8
+				}
+			});
+
+			new mapboxgl.Marker().setLngLat(map.unproject(click1)).addTo(map);
+			new mapboxgl.Marker().setLngLat(map.unproject(click2)).addTo(map);
 		});
 	});
 

@@ -35,8 +35,8 @@ describe('Map', async () => {
 
 	it('adds a marker when the map is clicked', async () => {
 		const screen = render(Map);
-		const mapCanvas: Locator = screen.getByTestId('map');
-		await mapCanvas.click();
+		const map: Locator = screen.getByTestId('map');
+		await map.click();
 		const marker: Locator = screen.getByLabelText('Map marker', { exact: true });
 
 		expect(marker).toBeDefined();
@@ -45,11 +45,22 @@ describe('Map', async () => {
 	// When map clicked, it should add element to the markers mapState
 	it('adds a marker to the mapState when the map is clicked', async () => {
 		const screen = render(Map);
-		const mapCanvas: Locator = screen.getByTestId('map');
+		const map: Locator = screen.getByTestId('map');
 
 		expect(mapState.getMarkers()).toHaveLength(0);
-		await mapCanvas.click();
+		await map.click();
 		expect(mapState.getMarkers()).toHaveLength(1);
+	});
+
+	it('connects two markers with a line', async () => {
+		const screen = render(Map);
+
+		const map: Locator = screen.getByTestId('map');
+		await map.click({ position: { x: 400, y: 4300 } });
+		await map.click({ position: { x: 500, y: 500 } });
+
+		const line: Locator | null = screen.getByLabelText('line');
+		expect(line.query()).not.toBeNull();
 	});
 });
 
