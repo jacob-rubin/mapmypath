@@ -54,7 +54,9 @@ class Mapbox {
 		new Marker().setLngLat(lngLat).addTo(this.#map);
 	}
 
-	getLayer(id: string): LayerSpecification | CustomLayerInterface | undefined {
+	getLayer(
+		id: string
+	): LayerSpecification | CustomLayerInterface | undefined {
 		return this.#map.getLayer(id);
 	}
 
@@ -79,6 +81,34 @@ class Mapbox {
 			id: 'line',
 			type: 'line',
 			source: 'lineSource',
+			layout: {
+				'line-join': 'round',
+				'line-cap': 'round'
+			},
+			paint: {
+				'line-color': '#888',
+				'line-width': 8
+			}
+		});
+	}
+
+	addMultiLine(lngLats: LngLat[]) {
+		this.#map.addSource('multiLineSource', {
+			type: 'geojson',
+			data: {
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'LineString',
+					coordinates: lngLats.map((lngLat) => lngLat.toArray())
+				}
+			}
+		});
+
+		this.#map.addLayer({
+			id: 'multiLine',
+			type: 'line',
+			source: 'multiLineSource',
 			layout: {
 				'line-join': 'round',
 				'line-cap': 'round'
