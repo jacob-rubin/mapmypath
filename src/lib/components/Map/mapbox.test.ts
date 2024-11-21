@@ -25,7 +25,7 @@ describe('Mapbox', async () => {
 	});
 
 	afterEach(() => {
-		// element.remove();
+		element.remove();
 	});
 
 	it('instantiates a map in a container using the id', async () => {
@@ -56,7 +56,19 @@ describe('Mapbox', async () => {
 
 		getByLabelText(element, 'Map').click();
 
-		expect(onClick).toHaveBeenCalled();
+		expect(onClick).toHaveBeenCalledOnce();
+	});
+
+	it('calls two separate onClick callbacks when the map is clicked with two onClick listeners', async () => {
+		const onClick1 = vi.fn();
+		const onClick2 = vi.fn();
+		mapbox.addClickListener(onClick1);
+		mapbox.addClickListener(onClick2);
+
+		getByLabelText(element, 'Map').click();
+
+		expect(onClick1).toHaveBeenCalledOnce();
+		expect(onClick2).toHaveBeenCalledOnce();
 	});
 
 	it('awaits until the map is loaded', async () => {
