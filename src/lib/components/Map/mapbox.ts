@@ -1,25 +1,28 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl, { MapMouseEvent, type LngLat } from 'mapbox-gl';
+import {
+	LngLat,
+	MapMouseEvent,
+	Map,
+	Marker,
+	type CustomLayerInterface,
+	type LayerSpecification,
+	type GeoJSONSourceSpecification
+} from 'mapbox-gl';
 
 class Mapbox {
-	#map: mapboxgl.Map;
+	#map: Map;
 
 	constructor(
 		container: string | HTMLElement,
-		center: LngLat,
-		zoom: number,
-		onClick: (event: MapMouseEvent) => void
+		center: LngLat = new LngLat(0, 0),
+		zoom: number = 0
 	) {
-		this.#map = new mapboxgl.Map({
+		this.#map = new Map({
 			container,
 			accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
 			zoom,
 			center,
 			style: 'mapbox://styles/mapbox/streets-v11'
-		});
-
-		this.#map.on('click', (e) => {
-			onClick(e);
 		});
 	}
 
@@ -27,12 +30,64 @@ class Mapbox {
 		this.#map.remove();
 	}
 
-	addMarker(lngLat: LngLat): void {
-		new mapboxgl.Marker().setLngLat(lngLat).addTo(this.#map);
+	isLoaded(): boolean {
+		return this.#map.isStyleLoaded();
 	}
 
-	getLines(): mapboxgl.Layer[] {
-		return [];
+	awaitLoad(): Promise<void> {
+		if (this.#map.isStyleLoaded()) {
+			return Promise.resolve();
+		} else {
+			return new Promise((resolve) => {
+				this.#map.on('load', () => {
+					resolve();
+				});
+			});
+		}
+	}
+
+	addClickListener(callback: (event: MapMouseEvent) => void): void {
+		this.#map.on('click', callback);
+	}
+
+	addMarker(lngLat: LngLat): void {
+		new Marker().setLngLat(lngLat).addTo(this.#map);
+	}
+
+	getLayer(id: string): LayerSpecification | CustomLayerInterface | undefined {
+		return this.#map.getLayer(id);
+	}
+
+	getSource(id: string): GeoJSONSourceSpecification | undefined {
+		return this.#map.getSource(id)?.serialize();
+	}
+
+	addLine(start: LngLat, end: LngLat) {
+		this.#map.addSource('lineSource', {
+			type: 'geojson',
+			data: {
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'LineString',
+					coordinates: [start.toArray(), end.toArray()]
+				}
+			}
+		});
+
+		this.#map.addLayer({
+			id: 'line',
+			type: 'line',
+			source: 'lineSource',
+			layout: {
+				'line-join': 'round',
+				'line-cap': 'round'
+			},
+			paint: {
+				'line-color': '#888',
+				'line-width': 8
+			}
+		});
 	}
 }
 
