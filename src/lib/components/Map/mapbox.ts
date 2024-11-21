@@ -6,7 +6,8 @@ import {
 	Marker,
 	type CustomLayerInterface,
 	type LayerSpecification,
-	type GeoJSONSourceSpecification
+	type GeoJSONSourceSpecification,
+	Point
 } from 'mapbox-gl';
 
 class Mapbox {
@@ -64,7 +65,7 @@ class Mapbox {
 		return this.#map.getSource(id)?.serialize();
 	}
 
-	addLine(start: LngLat, end: LngLat) {
+	addLineByLngLat(start: LngLat, end: LngLat) {
 		this.#map.addSource('lineSource', {
 			type: 'geojson',
 			data: {
@@ -90,6 +91,17 @@ class Mapbox {
 				'line-width': 8
 			}
 		});
+	}
+
+	pointToLngLat(point: Point): LngLat {
+		return this.#map.unproject(point);
+	}
+
+	addLineByPoint(start: Point, end: Point) {
+		this.addLineByLngLat(
+			this.pointToLngLat(start),
+			this.pointToLngLat(end)
+		);
 	}
 
 	addMultiLine(lngLats: LngLat[]) {

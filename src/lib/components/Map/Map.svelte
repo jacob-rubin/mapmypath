@@ -61,8 +61,12 @@
 				}
 			});
 
-			new mapboxgl.Marker().setLngLat(map.unproject(click1)).addTo(map);
-			new mapboxgl.Marker().setLngLat(map.unproject(click2)).addTo(map);
+			new mapboxgl.Marker()
+				.setLngLat(map.unproject(click1))
+				.addTo(map);
+			new mapboxgl.Marker()
+				.setLngLat(map.unproject(click2))
+				.addTo(map);
 		});
 	});
 
@@ -73,4 +77,8 @@
 	});
 </script>
 
-<div data-testid="map" class="h-screen w-screen" bind:this={mapContainer}></div>
+<div
+	data-testid="map"
+	class="h-screen w-screen"
+	bind:this={mapContainer}
+></div>

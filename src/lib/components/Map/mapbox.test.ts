@@ -7,7 +7,7 @@ import {
 	vi
 } from 'vitest';
 import Mapbox from './mapbox';
-import { LngLat } from 'mapbox-gl';
+import { LngLat, Point } from 'mapbox-gl';
 import { getByLabelText } from '@testing-library/svelte';
 
 describe('Mapbox', async () => {
@@ -16,12 +16,11 @@ describe('Mapbox', async () => {
 
 	beforeEach(async () => {
 		element = document.createElement('div');
-		element.innerHTML = `<div id="map" class="h-screen w-screen"></div`;
+		element.innerHTML = `<div id="map" class="h-80 w-80"></div`;
 		document.body.appendChild(element);
 
 		mapbox = new Mapbox(element);
 		await mapbox.awaitLoad();
-		console.log('Map loaded');
 	});
 
 	afterEach(() => {
@@ -30,23 +29,23 @@ describe('Mapbox', async () => {
 
 	it('instantiates a map in a container using the id', async () => {
 		expect(element.innerHTML).not.toBe(
-			'<div id="map" class="h-screen w-screen"></div>'
+			'<div id="map" class="h-80 w-80"></div>'
 		);
 	});
 
 	it('instantiates a map in a container using the element', async () => {
 		expect(element.innerHTML).not.toBe(
-			'<div id="map" class="h-screen w-screen"></div>'
+			'<div id="map" class="h-80 w-80"></div>'
 		);
 	});
 
 	it('removes the map from the container', async () => {
 		expect(element.innerHTML).not.toBe(
-			'<div id="map" class="h-screen w-screen"></div>'
+			'<div id="map" class="h-80 w-80"></div>'
 		);
 		mapbox.remove();
 		expect(element.innerHTML).toBe(
-			'<div id="map" class="h-screen w-screen"></div>'
+			'<div id="map" class="h-80 w-80"></div>'
 		);
 	});
 
@@ -73,7 +72,6 @@ describe('Mapbox', async () => {
 
 	it('awaits until the map is loaded', async () => {
 		await mapbox.awaitLoad();
-
 		expect(mapbox.isLoaded()).toBe(true);
 	});
 
@@ -83,22 +81,17 @@ describe('Mapbox', async () => {
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
-	it('adds a line between two LngLats', async () => {
-		mapbox.addLine(new LngLat(0, 0), new LngLat(20, 20));
+	it('converts a point to a LngLat', async () => {
+		const lngLat: LngLat = mapbox.pointToLngLat(new Point(0, 0));
 
-		expect(mapbox.getLayer('line')).toMatchObject({
-			id: 'line',
-			layout: {
-				'line-cap': 'round',
-				'line-join': 'round'
-			},
-			paint: {
-				'line-color': '#888',
-				'line-width': 8
-			},
-			source: 'lineSource',
-			type: 'line'
+		expect(lngLat).toMatchObject({
+			lat: 74.01954331150236,
+			lng: -145.54687500000128
 		});
+	});
+
+	it('adds a line between two LngLats', async () => {
+		mapbox.addLineByLngLat(new LngLat(0, 0), new LngLat(20, 20));
 
 		expect(mapbox.getSource('lineSource')).toMatchObject({
 			data: {
@@ -116,15 +109,39 @@ describe('Mapbox', async () => {
 		});
 	});
 
-	it('adds a multiline between multiple LngLats', async () => {
-		mapbox.addMultiLine([
-			new LngLat(0, 0),
-			new LngLat(20, 20),
-			new LngLat(-40, 40)
-		]);
+	it('adds a line between two points', async () => {
+		const startPoint: Point = new Point(50, 50);
+		const endPoint: Point = new Point(200, 200);
+		const startPointToLngLat: LngLat = mapbox.pointToLngLat(
+			new Point(50, 50)
+		);
+		const endPointToLngLat: LngLat = mapbox.pointToLngLat(
+			new Point(200, 200)
+		);
 
-		expect(mapbox.getLayer('multiLine')).toMatchObject({
-			id: 'multiLine',
+		mapbox.addLineByPoint(startPoint, endPoint);
+
+		expect(mapbox.getSource('lineSource')).toMatchObject({
+			data: {
+				geometry: {
+					coordinates: [
+						startPointToLngLat.toArray(),
+						endPointToLngLat.toArray()
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
+
+	it('styles the line', async () => {
+		mapbox.addLineByLngLat(new LngLat(0, 0), new LngLat(20, 20));
+
+		expect(mapbox.getLayer('line')).toMatchObject({
+			id: 'line',
 			layout: {
 				'line-cap': 'round',
 				'line-join': 'round'
@@ -133,9 +150,17 @@ describe('Mapbox', async () => {
 				'line-color': '#888',
 				'line-width': 8
 			},
-			source: 'multiLineSource',
+			source: 'lineSource',
 			type: 'line'
 		});
+	});
+
+	it('adds a multiline between multiple LngLats', async () => {
+		mapbox.addMultiLine([
+			new LngLat(0, 0),
+			new LngLat(20, 20),
+			new LngLat(-40, 40)
+		]);
 
 		expect(mapbox.getSource('multiLineSource')).toMatchObject({
 			data: {
