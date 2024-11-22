@@ -1,30 +1,24 @@
 <script lang="ts">
-	import mapboxgl from 'mapbox-gl';
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy } from 'svelte';
 	import { mapState } from '$lib/shared/mapState.svelte';
+	import Mapbox from './mapbox';
+	import mapboxgl from 'mapbox-gl';
 
-	let map: mapboxgl.Map;
-	let mapContainer: HTMLDivElement;
-	let lng: number, lat: number, zoom: number;
+	let map: Mapbox;
+	let container: HTMLDivElement;
 
-	lng = -71.224518;
-	lat = 42.213995;
-	zoom = 9;
+	onMount(async () => {
+		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
+			-71.224518,
+			42.213995
+		);
+		let zoom: number = 9;
 
-	onMount(() => {
-		const initialState = { lng: lng, lat: lat, zoom: zoom };
+		map = new Mapbox(container, center, zoom);
 
-		map = new mapboxgl.Map({
-			container: mapContainer,
-			accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
-			style: `mapbox://styles/mapbox/outdoors-v11`,
-			center: [initialState.lng, initialState.lat],
-			zoom: initialState.zoom
-		});
-
-		map.on('click', (e) => {
-			new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+		map.addClickListener((e) => {
+			map.addMarker(e.lngLat);
 			mapState.addMarker(e.lngLat);
 		});
 	});
@@ -36,4 +30,8 @@
 	});
 </script>
 
-<div data-testid="map" class="h-screen w-screen" bind:this={mapContainer}></div>
+<div
+	data-testid="map"
+	class="h-screen w-screen"
+	bind:this={container}
+></div>

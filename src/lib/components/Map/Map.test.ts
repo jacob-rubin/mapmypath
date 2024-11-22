@@ -19,7 +19,9 @@ describe('Map', async () => {
 		const screen = render(Map);
 
 		const map: Locator = screen.getByTestId('map');
-		const height: number = map.element().getBoundingClientRect().height;
+		const height: number = map
+			.element()
+			.getBoundingClientRect().height;
 
 		expect(height).toBe(window.innerHeight);
 	});
@@ -35,20 +37,21 @@ describe('Map', async () => {
 
 	it('adds a marker when the map is clicked', async () => {
 		const screen = render(Map);
-		const mapCanvas: Locator = screen.getByTestId('map');
-		await mapCanvas.click();
-		const marker: Locator = screen.getByLabelText('Map marker', { exact: true });
+		const map: Locator = screen.getByTestId('map');
+		await map.click();
+		const marker: Locator = screen.getByLabelText('Map marker', {
+			exact: true
+		});
 
 		expect(marker).toBeDefined();
 	});
 
-	// When map clicked, it should add element to the markers mapState
 	it('adds a marker to the mapState when the map is clicked', async () => {
 		const screen = render(Map);
-		const mapCanvas: Locator = screen.getByTestId('map');
+		const map: Locator = screen.getByTestId('map');
 
 		expect(mapState.getMarkers()).toHaveLength(0);
-		await mapCanvas.click();
+		await map.click();
 		expect(mapState.getMarkers()).toHaveLength(1);
 	});
 });
