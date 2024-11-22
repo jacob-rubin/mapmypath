@@ -98,7 +98,7 @@ class Mapbox {
 		);
 	}
 
-	addMultiLine(lngLats: mapboxgl.LngLat[]) {
+	addMultiLineByLngLat(lngLats: mapboxgl.LngLat[]) {
 		this.#map.addSource('multiLineSource', {
 			type: 'geojson',
 			data: {
@@ -124,6 +124,12 @@ class Mapbox {
 				'line-width': 8
 			}
 		});
+	}
+
+	addMultiLineByPoint(points: mapboxgl.Point[]) {
+		this.addMultiLineByLngLat(
+			points.map((point) => this.pointToLngLat(point))
+		);
 	}
 }
 

@@ -156,7 +156,7 @@ describe('Mapbox', async () => {
 	});
 
 	it('adds a multiline between multiple LngLats', async () => {
-		mapbox.addMultiLine([
+		mapbox.addMultiLineByLngLat([
 			new LngLat(0, 0),
 			new LngLat(20, 20),
 			new LngLat(-40, 40)
@@ -170,6 +170,30 @@ describe('Mapbox', async () => {
 						[20, 20],
 						[-40, 40]
 					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
+
+	it('adds a multiline between multiple points', async () => {
+		const points: Point[] = [
+			new Point(50, 50),
+			new Point(200, 200),
+			new Point(100, 100)
+		];
+
+		mapbox.addMultiLineByPoint(points);
+
+		expect(mapbox.getSource('multiLineSource')).toMatchObject({
+			data: {
+				geometry: {
+					coordinates: points.map((point) =>
+						mapbox.pointToLngLat(point).toArray()
+					),
 					type: 'LineString'
 				},
 				properties: {},
