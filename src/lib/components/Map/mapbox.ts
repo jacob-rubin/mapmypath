@@ -1,24 +1,16 @@
+import mapboxgl from 'mapbox-gl';
+
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {
-	LngLat,
-	MapMouseEvent,
-	Map,
-	Marker,
-	type CustomLayerInterface,
-	type LayerSpecification,
-	type GeoJSONSourceSpecification,
-	Point
-} from 'mapbox-gl';
 
 class Mapbox {
-	#map: Map;
+	#map: mapboxgl.Map;
 
 	constructor(
 		container: string | HTMLElement,
-		center: LngLat = new LngLat(0, 0),
+		center: mapboxgl.LngLat = new mapboxgl.LngLat(0, 0),
 		zoom: number = 0
 	) {
-		this.#map = new Map({
+		this.#map = new mapboxgl.Map({
 			container,
 			accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
 			zoom,
@@ -47,25 +39,27 @@ class Mapbox {
 		}
 	}
 
-	addClickListener(callback: (event: MapMouseEvent) => void): void {
+	addClickListener(
+		callback: (event: mapboxgl.MapMouseEvent) => void
+	): void {
 		this.#map.on('click', callback);
 	}
 
-	addMarker(lngLat: LngLat): void {
-		new Marker().setLngLat(lngLat).addTo(this.#map);
+	addMarker(lngLat: mapboxgl.LngLat): void {
+		new mapboxgl.Marker().setLngLat(lngLat).addTo(this.#map);
 	}
 
-	getLayer(
-		id: string
-	): LayerSpecification | CustomLayerInterface | undefined {
+	getLayer(id: string): mapboxgl.LayerSpecification | undefined {
 		return this.#map.getLayer(id);
 	}
 
-	getSource(id: string): GeoJSONSourceSpecification | undefined {
+	getSource(
+		id: string
+	): mapboxgl.GeoJSONSourceSpecification | undefined {
 		return this.#map.getSource(id)?.serialize();
 	}
 
-	addLineByLngLat(start: LngLat, end: LngLat) {
+	addLineByLngLat(start: mapboxgl.LngLat, end: mapboxgl.LngLat) {
 		this.#map.addSource('lineSource', {
 			type: 'geojson',
 			data: {
@@ -93,18 +87,18 @@ class Mapbox {
 		});
 	}
 
-	pointToLngLat(point: Point): LngLat {
+	pointToLngLat(point: mapboxgl.Point): mapboxgl.LngLat {
 		return this.#map.unproject(point);
 	}
 
-	addLineByPoint(start: Point, end: Point) {
+	addLineByPoint(start: mapboxgl.Point, end: mapboxgl.Point) {
 		this.addLineByLngLat(
 			this.pointToLngLat(start),
 			this.pointToLngLat(end)
 		);
 	}
 
-	addMultiLine(lngLats: LngLat[]) {
+	addMultiLine(lngLats: mapboxgl.LngLat[]) {
 		this.#map.addSource('multiLineSource', {
 			type: 'geojson',
 			data: {
