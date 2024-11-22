@@ -24,11 +24,16 @@ describe('Mapbox', async () => {
 
 		mapbox = new Mapbox(element);
 		await mapbox.awaitLoad();
-		mapbox.initializeStyles();
+		await mapbox.initializeStyles();
 	});
 
 	afterEach(() => {
 		element.remove();
+	});
+
+	it.skip('awaits until the map is loaded', async () => {
+		// TODO: Figure out map loading
+		expect(mapbox.isLoaded()).toBeTruthy();
 	});
 
 	it('instantiates a map in a container using the id', async () => {
@@ -72,11 +77,6 @@ describe('Mapbox', async () => {
 
 		expect(onClick1).toHaveBeenCalledOnce();
 		expect(onClick2).toHaveBeenCalledOnce();
-	});
-
-	it.skip('awaits until the map is loaded', async () => {
-		await mapbox.awaitLoad();
-		expect(mapbox.isLoaded()).toBe(true);
 	});
 
 	it('adds a marker to the map', async () => {

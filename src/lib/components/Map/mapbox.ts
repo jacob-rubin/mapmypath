@@ -27,7 +27,7 @@ class Mapbox {
 	}
 
 	isLoaded(): boolean {
-		return this.#map.isStyleLoaded();
+		return this.#map.loaded();
 	}
 
 	awaitLoad(): Promise<void> {
@@ -35,14 +35,15 @@ class Mapbox {
 			return Promise.resolve();
 		} else {
 			return new Promise((resolve) => {
-				this.#map.on('load', () => {
+				// TODO: style.load fixes one of the rendering issues. Why?
+				this.#map.on('style.load', () => {
 					resolve();
 				});
 			});
 		}
 	}
 
-	initializeStyles(): void {
+	async initializeStyles(): Promise<void> {
 		this.#map.addSource(SOURCE_ID, {
 			type: 'geojson',
 			data: {
