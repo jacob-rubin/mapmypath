@@ -90,6 +90,14 @@ describe('Mapbox', async () => {
 		});
 	});
 
+	it('throws an error when the layer does not exist', async () => {
+		expect(() => mapbox.getLayer('nonExistentLayer')).toThrow();
+	});
+
+	it('throws an error when the source does not exist', async () => {
+		expect(() => mapbox.getSource('nonExistentSource')).toThrow();
+	});
+
 	it('adds a line between two LngLats', async () => {
 		mapbox.addLineByLngLat(new LngLat(0, 0), new LngLat(20, 20));
 

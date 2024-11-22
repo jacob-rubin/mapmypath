@@ -28,7 +28,7 @@ class Mapbox {
 	}
 
 	awaitLoad(): Promise<void> {
-		if (this.#map.isStyleLoaded()) {
+		if (this.isLoaded()) {
 			return Promise.resolve();
 		} else {
 			return new Promise((resolve) => {
@@ -49,14 +49,24 @@ class Mapbox {
 		new mapboxgl.Marker().setLngLat(lngLat).addTo(this.#map);
 	}
 
-	getLayer(id: string): mapboxgl.LayerSpecification | undefined {
-		return this.#map.getLayer(id);
+	getLayer(id: string): mapboxgl.LayerSpecification {
+		if (!this.#map.getLayer(id)) {
+			throw new Error(`Layer not found: ${id}`);
+		}
+
+		return this.#map.getLayer(id)!;
 	}
 
-	getSource(
-		id: string
-	): mapboxgl.GeoJSONSourceSpecification | undefined {
-		return this.#map.getSource(id)?.serialize();
+	getSource(id: string): mapboxgl.GeoJSONSourceSpecification {
+		if (!this.#map.getSource(id)) {
+			throw new Error(`Source not found: ${id}`);
+		}
+
+		return this.#map.getSource(id)!.serialize();
+	}
+
+	pointToLngLat(point: mapboxgl.Point): mapboxgl.LngLat {
+		return this.#map.unproject(point);
 	}
 
 	addLineByLngLat(start: mapboxgl.LngLat, end: mapboxgl.LngLat) {
@@ -85,10 +95,6 @@ class Mapbox {
 				'line-width': 8
 			}
 		});
-	}
-
-	pointToLngLat(point: mapboxgl.Point): mapboxgl.LngLat {
-		return this.#map.unproject(point);
 	}
 
 	addLineByPoint(start: mapboxgl.Point, end: mapboxgl.Point) {
