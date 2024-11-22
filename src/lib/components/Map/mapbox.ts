@@ -78,7 +78,9 @@ class Mapbox {
 	}
 
 	addMarker(lngLat: mapboxgl.LngLat): void {
-		new mapboxgl.Marker().setLngLat(lngLat).addTo(this.#map);
+		new mapboxgl.Marker({ draggable: true })
+			.setLngLat(lngLat)
+			.addTo(this.#map);
 	}
 
 	getLayer(id: string): mapboxgl.LayerSpecification {

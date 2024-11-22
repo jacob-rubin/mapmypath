@@ -9,6 +9,7 @@ import {
 import Mapbox from './mapbox';
 import { LngLat } from 'mapbox-gl';
 import { getByLabelText } from '@testing-library/svelte';
+import userEvent from '@testing-library/user-event';
 
 describe('Mapbox', async () => {
 	let element: HTMLElement;
@@ -28,7 +29,7 @@ describe('Mapbox', async () => {
 	});
 
 	afterEach(() => {
-		element.remove();
+		// element.remove();
 	});
 
 	it.skip('awaits until the map is loaded', async () => {
@@ -85,12 +86,33 @@ describe('Mapbox', async () => {
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
+	it('drags a marker when it is clicked and dragged', async () => {
+		const user = userEvent.setup();
+		mapbox.addMarker(new LngLat(0, 0));
+		const marker = getByLabelText(element, 'Map marker');
+
+		await user.pointer([
+			{
+				keys: '[MouseLeft>]',
+				target: marker
+			},
+			{
+				coords: { x: 100, y: 100 }
+			},
+			{ keys: '[/MouseLeft]' }
+		]);
+
+		// Check that marker moved to a new position on the screen
+		expect(marker.getBoundingClientRect().x).toBe(293.5);
+		expect(marker.getBoundingClientRect().y).toBe(225.5);
+	});
+
 	it('throws an error when the layer does not exist', async () => {
-		expect(() => mapbox.getLayer('nonExistentLayer')).toThrow();
+		expect(mapbox.getLayer('nonExistentLayer')).toThrow();
 	});
 
 	it('throws an error when the source does not exist', async () => {
-		expect(() => mapbox.getSource('nonExistentSource')).toThrow();
+		expect(mapbox.getSource('nonExistentSource')).toThrow();
 	});
 
 	it('styles the path', async () => {
