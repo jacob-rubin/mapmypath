@@ -21,10 +21,11 @@ describe('Mapbox', async () => {
 
 		mapbox = new Mapbox(element);
 		await mapbox.awaitLoad();
+		mapbox.initializeStyles();
 	});
 
 	afterEach(() => {
-		element.remove();
+		// element.remove();
 	});
 
 	it('instantiates a map in a container using the id', async () => {
@@ -202,6 +203,67 @@ describe('Mapbox', async () => {
 					coordinates: points.map((point) =>
 						mapbox.pointToLngLat(point).toArray()
 					),
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
+
+	it('renders a path', async () => {
+		const lngLats: LngLat[] = [
+			new LngLat(0, 0),
+			new LngLat(20, 20),
+			new LngLat(-40, 40)
+		];
+
+		mapbox.renderPath(lngLats);
+
+		expect(mapbox.getSource('multiLineSource')).toMatchObject({
+			data: {
+				geometry: {
+					coordinates: lngLats.map((lngLat) => lngLat.toArray()),
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
+
+	it('updates the path when with new coordinates', async () => {
+		const SOURCE_ID = 'source';
+
+		const lngLats: LngLat[] = [
+			new LngLat(0, 0),
+			new LngLat(20, 20),
+			new LngLat(-40, 40)
+		];
+
+		mapbox.renderPath(lngLats);
+
+		expect(mapbox.getSource(SOURCE_ID)).toMatchObject({
+			data: {
+				geometry: {
+					coordinates: lngLats.map((lngLat) => lngLat.toArray()),
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+		lngLats.push(new LngLat(50, 50));
+
+		mapbox.renderPath(lngLats);
+
+		expect(mapbox.getSource(SOURCE_ID)).toMatchObject({
+			data: {
+				geometry: {
+					coordinates: lngLats.map((lngLat) => lngLat.toArray()),
 					type: 'LineString'
 				},
 				properties: {},

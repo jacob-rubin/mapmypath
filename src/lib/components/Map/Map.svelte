@@ -16,10 +16,13 @@
 		let zoom: number = 9;
 
 		map = new Mapbox(container, center, zoom);
+		await map.awaitLoad();
+		map.initializeStyles();
 
 		map.addClickListener((e) => {
 			map.addMarker(e.lngLat);
 			mapState.addMarker(e.lngLat);
+			map.renderPath(mapState.getMarkers());
 		});
 	});
 

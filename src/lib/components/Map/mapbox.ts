@@ -2,6 +2,9 @@ import mapboxgl from 'mapbox-gl';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+const SOURCE_ID = 'source';
+const LAYER_ID = 'layer';
+
 class Mapbox {
 	#map: mapboxgl.Map;
 
@@ -37,6 +40,34 @@ class Mapbox {
 				});
 			});
 		}
+	}
+
+	initializeStyles(): void {
+		this.#map.addSource(SOURCE_ID, {
+			type: 'geojson',
+			data: {
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'LineString',
+					coordinates: []
+				}
+			}
+		});
+
+		this.#map.addLayer({
+			id: LAYER_ID,
+			source: SOURCE_ID,
+			type: 'line',
+			layout: {
+				'line-join': 'round',
+				'line-cap': 'round'
+			},
+			paint: {
+				'line-color': '#888',
+				'line-width': 8
+			}
+		});
 	}
 
 	addClickListener(
@@ -136,6 +167,19 @@ class Mapbox {
 		this.addMultiLineByLngLat(
 			points.map((point) => this.pointToLngLat(point))
 		);
+	}
+
+	renderPath(lngLats: mapboxgl.LngLat[]) {
+		const geoJsonSource: mapboxgl.GeoJSONSource =
+			this.#map.getSource(SOURCE_ID)!;
+		geoJsonSource.setData({
+			type: 'Feature',
+			properties: {},
+			geometry: {
+				type: 'LineString',
+				coordinates: lngLats.map((lngLat) => lngLat.toArray())
+			}
+		});
 	}
 }
 
