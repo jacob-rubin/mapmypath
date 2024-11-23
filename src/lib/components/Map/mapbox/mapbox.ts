@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import Marker from './marker';
 
 const SOURCE_ID = 'source';
 const LAYER_ID = 'layer';
@@ -77,10 +78,8 @@ class Mapbox {
 		this.#map.on('click', callback);
 	}
 
-	addMarker(lngLat: mapboxgl.LngLat): void {
-		new mapboxgl.Marker({ draggable: true })
-			.setLngLat(lngLat)
-			.addTo(this.#map);
+	addMarker(id: string | number, lngLat: mapboxgl.LngLat): void {
+		new Marker(id, lngLat).addTo(this.#map);
 	}
 
 	getLayer(id: string): mapboxgl.LayerSpecification {

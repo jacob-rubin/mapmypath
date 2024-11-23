@@ -29,7 +29,7 @@ describe('Mapbox', async () => {
 	});
 
 	afterEach(() => {
-		// element.remove();
+		element.remove();
 	});
 
 	it.skip('awaits until the map is loaded', async () => {
@@ -81,14 +81,14 @@ describe('Mapbox', async () => {
 	});
 
 	it('adds a marker to the map', async () => {
-		mapbox.addMarker(new LngLat(0, 0));
+		mapbox.addMarker('id', new LngLat(0, 0));
 
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
 	it('drags a marker when it is clicked and dragged', async () => {
 		const user = userEvent.setup();
-		mapbox.addMarker(new LngLat(0, 0));
+		mapbox.addMarker('id', new LngLat(0, 0));
 		const marker = getByLabelText(element, 'Map marker');
 
 		await user.pointer([
@@ -108,11 +108,11 @@ describe('Mapbox', async () => {
 	});
 
 	it('throws an error when the layer does not exist', async () => {
-		expect(mapbox.getLayer('nonExistentLayer')).toThrow();
+		expect(() => mapbox.getLayer('nonExistentLayer')).toThrow();
 	});
 
 	it('throws an error when the source does not exist', async () => {
-		expect(mapbox.getSource('nonExistentSource')).toThrow();
+		expect(() => mapbox.getSource('nonExistentSource')).toThrow();
 	});
 
 	it('styles the path', async () => {
