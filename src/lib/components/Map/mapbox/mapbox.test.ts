@@ -10,6 +10,7 @@ import Mapbox from './mapbox';
 import { LngLat } from 'mapbox-gl';
 import { getByLabelText } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
+import type Marker from './marker';
 
 describe('Mapbox', async () => {
 	let element: HTMLElement;
@@ -110,13 +111,19 @@ describe('Mapbox', async () => {
 	it('calls a callback with MarkerData when a marker is dragging', async () => {
 		const onDrag = vi.fn();
 		const user = userEvent.setup();
-		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) }, onDrag);
-		const marker = getByLabelText(element, 'Map marker');
+
+		const marker: Marker = mapbox.addMarker({
+			id: 'id',
+			lngLat: new LngLat(0, 0)
+		});
+		marker.addDragListener(onDrag);
+
+		const mapMarker = getByLabelText(element, 'Map marker');
 
 		await user.pointer([
 			{
 				keys: '[MouseLeft>]',
-				target: marker
+				target: mapMarker
 			},
 			{
 				coords: { x: 100, y: 100 }

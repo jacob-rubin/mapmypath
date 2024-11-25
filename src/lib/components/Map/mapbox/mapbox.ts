@@ -79,11 +79,11 @@ class Mapbox {
 		this.#map.on('click', callback);
 	}
 
-	addMarker(
-		markerData: MarkerData,
-		callback?: (markerData: MarkerData) => void
-	): void {
-		new Marker(markerData, callback).addTo(this.#map);
+	addMarker(markerData: MarkerData): Marker {
+		const marker: Marker = new Marker(markerData);
+		marker.addTo(this.#map);
+
+		return marker;
 	}
 
 	getLayer(id: string): mapboxgl.LayerSpecification {

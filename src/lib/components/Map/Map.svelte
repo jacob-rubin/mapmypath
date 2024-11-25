@@ -5,6 +5,7 @@
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
 	import type { MarkerData } from '$lib/markerData';
+	import type Marker from './mapbox/marker';
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
@@ -20,18 +21,20 @@
 		await map.awaitLoad();
 		map.initializeStyles();
 
-		map.addClickListener((e) => {
+		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 			const markerData: MarkerData = {
 				id: mapState.getMarkers().length,
 				lngLat: e.lngLat
 			};
 
-			map.addMarker(markerData, (marker: MarkerData) => {
-				mapState.updateMarker(marker.id, marker.lngLat);
-				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			});
 			mapState.addMarker(markerData);
 			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+
+			const marker: Marker = map.addMarker(markerData);
+			marker.addDragListener((markerData: MarkerData) => {
+				mapState.updateMarker(markerData.id, markerData.lngLat);
+				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+			});
 		});
 	});
 
