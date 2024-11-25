@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Map from './Map.svelte';
-import { mapState } from '$lib/shared/mapState.svelte';
-import type { Locator } from '@vitest/browser/context';
+import { mapState } from '$lib/shared/mapState/mapState.svelte';
+import { type Locator } from '@vitest/browser/context';
+import userEvent from '@testing-library/user-event';
 
 describe('Map', async () => {
 	beforeEach(() => {
@@ -53,6 +54,40 @@ describe('Map', async () => {
 		expect(mapState.getMarkers()).toHaveLength(0);
 		await map.click();
 		expect(mapState.getMarkers()).toHaveLength(1);
+	});
+
+	it('updates the mapState with a new LngLat when a marker is dragged', async () => {
+		const user = userEvent.setup();
+
+		const screen = render(Map);
+		const map: Locator = screen.getByTestId('map');
+		await map.click();
+		const marker: Locator = screen.getByLabelText('Map marker', {
+			exact: true
+		});
+		expect(marker).toBeDefined();
+
+		expect(mapState.getMarkers()).toHaveLength(1);
+		expect(mapState.getMarkers()[0].lngLat).toEqual({
+			lat: 42.21501210675481,
+			lng: -71.2258912910153
+		});
+
+		await user.pointer([
+			{
+				keys: '[MouseLeft>]',
+				target: marker.element()
+			},
+			{
+				coords: { x: 100, y: 100 }
+			},
+			{ keys: '[/MouseLeft]' }
+		]);
+
+		expect(mapState.getMarkers()[0].lngLat).toEqual({
+			lat: 42.113220359185334,
+			lng: -71.08856218945311
+		});
 	});
 });
 

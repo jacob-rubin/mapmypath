@@ -81,14 +81,14 @@ describe('Mapbox', async () => {
 	});
 
 	it('adds a marker to the map', async () => {
-		mapbox.addMarker('id', new LngLat(0, 0));
+		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) });
 
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
 	it('drags a marker when it is clicked and dragged', async () => {
 		const user = userEvent.setup();
-		mapbox.addMarker('id', new LngLat(0, 0));
+		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) });
 		const marker = getByLabelText(element, 'Map marker');
 
 		await user.pointer([
@@ -105,6 +105,28 @@ describe('Mapbox', async () => {
 		// Check that marker moved to a new position on the screen
 		expect(marker.getBoundingClientRect().x).toBe(293.5);
 		expect(marker.getBoundingClientRect().y).toBe(225.5);
+	});
+
+	it('calls a callback with MarkerData when a marker is dragging', async () => {
+		const onDrag = vi.fn();
+		const user = userEvent.setup();
+		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) }, onDrag);
+		const marker = getByLabelText(element, 'Map marker');
+
+		await user.pointer([
+			{
+				keys: '[MouseLeft>]',
+				target: marker
+			},
+			{
+				coords: { x: 100, y: 100 }
+			},
+			{ keys: '[/MouseLeft]' }
+		]);
+		expect(onDrag).toHaveBeenLastCalledWith({
+			id: 'id',
+			lngLat: new LngLat(70.31249999999807, -57.326521225216695)
+		});
 	});
 
 	it('throws an error when the layer does not exist', async () => {
