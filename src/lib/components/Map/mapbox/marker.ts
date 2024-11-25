@@ -39,4 +39,5 @@ class Marker {
 		this.#marker.addTo(map);
 	}
 }
+
 export default Marker;
