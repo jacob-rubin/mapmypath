@@ -5,24 +5,22 @@ class Marker {
 	#id: string | number;
 	#marker: mapboxgl.Marker;
 
-	constructor(
-		markerData: MarkerData,
-		callback?: (markerData: MarkerData) => void
-	) {
+	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
 		this.#marker = new mapboxgl.Marker({ draggable: true }).setLngLat(
 			markerData.lngLat
 		);
+	}
 
-		if (callback) {
-			this.#marker.on('drag', () => {
-				const markerData: MarkerData = {
-					id: this.#id,
-					lngLat: this.getLngLat()
-				};
-				callback(markerData);
-			});
-		}
+	addDragListener(callback: (markerData: MarkerData) => void): void {
+		this.#marker.on('drag', () => {
+			const markerData: MarkerData = {
+				id: this.#id,
+				lngLat: this.getLngLat()
+			};
+
+			callback(markerData);
+		});
 	}
 
 	getId(): string | number {
