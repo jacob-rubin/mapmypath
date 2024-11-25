@@ -69,8 +69,8 @@ describe('Map', async () => {
 
 		expect(mapState.getMarkers()).toHaveLength(1);
 		expect(mapState.getMarkers()[0].lngLat).toEqual({
-			lat: 42.21501210675481,
-			lng: -71.2258912910153
+			lng: -71.2258912910153,
+			lat: 42.21501210675481
 		});
 
 		await user.pointer([
