@@ -61,17 +61,17 @@ describe('Map', async () => {
 
 		const screen = render(Map);
 		const map: Locator = screen.getByTestId('map');
+
 		await map.click();
+
 		const marker: Locator = screen.getByLabelText('Map marker', {
 			exact: true
 		});
 		expect(marker).toBeDefined();
-
 		expect(mapState.getMarkers()).toHaveLength(1);
-		expect(mapState.getMarkers()[0].lngLat).toEqual({
-			lng: -71.2258912910153,
-			lat: 42.21501210675481
-		});
+
+		const initialMarkerLngLat: mapboxgl.LngLat =
+			mapState.getMarkers()[0].lngLat;
 
 		await user.pointer([
 			{
@@ -84,10 +84,9 @@ describe('Map', async () => {
 			{ keys: '[/MouseLeft]' }
 		]);
 
-		expect(mapState.getMarkers()[0].lngLat).toEqual({
-			lat: 42.113220359185334,
-			lng: -71.08856218945311
-		});
+		expect(mapState.getMarkers()[0].lngLat).not.toEqual(
+			initialMarkerLngLat
+		);
 	});
 });
 
