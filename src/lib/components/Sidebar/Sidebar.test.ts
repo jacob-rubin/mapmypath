@@ -1,7 +1,7 @@
-import { describe, expect, it, test } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Sidebar from './Sidebar.svelte';
-import { mapState } from '$lib/shared/mapState.svelte';
+import { mapState } from '$lib/shared/mapState/mapState.svelte';
 import { LngLat } from 'mapbox-gl';
 import { tick } from 'svelte';
 import type { Locator } from '@vitest/browser/context';
@@ -42,15 +42,17 @@ describe('Sidebar', async () => {
 	it('spans the height of the screen', async () => {
 		const screen = render(Sidebar);
 		const sidebar: Locator = screen.getByTestId('sidebar');
-		const sidebarHeight: number = sidebar.element().getBoundingClientRect().height;
+		const sidebarHeight: number = sidebar
+			.element()
+			.getBoundingClientRect().height;
 
 		expect(sidebarHeight).toBe(window.innerHeight - 16);
 	});
 
-	test('it should display the latitude and longitude when added to the map state', async () => {
+	it('it should display the latitude and longitude when added to the map state', async () => {
 		const screen = render(Sidebar);
 		const sidebar: Locator = screen.getByTestId('sidebar');
-		mapState.addMarker(new LngLat(0, 0));
+		mapState.addMarker({ id: 1, lngLat: new LngLat(0, 0) });
 		await tick();
 
 		expect(sidebar.element()).toHaveTextContent('0, 0');
