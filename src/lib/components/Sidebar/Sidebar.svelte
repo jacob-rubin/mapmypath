@@ -1,16 +1,26 @@
 <script lang="ts">
 	import MdiMenu from '~icons/mdi/menu';
-	import { slide, fly } from 'svelte/transition';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 
-	let isOpen: boolean = true;
+	let isOpen: boolean = false;
+	let cardWidth: string = 'w-10';
 
 	function toggleSidebar() {
 		isOpen = !isOpen;
+		cardWidth = isOpen ? 'w-72' : 'w-10';
 	}
 </script>
 
-{#snippet card(width: string)}
+<div class="h-screen p-2">
+	<div
+		class="card h-full {cardWidth} bg-neutral-content transition-all"
+	>
+		<button class="btn btn-ghost p-0" onclick={toggleSidebar}>
+			<MdiMenu class="size-5 text-neutral" />
+		</button>
+	</div>
+</div>
+
+<!-- {#snippet card(width: string)}
 	<div
 		data-testid="sidebar"
 		class="card h-full {width} bg-neutral-content"
@@ -42,4 +52,4 @@
 	{:else}
 		{@render card('w-min')}
 	{/if}
-</div>
+</div> -->
