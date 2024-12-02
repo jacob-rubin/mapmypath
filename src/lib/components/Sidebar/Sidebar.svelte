@@ -1,6 +1,9 @@
 <script lang="ts">
 	import MdiMenu from '~icons/mdi/menu';
+	import MdiLocation from '~icons/mdi/location';
+	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 
+	// TODO: Remove coupling
 	let isOpen: boolean = false;
 	let cardWidth: string = 'w-10';
 
@@ -10,30 +13,20 @@
 	}
 </script>
 
-<div class="h-screen p-2">
+<div data-testid="sidebar" class="h-screen p-2">
 	<div
 		class="card h-full {cardWidth} bg-neutral-content transition-all"
 	>
-		<button class="btn btn-ghost p-0" onclick={toggleSidebar}>
-			<MdiMenu class="size-5 text-neutral" />
-		</button>
-	</div>
-</div>
-
-<!-- {#snippet card(width: string)}
-	<div
-		data-testid="sidebar"
-		class="card h-full {width} bg-neutral-content"
-	>
 		<button
 			data-testid="sidebar-button"
-			class="btn btn-ghost"
+			class="btn btn-ghost p-0"
 			onclick={toggleSidebar}
 		>
-			<MdiMenu class="text-neutral" />
+			<MdiMenu class="size-5 text-neutral" />
 		</button>
-		<div class="overflow-auto">
-			{#if isOpen}
+		<div class="divider"></div>
+		{#if isOpen}
+			<div class="overflow-y-auto">
 				{#each mapState.getMarkers() as marker}
 					<div
 						class="card m-2 border-2 border-solid border-black p-2"
@@ -41,15 +34,17 @@
 						{marker.lngLat.lng}, {marker.lngLat.lat}
 					</div>
 				{/each}
-			{/if}
-		</div>
+			</div>
+		{:else}
+			<div class="self-center overflow-hidden hover:overflow-y-auto">
+				{#each mapState.getMarkers() as marker, index}
+					<MdiLocation
+						data-testid={`marker${index}`}
+						class="size-8 text-neutral"
+					/>
+					<div class="divider"></div>
+				{/each}
+			</div>
+		{/if}
 	</div>
-{/snippet}
-
-<div data-testid="sidebar-div" class="h-screen p-2">
-	{#if isOpen}
-		{@render card('w-72')}
-	{:else}
-		{@render card('w-min')}
-	{/if}
-</div> -->
+</div>
