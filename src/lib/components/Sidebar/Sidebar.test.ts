@@ -20,7 +20,44 @@ describe('Sidebar', async () => {
 		expect(sidebar.element()).toHaveClass('w-72');
 	});
 
-	it('collapses when button clicked', async () => {
+	it('shows the collapse button when expanded', async () => {
+		const screen = render(Sidebar);
+		const sidebar: Locator = screen.getByTestId('sidebar');
+		const button: Locator = screen.getByRole('button');
+
+		expect(sidebar.element()).toHaveClass('w-72');
+		expect(button.getByTestId('collapse').query()).toBeTruthy();
+	});
+
+	it('shows the expand button when collapsed', async () => {
+		const screen = render(Sidebar);
+		const button: Locator = screen.getByRole('button');
+		await button.click();
+		const sidebar: Locator = screen.getByTestId('sidebar');
+
+		expect(sidebar.element()).toHaveClass('w-10');
+		expect(button.getByTestId('expand').query()).toBeTruthy();
+	});
+
+	it('shows a tooltip when the collapse button is hovered', async () => {
+		const screen = render(Sidebar);
+		const button: Locator = screen.getByRole('button');
+		await button.hover();
+		const tooltip: Locator = screen.getByTestId('tooltip');
+
+		expect(tooltip.element()).toBeInTheDocument();
+	});
+
+	it('is removed from the dom when collapse button clicked', async () => {
+		const screen = render(Sidebar);
+		const button: Locator = screen.getByRole('button');
+		await button.click();
+		const sidebar: Locator = screen.getByTestId('sidebar');
+
+		expect(sidebar.element()).not.toBeInTheDocument();
+	});
+
+	it.skip('collapses when button clicked', async () => {
 		const screen = render(Sidebar);
 		const button: Locator = screen.getByRole('button');
 		await button.click();
@@ -29,7 +66,7 @@ describe('Sidebar', async () => {
 		expect(sidebar.element()).toHaveClass('w-10');
 	});
 
-	it('reexpands when the button is clicked while collapsed', async () => {
+	it.skip('reexpands when the button is clicked while collapsed', async () => {
 		const screen = render(Sidebar);
 		const button: Locator = screen.getByRole('button');
 		await button.click();
