@@ -10,6 +10,7 @@
 	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
 	import MdiKeyboardArrowRight from '~icons/mdi/keyboard-arrow-right';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { slide } from 'svelte/transition';
 
 	// TODO: Remove coupling
 	let isOpen: boolean = true;
@@ -17,17 +18,18 @@
 
 	function toggleSidebar() {
 		isOpen = !isOpen;
-		cardWidth = isOpen ? 'w-72' : 'w-10';
+		cardWidth = isOpen ? 'w-72' : 'w-0';
 	}
 </script>
 
-<div
-	class="flex h-screen {cardWidth} flex-grow flex-row items-center py-2 transition-all"
->
-	<div
-		data-testid={'sidebar'}
-		class="card card-normal h-full w-full -translate-x-3 border-none bg-neutral-content"
-	></div>
+<div class="flex h-screen w-72 flex-grow flex-row items-center py-2">
+	{#if isOpen}
+		<div
+			data-testid={'sidebar'}
+			class="card card-normal h-full w-full bg-neutral-content"
+			transition:slide={{ axis: 'x' }}
+		></div>
+	{/if}
 
 	<div
 		data-testid={'tooltip'}
@@ -35,7 +37,7 @@
 		data-tip={isOpen ? 'Collapse' : 'Expand'}
 	>
 		<button
-			class="h-10 -translate-x-3 rounded-l-none rounded-r-lg border-none bg-neutral-content"
+			class="h-10 rounded-l-none rounded-r-lg border-none bg-neutral-content"
 			onclick={toggleSidebar}
 		>
 			{#if isOpen}
