@@ -11,6 +11,7 @@
 	import MdiKeyboardArrowRight from '~icons/mdi/keyboard-arrow-right';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { slide } from 'svelte/transition';
+	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 
 	// TODO: Remove coupling
 	let isOpen: boolean = true;
@@ -28,7 +29,11 @@
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-full bg-neutral-content"
 			transition:slide={{ axis: 'x' }}
-		></div>
+		>
+			<SidebarItem text="Location 1" />
+			<SidebarItem text="Location 2" />
+			<SidebarItem text="Location 3" />
+		</div>
 	{/if}
 
 	<div
