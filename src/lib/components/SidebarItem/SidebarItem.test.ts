@@ -13,8 +13,10 @@ describe('SidebarItem', async () => {
 		const screen = render(SidebarItem, {
 			text: 'Hello, world!'
 		});
-		const sidebarItem = screen.getByRole('menuitem');
 
-		expect(sidebarItem).toHaveTextContent('Hello, world!');
+		const textbox: HTMLElement =
+			screen.getByDisplayValue('Hello, world!');
+
+		expect(textbox).toBeTruthy();
 	});
 });

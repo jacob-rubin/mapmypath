@@ -1,25 +1,18 @@
 <script lang="ts">
 	/* TODOs: 
-	- Remove coupling of of isOpen, cardWidth
-	- Refactor data-tip to be cleaner
-	- Hide sidebar completely on collapse. 
-		- Consier using svelte:transitions
-			,and remove it from the DOM
+	- Have sidebar item slide with sidebar on close
 	*/
 
 	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
 	import MdiKeyboardArrowRight from '~icons/mdi/keyboard-arrow-right';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { slide } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
+	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 
-	// TODO: Remove coupling
 	let isOpen: boolean = true;
-	let cardWidth: string = 'w-72';
 
 	function toggleSidebar() {
 		isOpen = !isOpen;
-		cardWidth = isOpen ? 'w-72' : 'w-0';
 	}
 </script>
 
@@ -27,12 +20,12 @@
 	{#if isOpen}
 		<div
 			data-testid={'sidebar'}
-			class="card card-normal h-full w-full bg-neutral-content"
+			class="card card-normal h-full w-full bg-neutral-content p-2"
 			transition:slide={{ axis: 'x' }}
 		>
-			<SidebarItem text="Location 1" />
-			<SidebarItem text="Location 2" />
-			<SidebarItem text="Location 3" />
+			{#each mapState.getMarkers() as marker}
+				<SidebarItem text={marker.lngLat.toString()} />
+			{/each}
 		</div>
 	{/if}
 
