@@ -4,6 +4,7 @@
 	- Style scrollbar 
 	- Use geolocated names instead of lnglat's
 	- Sidebar scrolls down when marker added
+	- add debounce to reverseGeocode
 	*/
 
 	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
@@ -11,6 +12,7 @@
 	import { slide } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 
 	let isOpen: boolean = true;
 
@@ -27,7 +29,7 @@
 			transition:slide={{ axis: 'x' }}
 		>
 			{#each mapState.getMarkers() as marker}
-				<SidebarItem text={marker.lngLat.toString()} />
+				<SidebarItem {marker} />
 			{/each}
 		</div>
 	{/if}

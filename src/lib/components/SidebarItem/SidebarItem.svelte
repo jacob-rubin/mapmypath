@@ -1,11 +1,13 @@
 <script lang="ts">
+	import type { MarkerData } from '$lib/markerData';
+	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 	import { fade } from 'svelte/transition';
 
 	interface Props {
-		text: string;
+		marker: MarkerData;
 	}
 
-	let { text }: Props = $props();
+	let { marker }: Props = $props();
 </script>
 
 <div
@@ -13,5 +15,11 @@
 	role="menuitem"
 	transition:fade
 >
-	<input type="text" value={text} class="input w-full max-w-xs" />
+	{#await reverseGeocode(marker.lngLat) then geocode}
+		<input
+			type="text"
+			value={geocode}
+			class="input w-full max-w-xs"
+		/>
+	{/await}
 </div>
