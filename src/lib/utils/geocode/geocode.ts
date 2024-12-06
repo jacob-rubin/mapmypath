@@ -1,3 +1,5 @@
+import type { GeocodeResponse } from './geocodeResponseInterface';
+
 function assertOk(res: Response) {
 	if (!res.ok) {
 		throw new Error('Failed to fetch');
@@ -8,7 +10,13 @@ function assertOk(res: Response) {
 	}
 }
 
-// function getName(body: JSON): string {}
+function getName(geocodeResponse: GeocodeResponse): string {
+	if (geocodeResponse.features.length == 0) {
+		return 'Unknown Location';
+	}
+
+	return geocodeResponse.features[0].properties.name;
+}
 
 async function reverseGeocode(
 	lngLat: mapboxgl.LngLat
@@ -26,14 +34,9 @@ async function reverseGeocode(
 	);
 
 	assertOk(res);
+	const geocodeResponse: GeocodeResponse = await res.json();
 
-	const json = await res.json();
-
-	console.log('features: ', json['features']);
-	console.log('properties: ', json['features'][0]['properties']);
-	console.log('name: ', json['features'][0]['properties']['name']);
-
-	return json['features'][0]['properties']['name'];
+	return getName(geocodeResponse);
 }
 
 export { assertOk, reverseGeocode };

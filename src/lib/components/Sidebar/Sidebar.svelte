@@ -1,6 +1,9 @@
 <script lang="ts">
 	/* TODOs: 
-	- Have sidebar item slide with sidebar on close
+	- Have sidebar item slide with sidebar on close (maybe pass in isOpen prop, have in transition be fade, out be slide?)
+	- Style scrollbar 
+	- Use geolocated names instead of lnglat's
+	- Sidebar scrolls down when marker added
 	*/
 
 	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
@@ -20,7 +23,7 @@
 	{#if isOpen}
 		<div
 			data-testid={'sidebar'}
-			class="card card-normal h-full w-full overflow-hidden bg-neutral-content p-2 hover:overflow-auto"
+			class="card card-normal h-full w-full overflow-auto bg-neutral-content p-2"
 			transition:slide={{ axis: 'x' }}
 		>
 			{#each mapState.getMarkers() as marker}
