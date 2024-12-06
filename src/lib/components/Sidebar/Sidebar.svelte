@@ -20,7 +20,7 @@
 	{#if isOpen}
 		<div
 			data-testid={'sidebar'}
-			class="card card-normal h-full w-full bg-neutral-content p-2"
+			class="card card-normal h-full w-full overflow-hidden bg-neutral-content p-2 hover:overflow-auto"
 			transition:slide={{ axis: 'x' }}
 		>
 			{#each mapState.getMarkers() as marker}
