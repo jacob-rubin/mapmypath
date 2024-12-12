@@ -1,8 +1,12 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import debounce from './debounce';
 import { waitFor } from '@testing-library/svelte';
 
 describe('debounce', async () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	it('calls the function', async () => {
 		const fn = vi.fn();
 		const debouncedFn = debounce(fn, 100);

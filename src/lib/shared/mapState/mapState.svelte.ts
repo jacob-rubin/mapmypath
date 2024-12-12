@@ -1,4 +1,4 @@
-import type { MarkerData } from '$lib/markerData';
+import type { MarkerData } from '$lib/types/markerData';
 import type { LngLat } from 'mapbox-gl';
 
 class MapState {

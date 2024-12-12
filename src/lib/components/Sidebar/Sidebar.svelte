@@ -1,18 +1,9 @@
 <script lang="ts">
-	/* TODOs: 
-	- Have sidebar item slide with sidebar on close (maybe pass in isOpen prop, have in transition be fade, out be slide?)
-	- Style scrollbar 
-	- Use geolocated names instead of lnglat's
-	- Sidebar scrolls down when marker added
-	- add debounce to reverseGeocode
-	*/
-
 	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
 	import MdiKeyboardArrowRight from '~icons/mdi/keyboard-arrow-right';
 	import { slide } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
-	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 
 	let isOpen: boolean = true;
 

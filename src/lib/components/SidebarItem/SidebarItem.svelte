@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MarkerData } from '$lib/markerData';
+	import type { MarkerData } from '$lib/types/markerData';
 	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 	import { fade } from 'svelte/transition';
 

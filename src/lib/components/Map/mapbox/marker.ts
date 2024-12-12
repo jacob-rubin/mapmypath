@@ -1,4 +1,4 @@
-import type { MarkerData } from '$lib/markerData';
+import type { MarkerData } from '$lib/types/markerData';
 import mapboxgl from 'mapbox-gl';
 
 class Marker {
