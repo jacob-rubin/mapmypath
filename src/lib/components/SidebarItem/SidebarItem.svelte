@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { MarkerData } from '$lib/types/markerData';
 	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 	import { fade } from 'svelte/transition';
+	import type Marker from '../Map/mapbox/marker';
 
 	interface Props {
-		marker: MarkerData;
+		marker: Marker;
 	}
 
 	let { marker }: Props = $props();
@@ -15,7 +15,7 @@
 	role="menuitem"
 	transition:fade
 >
-	{#await reverseGeocode(marker.lngLat) then geocode}
+	{#await reverseGeocode(marker.getLngLat()) then geocode}
 		<input
 			type="text"
 			value={geocode}

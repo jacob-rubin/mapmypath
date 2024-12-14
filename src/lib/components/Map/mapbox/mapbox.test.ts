@@ -10,7 +10,7 @@ import Mapbox from './mapbox';
 import { LngLat } from 'mapbox-gl';
 import { getByLabelText } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import type Marker from './marker';
+import Marker from './marker';
 
 describe('Mapbox', async () => {
 	let element: HTMLElement;
@@ -82,14 +82,14 @@ describe('Mapbox', async () => {
 	});
 
 	it('adds a marker to the map', async () => {
-		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) });
+		mapbox.addMarker(new Marker({ id: 0, lngLat: new LngLat(0, 0) }));
 
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
 	it('drags a marker when it is clicked and dragged', async () => {
 		const user = userEvent.setup();
-		mapbox.addMarker({ id: 'id', lngLat: new LngLat(0, 0) });
+		mapbox.addMarker(new Marker({ id: 0, lngLat: new LngLat(0, 0) }));
 		const marker = getByLabelText(element, 'Map marker');
 
 		await user.pointer([
@@ -112,10 +112,9 @@ describe('Mapbox', async () => {
 		const onDrag = vi.fn();
 		const user = userEvent.setup();
 
-		const marker: Marker = mapbox.addMarker({
-			id: 'id',
-			lngLat: new LngLat(0, 0)
-		});
+		const marker: Marker = mapbox.addMarker(
+			new Marker({ id: 0, lngLat: new LngLat(0, 0) })
+		);
 		marker.addDragListener(onDrag);
 
 		const mapMarker = getByLabelText(element, 'Map marker');
@@ -131,7 +130,7 @@ describe('Mapbox', async () => {
 			{ keys: '[/MouseLeft]' }
 		]);
 		expect(onDrag).toHaveBeenLastCalledWith({
-			id: 'id',
+			id: 0,
 			lngLat: new LngLat(70.31249999999807, -57.326521225216695)
 		});
 	});

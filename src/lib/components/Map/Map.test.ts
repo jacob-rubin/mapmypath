@@ -70,8 +70,9 @@ describe('Map', async () => {
 		expect(marker).toBeDefined();
 		expect(mapState.getMarkers()).toHaveLength(1);
 
-		const initialMarkerLngLat: mapboxgl.LngLat =
-			mapState.getMarkers()[0].lngLat;
+		const initialMarkerLngLat: mapboxgl.LngLat = mapState
+			.getMarkers()[0]
+			.getLngLat();
 
 		await user.pointer([
 			{
@@ -84,7 +85,7 @@ describe('Map', async () => {
 			{ keys: '[/MouseLeft]' }
 		]);
 
-		expect(mapState.getMarkers()[0].lngLat).not.toEqual(
+		expect(mapState.getMarkers()[0].getLngLat()).not.toEqual(
 			initialMarkerLngLat
 		);
 	});

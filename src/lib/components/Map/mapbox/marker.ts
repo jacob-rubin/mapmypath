@@ -1,8 +1,11 @@
-import type { MarkerData } from '$lib/types/markerData';
 import mapboxgl from 'mapbox-gl';
 
+export interface MarkerData {
+	id: number;
+	lngLat: mapboxgl.LngLat;
+}
 class Marker {
-	#id: string | number;
+	#id: number;
 	#marker: mapboxgl.Marker;
 
 	constructor(markerData: MarkerData) {
@@ -31,11 +34,11 @@ class Marker {
 		return this.#marker.getLngLat();
 	}
 
-	getMarker(): mapboxgl.Marker {
-		return this.#marker;
+	setLngLat(lngLat: mapboxgl.LngLat): void {
+		this.#marker.setLngLat(lngLat);
 	}
 
-	addTo(map: mapboxgl.Map): void {
+	addToMap(map: mapboxgl.Map): void {
 		this.#marker.addTo(map);
 	}
 }

@@ -5,6 +5,7 @@ import { mapState } from '$lib/shared/mapState/mapState.svelte';
 import { LngLat } from 'mapbox-gl';
 import { tick } from 'svelte';
 import type { Locator } from '@vitest/browser/context';
+import Marker from '../Map/mapbox/marker';
 
 describe('Sidebar', async () => {
 	it('matches the snapshot', async ({ expect }) => {
@@ -88,7 +89,9 @@ describe('Sidebar', async () => {
 	it.skip('displays the latitude and longitude when added to the map state', async () => {
 		const screen = render(Sidebar);
 		const sidebar: Locator = screen.getByTestId('sidebar');
-		mapState.addMarker({ id: 1, lngLat: new LngLat(0, 0) });
+		mapState.addMarker(
+			new Marker({ id: 0, lngLat: new LngLat(0, 0) })
+		);
 		await tick();
 
 		expect(sidebar.getByRole('textbox').element()).toHaveValue(
