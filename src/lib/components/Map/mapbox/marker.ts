@@ -30,7 +30,6 @@ class Marker {
 	}
 
 	get name(): string {
-		//TODO: Replace all with getters and setters!!
 		return this.#name;
 	}
 

@@ -40,4 +40,24 @@ describe('Marker', async () => {
 
 		expect(marker.lngLat).toEqual(new LngLat(1, 1));
 	});
+
+	it('returns the name', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0)
+		});
+
+		expect(marker.name).toBe('Location');
+	});
+
+	it('sets the name', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0)
+		});
+
+		marker.name = 'New Location';
+
+		expect(marker.name).toBe('New Location');
+	});
 });
