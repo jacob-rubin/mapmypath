@@ -29,16 +29,14 @@
 
 			map.addMarker(marker);
 			mapState.addMarker(marker);
-			map.renderPath(mapState.getMarkers().map((m) => m.getLngLat()));
+			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
 
 			marker.addDragListener((markerData: MarkerData) => {
 				mapState.updateMarker({
 					id: markerData.id,
 					lngLat: markerData.lngLat
 				});
-				map.renderPath(
-					mapState.getMarkers().map((m) => m.getLngLat())
-				);
+				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
 			});
 		});
 	});

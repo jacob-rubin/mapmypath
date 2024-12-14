@@ -17,31 +17,16 @@ class Marker {
 		this.#name = 'Location';
 	}
 
-	addDragListener(callback: (markerData: MarkerData) => void): void {
-		this.#marker.on('drag', () => {
-			const markerData: MarkerData = {
-				id: this.#id,
-				lngLat: this.getLngLat()
-			};
-
-			callback(markerData);
-		});
-	}
-
-	getId(): string | number {
+	get id(): number {
 		return this.#id;
 	}
 
-	getLngLat(): mapboxgl.LngLat {
+	get lngLat(): mapboxgl.LngLat {
 		return this.#marker.getLngLat();
 	}
 
-	setLngLat(lngLat: mapboxgl.LngLat): void {
-		this.#marker.setLngLat(lngLat);
-	}
-
-	addToMap(map: mapboxgl.Map): void {
-		this.#marker.addTo(map);
+	set lngLat(value: mapboxgl.LngLat) {
+		this.#marker.setLngLat(value);
 	}
 
 	get name(): string {
@@ -51,6 +36,21 @@ class Marker {
 
 	set name(value: string) {
 		this.#name = value;
+	}
+
+	addToMap(map: mapboxgl.Map): void {
+		this.#marker.addTo(map);
+	}
+
+	addDragListener(callback: (markerData: MarkerData) => void): void {
+		this.#marker.on('drag', () => {
+			const markerData: MarkerData = {
+				id: this.#id,
+				lngLat: this.lngLat
+			};
+
+			callback(markerData);
+		});
 	}
 }
 

@@ -10,20 +10,18 @@ class MapState {
 
 	addMarker(marker: Marker) {
 		this.#markers.push(marker);
-		console.log($state.snapshot(this.#markers));
 	}
 
 	updateMarker(markerData: MarkerData) {
 		const marker: Marker | undefined = this.#markers.find(
-			(marker) => marker.getId() === markerData.id
+			(marker) => marker.id === markerData.id
 		);
 
 		if (!marker) {
 			throw new Error(`Marker with id ${markerData.id} not found`);
 		}
 
-		marker.setLngLat(markerData.lngLat);
-		console.log($state.snapshot(this.#markers));
+		marker.lngLat = markerData.lngLat;
 	}
 
 	getMarkers() {
@@ -32,7 +30,7 @@ class MapState {
 
 	getMarker(id: number): Marker {
 		const marker: Marker | undefined = this.#markers.find(
-			(marker) => marker.getId() === id
+			(marker) => marker.id === id
 		);
 
 		if (!marker) {

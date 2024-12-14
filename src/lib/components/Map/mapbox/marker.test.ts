@@ -18,7 +18,7 @@ describe('Marker', async () => {
 			lngLat: new LngLat(0, 0)
 		});
 
-		expect(marker.getId()).toBe(0);
+		expect(marker.id).toBe(0);
 	});
 
 	it('returns the lngLat', async () => {
@@ -27,7 +27,7 @@ describe('Marker', async () => {
 			lngLat: new LngLat(0, 0)
 		});
 
-		expect(marker.getLngLat()).toEqual(new LngLat(0, 0));
+		expect(marker.lngLat).toEqual(new LngLat(0, 0));
 	});
 
 	it('sets the lngLat', async () => {
@@ -36,8 +36,8 @@ describe('Marker', async () => {
 			lngLat: new LngLat(0, 0)
 		});
 
-		marker.setLngLat(new LngLat(1, 1));
+		marker.lngLat = new LngLat(1, 1);
 
-		expect(marker.getLngLat()).toEqual(new LngLat(1, 1));
+		expect(marker.lngLat).toEqual(new LngLat(1, 1));
 	});
 });

@@ -36,7 +36,7 @@ describe('MapState', async () => {
 			lngLat: new mapboxgl.LngLat(1, 1)
 		});
 
-		expect(mapState.getMarkers()[0].getLngLat()).toEqual(
+		expect(mapState.getMarkers()[0].lngLat).toEqual(
 			new mapboxgl.LngLat(1, 1)
 		);
 	});
