@@ -7,12 +7,14 @@ export interface MarkerData {
 class Marker {
 	#id: number;
 	#marker: mapboxgl.Marker;
+	#name: string;
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
 		this.#marker = new mapboxgl.Marker({ draggable: true }).setLngLat(
 			markerData.lngLat
 		);
+		this.#name = 'Location';
 	}
 
 	addDragListener(callback: (markerData: MarkerData) => void): void {
@@ -40,6 +42,15 @@ class Marker {
 
 	addToMap(map: mapboxgl.Map): void {
 		this.#marker.addTo(map);
+	}
+
+	get name(): string {
+		//TODO: Replace all with getters and setters!!
+		return this.#name;
+	}
+
+	set name(value: string) {
+		this.#name = value;
 	}
 }
 

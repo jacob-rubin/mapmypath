@@ -15,11 +15,9 @@
 	role="menuitem"
 	transition:fade
 >
-	{#await reverseGeocode(marker.getLngLat()) then geocode}
-		<input
-			type="text"
-			value={geocode}
-			class="input w-full max-w-xs"
-		/>
-	{/await}
+	<input
+		type="text"
+		bind:value={marker.name}
+		class="input w-full max-w-xs"
+	/>
 </div>

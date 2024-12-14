@@ -12,7 +12,7 @@
 	}
 </script>
 
-<div class="flex h-screen w-72 flex-grow flex-row items-center py-2">
+<div class="flex h-screen w-80 flex-grow flex-row items-center py-2">
 	{#if isOpen}
 		<div
 			data-testid={'sidebar'}
