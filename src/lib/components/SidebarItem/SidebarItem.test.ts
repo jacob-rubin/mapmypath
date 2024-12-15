@@ -2,7 +2,7 @@ import { cleanup, render } from '@testing-library/svelte';
 import { afterEach, describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
-import Marker from '../Map/mapbox/marker';
+import Marker from '../Map/mapbox/marker.svelte';
 import userEvent from '@testing-library/user-event';
 
 describe('SidebarItem', async () => {

@@ -7,7 +7,7 @@ export interface MarkerData {
 class Marker {
 	#id: number;
 	#marker: mapboxgl.Marker;
-	#name: string;
+	#name: string = $state('Location');
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;

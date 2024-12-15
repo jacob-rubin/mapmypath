@@ -1,6 +1,6 @@
 import { LngLat } from 'mapbox-gl';
 import { describe, expect, it } from 'vitest';
-import Marker from './marker';
+import Marker from './marker.svelte';
 
 describe('Marker', async () => {
 	it('constructs a marker', async () => {

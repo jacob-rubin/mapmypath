@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mapState } from './mapState.svelte';
 import mapboxgl from 'mapbox-gl';
-import Marker from '$lib/components/Map/mapbox/marker';
+import Marker from '$lib/components/Map/mapbox/marker.svelte';
 
 describe('MapState', async () => {
 	beforeEach(() => {

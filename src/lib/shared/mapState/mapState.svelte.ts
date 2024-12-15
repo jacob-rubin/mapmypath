@@ -1,5 +1,5 @@
-import type Marker from '$lib/components/Map/mapbox/marker';
-import type { MarkerData } from '$lib/components/Map/mapbox/marker';
+import type Marker from '$lib/components/Map/mapbox/marker.svelte';
+import type { MarkerData } from '$lib/components/Map/mapbox/marker.svelte';
 
 class MapState {
 	#markers: Marker[] = $state([]); //TODO: consider making this collection instead of a list

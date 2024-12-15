@@ -1,7 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import Marker from './marker';
+import Marker from './marker.svelte';
 
 const SOURCE_ID = 'source';
 const LAYER_ID = 'layer';

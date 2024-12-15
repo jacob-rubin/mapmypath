@@ -4,8 +4,8 @@
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
-	import Marker from './mapbox/marker';
-	import type { MarkerData } from './mapbox/marker';
+	import Marker from './mapbox/marker.svelte';
+	import type { MarkerData } from './mapbox/marker.svelte';
 
 	let map: Mapbox;
 	let container: HTMLDivElement;

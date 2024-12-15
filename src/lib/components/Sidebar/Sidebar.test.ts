@@ -5,7 +5,7 @@ import { mapState } from '$lib/shared/mapState/mapState.svelte';
 import { LngLat } from 'mapbox-gl';
 import { tick } from 'svelte';
 import type { Locator } from '@vitest/browser/context';
-import Marker from '../Map/mapbox/marker';
+import Marker from '../Map/mapbox/marker.svelte';
 
 describe('Sidebar', async () => {
 	it('matches the snapshot', async ({ expect }) => {
