@@ -1,4 +1,4 @@
-import { cleanup, render } from '@testing-library/svelte';
+import { cleanup, render, waitFor } from '@testing-library/svelte';
 import { afterEach, describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
@@ -40,5 +40,26 @@ describe('SidebarItem', async () => {
 		await user.type(input, 'New Location');
 
 		expect(marker.name).toBe('New Location');
+	});
+
+	it('Loads the geocoded name', async ({ expect }) => {
+		const marker = new Marker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(
+				-77.03654979172663,
+				38.89763503472804
+			)
+		});
+
+		const screen = render(SidebarItem, {
+			marker
+		});
+
+		const geocode = screen.getByPlaceholderText('Geocoding...');
+		await waitFor(() => {
+			expect(geocode).toHaveTextContent(
+				'1600 Pennsylvania Avenue Northwest'
+			);
+		});
 	});
 });

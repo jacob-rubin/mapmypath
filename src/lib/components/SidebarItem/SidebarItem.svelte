@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import type Marker from '../Map/mapbox/marker.svelte';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
+	import { reverseGeocode } from '$lib/utils/geocode/geocode';
 
 	interface Props {
 		marker: Marker;
@@ -20,8 +21,12 @@
 		bind:value={marker.name}
 		class="input w-full max-w-xs"
 	/>
-	<div class="flex flex-row pt-2">
-		<MdiLocationRadius class="h-6 w-6" />
-		<div>Geocode Here</div>
+	<div class="flex flex-auto items-center gap-2 pt-2">
+		<MdiLocationRadius class="size-8 shrink-0" />
+		<div class="p-0 leading-none" placeholder="Geocoding...">
+			{#await reverseGeocode(marker.lngLat) then location}
+				{location}
+			{/await}
+		</div>
 	</div>
 </div>

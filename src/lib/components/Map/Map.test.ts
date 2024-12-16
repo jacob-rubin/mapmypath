@@ -88,6 +88,19 @@ describe('Map', async () => {
 			initialMarkerLngLat
 		);
 	});
+
+	it('Gives first markers names of step 1 and step 2', async () => {
+		const screen = render(Map);
+		const map: Locator = screen.getByTestId('map');
+
+		await map.click();
+		await map.click();
+
+		const markers = mapState.getMarkers();
+
+		expect(markers[0].name).toBe('Stop 1');
+		expect(markers[1].name).toBe('Stop 2');
+	});
 });
 
 // TODO: Get snapshot testing work

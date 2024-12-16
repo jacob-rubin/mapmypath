@@ -41,7 +41,7 @@ describe('Marker', async () => {
 		expect(marker.lngLat).toEqual(new LngLat(1, 1));
 	});
 
-	it('returns the name', async () => {
+	it('returns the default name', async () => {
 		const marker: Marker = new Marker({
 			id: 0,
 			lngLat: new LngLat(0, 0)
@@ -59,5 +59,15 @@ describe('Marker', async () => {
 		marker.name = 'New Location';
 
 		expect(marker.name).toBe('New Location');
+	});
+
+	it('sets the name in the constructor if provided', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0),
+			name: 'Step 1'
+		});
+
+		expect(marker.name).toBe('Step 1');
 	});
 });

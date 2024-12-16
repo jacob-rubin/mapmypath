@@ -15,14 +15,13 @@ function getName(geocodeResponse: GeocodeResponse): string {
 		return 'Unknown Location';
 	}
 
-	return geocodeResponse.features[0].properties.name;
+	return geocodeResponse.features[0].properties.full_address;
 }
 
 async function reverseGeocode(
 	lngLat: mapboxgl.LngLat
 ): Promise<string> {
 	const params: URLSearchParams = new URLSearchParams({
-		types: 'address',
 		language: 'en',
 		longitude: lngLat.lng.toString(),
 		latitude: lngLat.lat.toString(),

@@ -11,13 +11,26 @@ describe('Geocode', async () => {
 
 		const name: string = await reverseGeocode(lngLat);
 
-		expect(name).toEqual('1600 Pennsylvania Avenue Northwest');
+		expect(name).toEqual(
+			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
+		);
+	});
+
+	it('geocodes a region without an address', async () => {
+		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
+			-87.2792096802718,
+			42.634079806505895
+		);
+
+		const name: string = await reverseGeocode(lngLat);
+
+		expect(name).toEqual('Wisconsin, United States');
 	});
 
 	it('returns a default string when no name found', async () => {
 		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-86.85330125650026,
-			42.598745356092735
+			-50.809687107028935,
+			34.09889216603018
 		);
 
 		const name: string = await reverseGeocode(lngLat);

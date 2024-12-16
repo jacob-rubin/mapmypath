@@ -3,18 +3,19 @@ import mapboxgl from 'mapbox-gl';
 export interface MarkerData {
 	id: number;
 	lngLat: mapboxgl.LngLat;
+	name?: string;
 }
 class Marker {
 	#id: number;
-	#marker: mapboxgl.Marker;
-	#name: string = $state('Location');
+	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
+	#name: string = $state('');
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
 		this.#marker = new mapboxgl.Marker({ draggable: true }).setLngLat(
 			markerData.lngLat
 		);
-		this.#name = 'Location';
+		this.#name = markerData.name || 'Location';
 	}
 
 	get id(): number {

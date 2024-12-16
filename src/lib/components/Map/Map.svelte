@@ -24,7 +24,8 @@
 		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 			const marker: Marker = new Marker({
 				id: mapState.getMarkers().length,
-				lngLat: e.lngLat
+				lngLat: e.lngLat,
+				name: `Stop ${mapState.getMarkers().length + 1}`
 			});
 
 			map.addMarker(marker);
