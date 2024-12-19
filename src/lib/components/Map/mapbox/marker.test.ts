@@ -1,6 +1,7 @@
 import { LngLat } from 'mapbox-gl';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Marker from './marker.svelte';
+import { successJSON } from '$lib/utils/geocode/mockJSON';
 
 describe('Marker', async () => {
 	afterEach(() => {
@@ -73,5 +74,49 @@ describe('Marker', async () => {
 		});
 
 		expect(marker.name).toBe('Step 1');
+	});
+
+	it('gets the geocode name', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0),
+			name: 'Step 1'
+		});
+
+		expect(await marker.getGeocodeName()).toBe('Unknown Location');
+	});
+
+	it('Debounces getting the geocode when lnglat changed multiple times', async () => {
+		vi.useFakeTimers();
+
+		const mockFetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify(successJSON), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' }
+			})
+		);
+
+		vi.stubGlobal('fetch', mockFetch);
+
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0),
+			name: 'Step 1'
+		});
+
+		marker.lngLat = new LngLat(1, 1);
+		marker.lngLat = new LngLat(1, 2);
+		marker.lngLat = new LngLat(1, 3);
+
+		vi.advanceTimersByTime(500);
+
+		expect(mockFetch).toHaveBeenCalledTimes(1);
+		expect(await marker.getGeocodeName()).toBe(
+			successJSON.features[0].properties.full_address
+		);
+
+		vi.clearAllTimers();
+		vi.restoreAllMocks();
+		vi.unstubAllGlobals();
 	});
 });

@@ -1,3 +1,4 @@
+import Geocode from '$lib/utils/geocode/geocode';
 import mapboxgl from 'mapbox-gl';
 
 export interface MarkerData {
@@ -9,6 +10,7 @@ export interface MarkerData {
 class Marker {
 	#id: number;
 	#name: string = $state('');
+	#geocode: Geocode = $state(new Geocode());
 
 	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
 
@@ -18,6 +20,7 @@ class Marker {
 			markerData.lngLat
 		);
 		this.#name = markerData.name || 'Location';
+		this.#geocode = new Geocode();
 	}
 
 	get id(): number {
@@ -30,6 +33,7 @@ class Marker {
 
 	set lngLat(value: mapboxgl.LngLat) {
 		this.#marker.setLngLat(value);
+		this.#geocode.reverse(value);
 	}
 
 	get name(): string {
@@ -38,6 +42,10 @@ class Marker {
 
 	set name(value: string) {
 		this.#name = value;
+	}
+
+	getGeocodeName(): Promise<string> {
+		return this.#geocode.name;
 	}
 
 	addToMap(map: mapboxgl.Map): void {
