@@ -55,7 +55,7 @@ describe('SidebarItem', async () => {
 			marker
 		});
 
-		const geocode = screen.getByPlaceholderText('Geocoding...');
+		const geocode = screen.getByTestId('geocode');
 		await waitFor(() => {
 			expect(geocode).toHaveTextContent(
 				'1600 Pennsylvania Avenue Northwest'

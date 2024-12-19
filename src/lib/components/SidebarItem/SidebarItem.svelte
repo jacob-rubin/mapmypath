@@ -22,7 +22,7 @@
 	/>
 	<div class="flex flex-auto items-center gap-1 pt-2">
 		<MdiLocationRadius class="size-4 shrink-0" />
-		<div class="p-0 leading-none" placeholder="Geocoding...">
+		<div class="p-0 leading-none" data-testid="geocode">
 			{#await marker.getGeocodeName() then geocodeName}
 				<div class="overflow-none h-10 text-xs" transition:fade>
 					{geocodeName}
