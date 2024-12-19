@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import type Marker from '../Map/mapbox/marker.svelte';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
-	import { reverseGeocode } from '$lib/utils/geocode/geocode';
+	import { reverseGeocode } from '$lib/utils/geocode/utils';
 
 	interface Props {
 		marker: Marker;

@@ -1,4 +1,5 @@
-function debounce<T extends (...args: unknown[]) => unknown>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function debounce<T extends (...args: any[]) => any>(
 	func: T,
 	delay: number
 ): (...args: Parameters<T>) => void {

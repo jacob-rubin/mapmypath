@@ -1,41 +1,33 @@
-import type { GeocodeResponse } from './geocodeResponseInterface';
+import debounce from '../debounce/debounce';
+import { reverseGeocode } from './utils';
 
-function assertOk(res: Response) {
-	if (!res.ok) {
-		throw new Error('Failed to fetch');
+class Geocode {
+	#name: Promise<string>;
+	#debounce: (lngLat: mapboxgl.LngLat) => void;
+
+	constructor(lngLat: mapboxgl.LngLat) {
+		this.#name = reverseGeocode(lngLat);
+		this.#debounce = debounce(
+			this.#reverseWithDebounce.bind(this),
+			200
+		);
 	}
 
-	if (!res.body) {
-		throw new Error('Response body is null');
+	async #reverseWithDebounce(lngLat: mapboxgl.LngLat): Promise<void> {
+		this.#name = reverseGeocode(lngLat);
+	}
+
+	async reverse(lngLat: mapboxgl.LngLat): Promise<void> {
+		this.#debounce(lngLat);
+	}
+
+	get name(): Promise<string> {
+		return this.#name;
+	}
+
+	set name(value: Promise<string>) {
+		this.#name = value;
 	}
 }
 
-function getName(geocodeResponse: GeocodeResponse): string {
-	if (geocodeResponse.features.length == 0) {
-		return 'Unknown Location';
-	}
-
-	return geocodeResponse.features[0].properties.full_address;
-}
-
-async function reverseGeocode(
-	lngLat: mapboxgl.LngLat
-): Promise<string> {
-	const params: URLSearchParams = new URLSearchParams({
-		language: 'en',
-		longitude: lngLat.lng.toString(),
-		latitude: lngLat.lat.toString(),
-		access_token: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
-	});
-
-	const res: Response = await fetch(
-		`https://api.mapbox.com/search/geocode/v6/reverse?${params}`
-	);
-
-	assertOk(res);
-	const geocodeResponse: GeocodeResponse = await res.json();
-
-	return getName(geocodeResponse);
-}
-
-export { assertOk, reverseGeocode };
+export default Geocode;

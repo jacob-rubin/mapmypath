@@ -1,46 +1,48 @@
-import mapboxgl from 'mapbox-gl';
 import { describe, expect, it } from 'vitest';
-import { reverseGeocode, assertOk } from './geocode';
+import Geocode from './geocode';
+import mapboxgl from 'mapbox-gl';
 
 describe('Geocode', async () => {
-	it('geocodes the white house', async () => {
-		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
+	it('Initially geocodes the name', async () => {
+		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
+		expect(await geocode.name).toBe('Unknown Location');
+	});
+
+	it('Geocodes the name', async () => {
+		const whiteHouseLngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
 			-77.03654979172663,
 			38.89763503472804
 		);
 
-		const name: string = await reverseGeocode(lngLat);
+		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
+		expect(await geocode.name).toBe('Unknown Location');
+		await geocode.reverse(whiteHouseLngLat);
 
-		expect(name).toEqual(
+		// wait for debounce
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		expect(await geocode.name).toBe(
 			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
 		);
 	});
 
-	it('geocodes a region without an address', async () => {
-		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-87.2792096802718,
-			42.634079806505895
+	it('Debounces the geocode when called multiple times', async () => {
+		const whiteHouseLngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
+			-77.03654979172663,
+			38.89763503472804
 		);
+		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
 
-		const name: string = await reverseGeocode(lngLat);
+		// TODO: I see in the network tab the debounce worked. How do I test?
+		await geocode.reverse(new mapboxgl.LngLat(0, 0));
+		await geocode.reverse(new mapboxgl.LngLat(1, 0));
+		await geocode.reverse(new mapboxgl.LngLat(2, 0));
+		await geocode.reverse(whiteHouseLngLat);
 
-		expect(name).toEqual('Wisconsin, United States');
-	});
+		// wait for debounce
+		await new Promise((resolve) => setTimeout(resolve, 500));
 
-	it('returns a default string when no name found', async () => {
-		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-50.809687107028935,
-			34.09889216603018
+		expect(await geocode.name).toBe(
+			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
 		);
-
-		const name: string = await reverseGeocode(lngLat);
-
-		expect(name).toEqual('Unknown Location');
-	});
-
-	it('throws an error when the fetch fails', async () => {
-		const mockFailedResponse = new Response(null, { status: 500 });
-
-		expect(() => assertOk(mockFailedResponse)).toThrowError();
 	});
 });

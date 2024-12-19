@@ -1,8 +1,12 @@
 import { LngLat } from 'mapbox-gl';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Marker from './marker.svelte';
 
 describe('Marker', async () => {
+	afterEach(() => {
+		vi.unmock('$lib/utils/geocode/geocode');
+	});
+
 	it('constructs a marker', async () => {
 		const marker: Marker = new Marker({
 			id: 0,

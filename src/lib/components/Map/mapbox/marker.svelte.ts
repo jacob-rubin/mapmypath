@@ -5,10 +5,12 @@ export interface MarkerData {
 	lngLat: mapboxgl.LngLat;
 	name?: string;
 }
+
 class Marker {
 	#id: number;
-	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
 	#name: string = $state('');
+
+	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
