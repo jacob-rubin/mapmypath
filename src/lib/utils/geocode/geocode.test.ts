@@ -8,6 +8,7 @@ import {
 } from 'vitest';
 import Geocode from './geocode';
 import mapboxgl from 'mapbox-gl';
+import { successJSON } from './mockJSON';
 
 describe('Geocode', async () => {
 	beforeEach(() => {
@@ -19,9 +20,14 @@ describe('Geocode', async () => {
 		vi.restoreAllMocks();
 	});
 
-	it('Initially geocodes the name', async () => {
-		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
+	it('Has a default name called Unknown Location', async () => {
+		const geocode: Geocode = new Geocode();
 		expect(await geocode.name).toBe('Unknown Location');
+	});
+
+	it('Sets the name in the constructor', async () => {
+		const geocode: Geocode = new Geocode('White House');
+		expect(await geocode.name).toBe('White House');
 	});
 
 	it('Geocodes the name', async () => {
@@ -30,33 +36,42 @@ describe('Geocode', async () => {
 			38.89763503472804
 		);
 
-		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
-		expect(await geocode.name).toBe('Unknown Location');
+		const geocode: Geocode = new Geocode();
 		await geocode.reverse(whiteHouseLngLat);
 		vi.advanceTimersByTime(500);
+
 		expect(await geocode.name).toBe(
 			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
 		);
 	});
 
 	it('Debounces the geocode when called multiple times', async () => {
-		const whiteHouseLngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-77.03654979172663,
-			38.89763503472804
+		const mockFetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify(successJSON), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' }
+			})
 		);
-		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
 
-		// TODO: I see in the network tab the debounce worked. How do I test?
+		vi.stubGlobal('fetch', mockFetch);
+
+		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
+			-74.013262,
+			40.80159
+		);
+		const geocode: Geocode = new Geocode();
+
 		await geocode.reverse(new mapboxgl.LngLat(0, 0));
 		await geocode.reverse(new mapboxgl.LngLat(1, 0));
 		await geocode.reverse(new mapboxgl.LngLat(2, 0));
-		await geocode.reverse(whiteHouseLngLat);
-
-		// wait for debounce
+		await geocode.reverse(lngLat);
 		vi.advanceTimersByTime(500);
 
 		expect(await geocode.name).toBe(
-			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
+			successJSON.features[0].properties.full_address
 		);
+		expect(mockFetch).toHaveBeenCalledOnce();
+
+		vi.unstubAllGlobals();
 	});
 });

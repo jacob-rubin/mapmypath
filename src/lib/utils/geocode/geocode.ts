@@ -5,8 +5,8 @@ class Geocode {
 	#name: Promise<string>;
 	#debounce: (lngLat: mapboxgl.LngLat) => void;
 
-	constructor(lngLat: mapboxgl.LngLat) {
-		this.#name = reverseGeocode(lngLat);
+	constructor(name?: string) {
+		this.#name = Promise.resolve(name || 'Unknown Location');
 		this.#debounce = debounce(
 			this.#reverseWithDebounce.bind(this),
 			200
