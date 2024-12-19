@@ -1,4 +1,4 @@
-import Geocode from '$lib/utils/geocode/geocode';
+import Geocode from '$lib/utils/geocode/geocode.svelte';
 import mapboxgl from 'mapbox-gl';
 
 export interface MarkerData {
@@ -21,6 +21,7 @@ class Marker {
 		);
 		this.#name = markerData.name || 'Location';
 		this.#geocode = new Geocode();
+		this.#geocode.reverse(markerData.lngLat);
 	}
 
 	get id(): number {

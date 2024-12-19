@@ -6,7 +6,7 @@ import {
 	it,
 	vi
 } from 'vitest';
-import Geocode from './geocode';
+import Geocode from './geocode.svelte';
 import mapboxgl from 'mapbox-gl';
 import { successJSON } from './mockJSON';
 
@@ -20,9 +20,9 @@ describe('Geocode', async () => {
 		vi.restoreAllMocks();
 	});
 
-	it('Has a default name called Unknown Location', async () => {
+	it('Has a default name of a blank string', async () => {
 		const geocode: Geocode = new Geocode();
-		expect(await geocode.name).toBe('Unknown Location');
+		expect(await geocode.name).toBe('');
 	});
 
 	it('Sets the name in the constructor', async () => {

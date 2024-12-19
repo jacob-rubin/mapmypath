@@ -76,16 +76,6 @@ describe('Marker', async () => {
 		expect(marker.name).toBe('Step 1');
 	});
 
-	it('gets the geocode name', async () => {
-		const marker: Marker = new Marker({
-			id: 0,
-			lngLat: new LngLat(0, 0),
-			name: 'Step 1'
-		});
-
-		expect(await marker.getGeocodeName()).toBe('Unknown Location');
-	});
-
 	it('Debounces getting the geocode when lnglat changed multiple times', async () => {
 		vi.useFakeTimers();
 

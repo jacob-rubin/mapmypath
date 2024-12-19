@@ -2,11 +2,11 @@ import debounce from '../debounce/debounce';
 import { reverseGeocode } from './utils';
 
 class Geocode {
-	#name: Promise<string>;
+	#name: Promise<string> = $state(Promise.resolve(''));
 	#debounce: (lngLat: mapboxgl.LngLat) => void;
 
 	constructor(name?: string) {
-		this.#name = Promise.resolve(name || 'Unknown Location');
+		this.#name = Promise.resolve(name || '');
 		this.#debounce = debounce(
 			this.#reverseWithDebounce.bind(this),
 			200
