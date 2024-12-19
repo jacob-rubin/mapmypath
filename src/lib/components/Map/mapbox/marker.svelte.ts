@@ -10,7 +10,7 @@ export interface MarkerData {
 class Marker {
 	#id: number;
 	#name: string = $state('');
-	#geocode: Geocode = $state(new Geocode());
+	#geocode: Geocode;
 
 	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
 
