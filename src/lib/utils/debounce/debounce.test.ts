@@ -1,9 +1,20 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi
+} from 'vitest';
 import debounce from './debounce';
-import { waitFor } from '@testing-library/svelte';
 
 describe('debounce', async () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
 	afterEach(() => {
+		vi.clearAllTimers();
 		vi.restoreAllMocks();
 	});
 
@@ -12,10 +23,9 @@ describe('debounce', async () => {
 		const debouncedFn = debounce(fn, 100);
 
 		debouncedFn();
+		vi.advanceTimersByTime(100);
 
-		await waitFor(() => {
-			expect(fn).toHaveBeenCalledOnce();
-		});
+		expect(fn).toHaveBeenCalledOnce();
 	});
 
 	it('only calls the function once after multiple calls wihtin the buffer', async () => {
@@ -25,10 +35,8 @@ describe('debounce', async () => {
 		debouncedFn();
 		debouncedFn();
 		debouncedFn();
-
-		await new Promise((resolve) => setTimeout(resolve, 500));
+		vi.advanceTimersByTime(100);
 
 		expect(fn).toHaveBeenCalledOnce();
-		expect(fn).not.toHaveBeenCalledTimes(3);
 	});
 });

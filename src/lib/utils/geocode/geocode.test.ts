@@ -1,8 +1,24 @@
-import { describe, expect, it } from 'vitest';
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi
+} from 'vitest';
 import Geocode from './geocode';
 import mapboxgl from 'mapbox-gl';
 
 describe('Geocode', async () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.clearAllTimers();
+		vi.restoreAllMocks();
+	});
+
 	it('Initially geocodes the name', async () => {
 		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
 		expect(await geocode.name).toBe('Unknown Location');
@@ -17,9 +33,7 @@ describe('Geocode', async () => {
 		const geocode: Geocode = new Geocode(new mapboxgl.LngLat(0, 0));
 		expect(await geocode.name).toBe('Unknown Location');
 		await geocode.reverse(whiteHouseLngLat);
-
-		// wait for debounce
-		await new Promise((resolve) => setTimeout(resolve, 500));
+		vi.advanceTimersByTime(500);
 		expect(await geocode.name).toBe(
 			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
 		);
@@ -39,7 +53,7 @@ describe('Geocode', async () => {
 		await geocode.reverse(whiteHouseLngLat);
 
 		// wait for debounce
-		await new Promise((resolve) => setTimeout(resolve, 500));
+		vi.advanceTimersByTime(500);
 
 		expect(await geocode.name).toBe(
 			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
