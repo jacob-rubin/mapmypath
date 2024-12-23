@@ -5,21 +5,33 @@
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 
-	let isOpen: boolean = true;
+	let sidebar: HTMLDivElement | null = $state(null);
+
+	let isOpen: boolean = $state(true);
+	let mapSize: number = $derived(mapState.getMarkers().length);
 
 	function toggleSidebar() {
 		isOpen = !isOpen;
 	}
+
+	$effect(() => {
+		if (sidebar && mapSize > 0) {
+			sidebar.scrollTo({
+				top: sidebar.scrollHeight
+			});
+		}
+	});
 </script>
 
 <div class="flex h-screen w-80 flex-grow flex-row items-center py-2">
 	{#if isOpen}
 		<div
+			bind:this={sidebar}
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-full overflow-auto bg-neutral-content p-2"
 			transition:slide={{ axis: 'x' }}
 		>
-			{#each mapState.getMarkers() as marker}
+			{#each mapState.getMarkers() as marker (marker.id)}
 				<SidebarItem {marker} />
 			{/each}
 		</div>

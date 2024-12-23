@@ -11,6 +11,7 @@
 </script>
 
 <div
+	data-testid="sidebar-item-{marker.id}"
 	class="m-2 flex flex-col rounded border-2 border-black p-2"
 	role="menuitem"
 	transition:fade
@@ -20,11 +21,11 @@
 		bind:value={marker.name}
 		class="input w-full max-w-xs"
 	/>
-	<div class="flex flex-auto items-center gap-1 pt-2">
+	<div class="flex h-8 items-center gap-1 pt-2">
 		<MdiLocationRadius class="size-4 shrink-0" />
-		<div class="p-0 leading-none" data-testid="geocode">
+		<div data-testid="geocode">
 			{#await marker.getGeocodeName() then geocodeName}
-				<div class="overflow-none h-10 text-xs" transition:fade>
+				<div class="overflow-none text-xs" transition:fade>
 					{geocodeName}
 				</div>
 			{/await}
