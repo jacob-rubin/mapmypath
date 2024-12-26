@@ -5,6 +5,7 @@
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { cubicOut } from 'svelte/easing';
+	import SidebarButton from './SidebarButton.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
 
@@ -24,31 +25,6 @@
 	});
 </script>
 
-{#snippet sidebarButton()}
-	<div
-		data-testid={'tooltip'}
-		class="tooltip tooltip-right flex"
-		data-tip={isOpen ? 'Collapse' : 'Expand'}
-	>
-		<button
-			class="h-10 rounded-l-none rounded-r-lg border-none bg-neutral-content"
-			onclick={toggleSidebar}
-		>
-			{#if isOpen}
-				<MdiKeyboardArrowLeft
-					data-testid={'collapse'}
-					class="h-6 w-6"
-				/>
-			{:else}
-				<MdiKeyboardArrowRight
-					data-testid={'expand'}
-					class="h-6 w-6"
-				/>
-			{/if}
-		</button>
-	</div>
-{/snippet}
-
 {#if isOpen}
 	<div
 		class="flex h-screen items-center py-2"
@@ -67,11 +43,11 @@
 				<SidebarItem {marker} />
 			{/each}
 		</div>
-		{@render sidebarButton()}
+		<SidebarButton {isOpen} onClick={toggleSidebar} />
 	</div>
 {:else}
 	<div class="flex h-screen items-center">
 		<div class="h-full"></div>
-		{@render sidebarButton()}
+		<SidebarButton {isOpen} onClick={toggleSidebar} />
 	</div>
 {/if}
