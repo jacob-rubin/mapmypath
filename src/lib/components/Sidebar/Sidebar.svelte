@@ -1,10 +1,8 @@
 <script lang="ts">
-	import MdiKeyboardArrowLeft from '~icons/mdi/keyboard-arrow-left';
-	import MdiKeyboardArrowRight from '~icons/mdi/keyboard-arrow-right';
 	import { fly } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
-	import { cubicOut } from 'svelte/easing';
+	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
@@ -31,7 +29,8 @@
 		transition:fly={{
 			x: '-20rem',
 			opacity: 100,
-			easing: cubicOut
+			easing: linear,
+			duration: 300
 		}}
 	>
 		<div
