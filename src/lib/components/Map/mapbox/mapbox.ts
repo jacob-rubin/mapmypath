@@ -1,8 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import Marker from './marker';
-import type { MarkerData } from '$lib/markerData';
+import Marker from './marker.svelte';
 
 const SOURCE_ID = 'source';
 const LAYER_ID = 'layer';
@@ -79,9 +78,8 @@ class Mapbox {
 		this.#map.on('click', callback);
 	}
 
-	addMarker(markerData: MarkerData): Marker {
-		const marker: Marker = new Marker(markerData);
-		marker.addTo(this.#map);
+	addMarker(marker: Marker) {
+		marker.addToMap(this.#map);
 
 		return marker;
 	}

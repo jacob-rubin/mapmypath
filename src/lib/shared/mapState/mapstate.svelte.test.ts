@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mapState } from './mapState.svelte';
 import mapboxgl from 'mapbox-gl';
+import Marker from '$lib/components/Map/mapbox/marker.svelte';
 
 describe('MapState', async () => {
 	beforeEach(() => {
@@ -12,21 +13,29 @@ describe('MapState', async () => {
 	});
 
 	it('adds a marker', async () => {
-		mapState.addMarker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) });
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
 		expect(mapState.getMarkers()).toHaveLength(1);
 	});
 
 	it('Gets a marker', async () => {
-		mapState.addMarker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) });
-		expect(mapState.getMarker(1)).toEqual({
-			id: 1,
-			lngLat: new mapboxgl.LngLat(0, 0)
-		});
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+		expect(mapState.getMarker(1)).toEqual(mapState.getMarkers()[0]);
 	});
 
 	it('updates a marker', async () => {
-		mapState.addMarker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) });
-		mapState.updateMarker(1, new mapboxgl.LngLat(1, 1));
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+
+		mapState.updateMarker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(1, 1)
+		});
+
 		expect(mapState.getMarkers()[0].lngLat).toEqual(
 			new mapboxgl.LngLat(1, 1)
 		);

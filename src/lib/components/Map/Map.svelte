@@ -4,8 +4,8 @@
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
-	import type { MarkerData } from '$lib/markerData';
-	import type Marker from './mapbox/marker';
+	import Marker from './mapbox/marker.svelte';
+	import type { MarkerData } from './mapbox/marker.svelte';
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
@@ -22,17 +22,21 @@
 		map.initializeStyles();
 
 		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
-			const markerData: MarkerData = {
+			const marker: Marker = new Marker({
 				id: mapState.getMarkers().length,
-				lngLat: e.lngLat
-			};
+				lngLat: e.lngLat,
+				name: `Stop ${mapState.getMarkers().length + 1}`
+			});
 
-			mapState.addMarker(markerData);
+			map.addMarker(marker);
+			mapState.addMarker(marker);
 			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
 
-			const marker: Marker = map.addMarker(markerData);
 			marker.addDragListener((markerData: MarkerData) => {
-				mapState.updateMarker(markerData.id, markerData.lngLat);
+				mapState.updateMarker({
+					id: markerData.id,
+					lngLat: markerData.lngLat
+				});
 				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
 			});
 		});

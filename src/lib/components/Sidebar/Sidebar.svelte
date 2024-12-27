@@ -1,45 +1,52 @@
 <script lang="ts">
-	import MdiMenu from '~icons/mdi/menu';
-	import { slide, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { linear } from 'svelte/easing';
+	import SidebarButton from './SidebarButton.svelte';
 
-	let isOpen: boolean = true;
+	let sidebar: HTMLDivElement | null = $state(null);
+
+	let isOpen: boolean = $state(true);
+	let mapSize: number = $derived(mapState.getMarkers().length);
 
 	function toggleSidebar() {
 		isOpen = !isOpen;
 	}
+
+	$effect(() => {
+		if (sidebar && mapSize > 0) {
+			sidebar.scrollTo({
+				top: sidebar.scrollHeight
+			});
+		}
+	});
 </script>
 
-{#snippet card(width: string)}
+{#if isOpen}
 	<div
-		data-testid="sidebar"
-		class="card h-full {width} bg-neutral-content"
+		class="flex h-screen items-center py-2"
+		transition:fly={{
+			x: '-20rem',
+			opacity: 100,
+			easing: linear,
+			duration: 300
+		}}
 	>
-		<button
-			data-testid="sidebar-button"
-			class="btn btn-ghost"
-			onclick={toggleSidebar}
+		<div
+			bind:this={sidebar}
+			data-testid={'sidebar'}
+			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
 		>
-			<MdiMenu class="text-neutral" />
-		</button>
-		<div class="overflow-auto">
-			{#if isOpen}
-				{#each mapState.getMarkers() as marker}
-					<div
-						class="card m-2 border-2 border-solid border-black p-2"
-					>
-						{marker.lngLat.lng}, {marker.lngLat.lat}
-					</div>
-				{/each}
-			{/if}
+			{#each mapState.getMarkers() as marker (marker.id)}
+				<SidebarItem {marker} />
+			{/each}
 		</div>
+		<SidebarButton {isOpen} onClick={toggleSidebar} />
 	</div>
-{/snippet}
-
-<div data-testid="sidebar-div" class="h-screen p-2">
-	{#if isOpen}
-		{@render card('w-72')}
-	{:else}
-		{@render card('w-min')}
-	{/if}
-</div>
+{:else}
+	<div class="flex h-screen items-center">
+		<div class="h-full"></div>
+		<SidebarButton {isOpen} onClick={toggleSidebar} />
+	</div>
+{/if}

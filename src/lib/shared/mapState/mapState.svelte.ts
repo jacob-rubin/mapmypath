@@ -1,33 +1,35 @@
-import type { MarkerData } from '$lib/markerData';
-import type { LngLat } from 'mapbox-gl';
+import type Marker from '$lib/components/Map/mapbox/marker.svelte';
+import type { MarkerData } from '$lib/components/Map/mapbox/marker.svelte';
 
 class MapState {
-	#markers: MarkerData[] = $state([]); //TODO: consider making this a hash map
+	#markers: Marker[] = $state([]); //TODO: consider making this collection instead of a list
 
 	constructor() {
 		this.#markers = [];
 	}
 
-	addMarker(marker: MarkerData) {
+	addMarker(marker: Marker) {
 		this.#markers.push(marker);
-		console.log($state.snapshot(this.#markers));
 	}
 
-	updateMarker(id: number | string, lngLat: LngLat) {
-		const marker = this.#markers.find((marker) => marker.id === id);
+	updateMarker(markerData: MarkerData) {
+		const marker: Marker | undefined = this.#markers.find(
+			(marker) => marker.id === markerData.id
+		);
+
 		if (!marker) {
-			throw new Error(`Marker with id ${id} not found`);
+			throw new Error(`Marker with id ${markerData.id} not found`);
 		}
 
-		marker.lngLat = lngLat;
+		marker.lngLat = markerData.lngLat;
 	}
 
 	getMarkers() {
 		return this.#markers;
 	}
 
-	getMarker(id: number): MarkerData {
-		const marker: MarkerData | undefined = this.#markers.find(
+	getMarker(id: number): Marker {
+		const marker: Marker | undefined = this.#markers.find(
 			(marker) => marker.id === id
 		);
 

@@ -13,7 +13,9 @@ describe('SearchBox', async () => {
 	it('has the placeholder`Search`', async () => {
 		const screen = render(SearchBox);
 		const input: Locator = screen.getByTestId('search-box');
-		const placeholder: Element | null = input.getByPlaceholder('Search').query();
+		const placeholder: Element | null = input
+			.getByPlaceholder('Search')
+			.query();
 
 		expect(placeholder).toBeDefined();
 	});

@@ -1,12 +1,18 @@
-import { describe, expect, it } from 'vitest';
-import { render } from 'vitest-browser-svelte';
+import { afterEach, describe, expect, it } from 'vitest';
 import Sidebar from './Sidebar.svelte';
+import { cleanup, render } from '@testing-library/svelte';
+import userEvent from '@testing-library/user-event';
 import { mapState } from '$lib/shared/mapState/mapState.svelte';
-import { LngLat } from 'mapbox-gl';
+import Marker from '../Map/mapbox/marker.svelte';
+import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
-import type { Locator } from '@vitest/browser/context';
 
 describe('Sidebar', async () => {
+	afterEach(() => {
+		cleanup();
+		mapState.clear();
+	});
+
 	it('matches the snapshot', async ({ expect }) => {
 		const screen = render(Sidebar);
 
@@ -15,46 +21,103 @@ describe('Sidebar', async () => {
 
 	it('is expanded by default', async () => {
 		const screen = render(Sidebar);
-		const sidebar: Locator = screen.getByTestId('sidebar');
+		const sidebar: Element | null = screen.getByTestId('sidebar');
 
-		expect(sidebar.element()).toHaveClass('w-72');
+		expect(sidebar).not.toBeNull();
 	});
 
-	it('collapses when button clicked', async () => {
+	it('shows the collapse button when expanded', async () => {
 		const screen = render(Sidebar);
-		const button: Locator = screen.getByTestId('sidebar-button');
-		await button.click();
-		const sidebar: Locator = screen.getByTestId('sidebar');
 
-		expect(sidebar.element()).toHaveClass('w-min');
+		expect(screen.getByTestId('collapse')).toBeTruthy();
+	});
+
+	it('shows the expand button when collapsed', async () => {
+		const screen = render(Sidebar);
+		await screen.getByRole('button').click();
+
+		expect(screen.getByTestId('expand')).toBeTruthy();
+	});
+
+	it('shows a tooltip when the collapse button is hovered', async () => {
+		const user = userEvent.setup();
+
+		const screen = render(Sidebar);
+		const button = screen.getByRole('button');
+		await user.hover(button);
+
+		expect(screen.getByTestId('tooltip')).toBeTruthy();
+	});
+
+	it('is removed from the dom when collapse button clicked', async () => {
+		const TRANSITION_DURATION = 500;
+		const screen = render(Sidebar);
+		screen.getByRole('button').click();
+
+		await new Promise((resolve) =>
+			setTimeout(resolve, TRANSITION_DURATION)
+		);
+
+		const sidebar: Element | null = screen.queryByTestId('sidebar');
+
+		expect(sidebar).toBeNull();
 	});
 
 	it('reexpands when the button is clicked while collapsed', async () => {
 		const screen = render(Sidebar);
-		const button: Locator = screen.getByTestId('sidebar-button');
-		await button.click();
-		await button.click();
-		const sidebar: Locator = screen.getByTestId('sidebar');
+		const button: HTMLElement = screen.getByRole('button');
+		button.click();
+		button.click();
+		const sidebar: Element | null = screen.queryByTestId('sidebar');
 
-		expect(sidebar.element()).toHaveClass('w-72');
+		expect(sidebar).not.toBeNull();
 	});
 
 	it('spans the height of the screen', async () => {
 		const screen = render(Sidebar);
-		const sidebar: Locator = screen.getByTestId('sidebar');
-		const sidebarHeight: number = sidebar
-			.element()
-			.getBoundingClientRect().height;
+
+		const sidebar: HTMLElement = screen.getByTestId('sidebar');
+		const sidebarHeight: number =
+			sidebar.getBoundingClientRect().height;
 
 		expect(sidebarHeight).toBe(window.innerHeight - 16);
 	});
 
-	it('it should display the latitude and longitude when added to the map state', async () => {
-		const screen = render(Sidebar);
-		const sidebar: Locator = screen.getByTestId('sidebar');
-		mapState.addMarker({ id: 1, lngLat: new LngLat(0, 0) });
-		await tick();
+	it('adds a sidebar item when mapstate changes', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new mapboxgl.LngLat(0, 0)
+		});
 
-		expect(sidebar.element()).toHaveTextContent('0, 0');
+		const screen = render(Sidebar);
+		mapState.addMarker(marker);
+		await tick();
+		const sidebarItem = screen.getByRole('menuitem');
+
+		expect(sidebarItem).not.toBeNull();
+	});
+
+	it('scrolls to the bottom when a new item is added and the sidebar overflow', async () => {
+		const screen = render(Sidebar);
+
+		for (let i = 0; i < 10; i++) {
+			mapState.addMarker(
+				new Marker({ id: i, lngLat: new mapboxgl.LngLat(i, i) })
+			);
+			await tick();
+		}
+		const sidebar = screen.getByTestId('sidebar');
+		const sidebarItem = screen.getByTestId('sidebar-item-9');
+
+		const sidebarRect = sidebar.getBoundingClientRect();
+		const sidebarItemRect = sidebarItem.getBoundingClientRect();
+
+		console.log(sidebarRect, sidebarItemRect);
+
+		const isVisible: boolean =
+			sidebarItemRect.top >= sidebarRect.top &&
+			sidebarItemRect.bottom <= sidebarRect.bottom;
+
+		expect(isVisible).toBeTruthy();
 	});
 });
