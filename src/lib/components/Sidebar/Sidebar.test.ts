@@ -120,4 +120,14 @@ describe('Sidebar', async () => {
 
 		expect(isVisible).toBeTruthy();
 	});
+
+	it('does not duplicate the button during the transition', async () => {
+		const screen = render(Sidebar);
+		const button: HTMLElement = screen.getByRole('button');
+		button.click();
+
+		await tick();
+		expect(screen.queryByTestId('collapse')).toBeInTheDocument();
+		expect(screen.queryByTestId('expand')).not.toBeInTheDocument();
+	});
 });
