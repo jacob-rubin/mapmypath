@@ -32,13 +32,6 @@ describe('Sidebar', async () => {
 		expect(screen.getByTestId('collapse')).toBeTruthy();
 	});
 
-	it('shows the expand button when collapsed', async () => {
-		const screen = render(Sidebar);
-		await screen.getByRole('button').click();
-
-		expect(screen.getByTestId('expand')).toBeTruthy();
-	});
-
 	it('shows a tooltip when the collapse button is hovered', async () => {
 		const user = userEvent.setup();
 
@@ -119,5 +112,15 @@ describe('Sidebar', async () => {
 			sidebarItemRect.bottom <= sidebarRect.bottom;
 
 		expect(isVisible).toBeTruthy();
+	});
+
+	it('does not duplicate the button during the transition', async () => {
+		const screen = render(Sidebar);
+		const button: HTMLElement = screen.getByRole('button');
+		button.click();
+
+		await tick();
+		expect(screen.queryByTestId('collapse')).toBeInTheDocument();
+		expect(screen.queryByTestId('expand')).not.toBeInTheDocument();
 	});
 });

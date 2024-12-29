@@ -3,16 +3,13 @@
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { linear } from 'svelte/easing';
-	import SidebarButton from './SidebarButton.svelte';
+	import SidebarButton from './SidebarButton/SidebarButton.svelte';
+	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
-
-	let isOpen: boolean = $state(true);
+	let sidebarTransitionState: SidebarTransitionState =
+		new SidebarTransitionState();
 	let mapSize: number = $derived(mapState.getMarkers().length);
-
-	function toggleSidebar() {
-		isOpen = !isOpen;
-	}
 
 	$effect(() => {
 		if (sidebar && mapSize > 0) {
@@ -21,17 +18,28 @@
 			});
 		}
 	});
+
+	$effect(() => {
+		console.log(
+			'sidebarTransitionState',
+			sidebarTransitionState.state
+		);
+	});
 </script>
 
-{#if isOpen}
+{#if sidebarTransitionState.isVisible()}
 	<div
-		class="flex h-screen items-center py-2"
+		class="inline-flex h-screen items-center py-2"
 		transition:fly={{
 			x: '-20rem',
 			opacity: 100,
 			easing: linear,
 			duration: 300
 		}}
+		onintrostart={() => sidebarTransitionState.onIntroStart()}
+		onintroend={() => sidebarTransitionState.onIntroEnd()}
+		onoutrostart={() => sidebarTransitionState.onOutroStart()}
+		onoutroend={() => sidebarTransitionState.onOutroEnd()}
 	>
 		<div
 			bind:this={sidebar}
@@ -42,11 +50,19 @@
 				<SidebarItem {marker} />
 			{/each}
 		</div>
-		<SidebarButton {isOpen} onClick={toggleSidebar} />
+		<SidebarButton
+			isOpen={true}
+			onClick={() => sidebarTransitionState.onOutroStart()}
+		/>
 	</div>
-{:else}
+{/if}
+
+{#if sidebarTransitionState.isClosed()}
 	<div class="flex h-screen items-center">
-		<div class="h-full"></div>
-		<SidebarButton {isOpen} onClick={toggleSidebar} />
+		<div class="invisible h-full"></div>
+		<SidebarButton
+			isOpen={false}
+			onClick={() => sidebarTransitionState.onIntroStart()}
+		/>
 	</div>
 {/if}
