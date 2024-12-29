@@ -3,7 +3,7 @@
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { linear } from 'svelte/easing';
-	import SidebarButton from './SidebarButton.svelte';
+	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
@@ -18,9 +18,16 @@
 			});
 		}
 	});
+
+	$effect(() => {
+		console.log(
+			'sidebarTransitionState',
+			sidebarTransitionState.state
+		);
+	});
 </script>
 
-{#if sidebarTransitionState.isOpen()}
+{#if sidebarTransitionState.isVisible()}
 	<div
 		class="inline-flex h-screen items-center py-2"
 		transition:fly={{

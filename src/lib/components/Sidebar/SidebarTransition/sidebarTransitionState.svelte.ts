@@ -12,7 +12,7 @@ export class SidebarTransitionState {
 		return this._state;
 	}
 
-	isOpen(): boolean {
+	isVisible(): boolean {
 		return (
 			this._state === TransitionState.Open ||
 			this._state === TransitionState.Opening

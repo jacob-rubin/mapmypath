@@ -37,17 +37,17 @@ describe('SidebarTransitionState', async () => {
 		);
 	});
 
-	it('Sets the state to open when outro ended', async () => {
-		sidebarTransitionState.onOutroEnd();
+	it('Sets the state to open when intro ended', async () => {
+		sidebarTransitionState.onIntroEnd();
 
 		expect(sidebarTransitionState.state).toBe(TransitionState.Open);
 	});
 
-	it('isOpen returns true if open or opening state', async () => {
+	it('isVisible returns true if open or opening state', async () => {
 		sidebarTransitionState.onIntroStart();
-		expect(sidebarTransitionState.isOpen()).toBe(true);
+		expect(sidebarTransitionState.isVisible()).toBe(true);
 		sidebarTransitionState.onIntroEnd();
-		expect(sidebarTransitionState.isOpen()).toBe(true);
+		expect(sidebarTransitionState.isVisible()).toBe(true);
 	});
 
 	it('isClosed returns true if closed state', async () => {

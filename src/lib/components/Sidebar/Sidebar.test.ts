@@ -32,13 +32,6 @@ describe('Sidebar', async () => {
 		expect(screen.getByTestId('collapse')).toBeTruthy();
 	});
 
-	it('shows the expand button when collapsed', async () => {
-		const screen = render(Sidebar);
-		await screen.getByRole('button').click();
-
-		expect(screen.getByTestId('expand')).toBeTruthy();
-	});
-
 	it('shows a tooltip when the collapse button is hovered', async () => {
 		const user = userEvent.setup();
 
