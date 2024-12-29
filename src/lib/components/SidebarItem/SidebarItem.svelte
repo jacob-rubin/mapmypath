@@ -12,7 +12,7 @@
 
 <div
 	data-testid="sidebar-item-{marker.id}"
-	class="m-2 flex flex-col rounded border-2 border-black p-2"
+	class="m-2 flex flex-col rounded border-2 border-black p-2 hover:border-4"
 	role="menuitem"
 	transition:fade
 >
