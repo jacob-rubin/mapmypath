@@ -4,15 +4,11 @@
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton.svelte';
-	import {
-		SidebarTransitionState,
-		TransitionState
-	} from './SidebarTransitionState.svelte';
+	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
-	let sidebarState: SidebarTransitionState = $state(
-		new SidebarTransitionState()
-	);
+	let sidebarTransitionState: SidebarTransitionState =
+		new SidebarTransitionState();
 	let mapSize: number = $derived(mapState.getMarkers().length);
 
 	$effect(() => {
@@ -22,35 +18,21 @@
 			});
 		}
 	});
-
-	$effect(() => {
-		console.log('Transition State:', sidebarState.state);
-	});
-
-	function toggleSidebar() {
-		if (sidebarState.isOpen()) {
-			sidebarState.state = TransitionState.Closing;
-		} else {
-			sidebarState.state = TransitionState.Opening;
-		}
-	}
 </script>
 
-{#if sidebarState.isOpen()}
+{#if sidebarTransitionState.isOpen()}
 	<div
-		class="flex h-screen items-center py-2"
+		class="inline-flex h-screen items-center py-2"
 		transition:fly={{
 			x: '-20rem',
 			opacity: 100,
 			easing: linear,
 			duration: 300
 		}}
-		onintrostart={() =>
-			(sidebarState.state = TransitionState.Opening)}
-		onintroend={() => (sidebarState.state = TransitionState.Open)}
-		onoutrostart={() =>
-			(sidebarState.state = TransitionState.Closing)}
-		onoutroend={() => (sidebarState.state = TransitionState.Closed)}
+		onintrostart={() => sidebarTransitionState.onIntroStart()}
+		onintroend={() => sidebarTransitionState.onIntroEnd()}
+		onoutrostart={() => sidebarTransitionState.onOutroStart()}
+		onoutroend={() => sidebarTransitionState.onOutroEnd()}
 	>
 		<div
 			bind:this={sidebar}
@@ -61,13 +43,19 @@
 				<SidebarItem {marker} />
 			{/each}
 		</div>
-		<SidebarButton isOpen={true} onClick={toggleSidebar} />
+		<SidebarButton
+			isOpen={true}
+			onClick={() => sidebarTransitionState.onOutroStart()}
+		/>
 	</div>
 {/if}
 
-{#if sidebarState.isClosed()}
+{#if sidebarTransitionState.isClosed()}
 	<div class="flex h-screen items-center">
 		<div class="invisible h-full"></div>
-		<SidebarButton isOpen={false} onClick={toggleSidebar} />
+		<SidebarButton
+			isOpen={false}
+			onClick={() => sidebarTransitionState.onIntroStart()}
+		/>
 	</div>
 {/if}

@@ -1,8 +1,8 @@
 export enum TransitionState {
-	Open = 'Open',
+	Closing = 'Closing',
 	Closed = 'Closed',
 	Opening = 'Opening',
-	Closing = 'Closing'
+	Open = 'Open'
 }
 
 export class SidebarTransitionState {
@@ -23,7 +23,19 @@ export class SidebarTransitionState {
 		return this._state === TransitionState.Closed;
 	}
 
-	set state(value: TransitionState) {
-		this._state = value;
+	onOutroStart() {
+		this._state = TransitionState.Closing;
+	}
+
+	onOutroEnd() {
+		this._state = TransitionState.Closed;
+	}
+
+	onIntroStart() {
+		this._state = TransitionState.Opening;
+	}
+
+	onIntroEnd() {
+		this._state = TransitionState.Open;
 	}
 }
