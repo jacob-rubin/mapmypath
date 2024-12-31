@@ -13,33 +13,26 @@
 </script>
 
 <div
-	class="flex flex-row items-center"
 	onmouseenter={() => (isHovering = true)}
 	onmouseleave={() => (isHovering = false)}
 	role="menuitem"
 	tabindex={marker.id}
+	data-testid="sidebar-item-{marker.id}"
+	class={`m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
 >
-	<div
-		data-testid="sidebar-item-{marker.id}"
-		class={`m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
-	>
-		<input
-			type="text"
-			bind:value={marker.name}
-			class="input w-full max-w-xs"
-		/>
-		<div class="flex h-8 items-center gap-1 pt-2">
-			<MdiLocationRadius class="size-4 shrink-0" />
-			<div data-testid="geocode">
-				{#await marker.getGeocodeName() then geocodeName}
-					<div class="overflow-none text-xs" transition:fade>
-						{geocodeName}
-					</div>
-				{/await}
-			</div>
+	<input
+		type="text"
+		bind:value={marker.name}
+		class="input w-full max-w-xs"
+	/>
+	<div class="flex h-8 items-center gap-1 pt-2">
+		<MdiLocationRadius class="size-4 shrink-0" />
+		<div data-testid="geocode">
+			{#await marker.getGeocodeName() then geocodeName}
+				<div class="overflow-none text-xs" transition:fade>
+					{geocodeName}
+				</div>
+			{/await}
 		</div>
 	</div>
-	{#if isHovering}
-		<button class="btn btn-circle">X</button>
-	{/if}
 </div>

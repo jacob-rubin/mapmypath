@@ -1,12 +1,5 @@
-import {
-	cleanup,
-	getByPlaceholderText,
-	getByRole,
-	render,
-	waitFor,
-	fireEvent
-} from '@testing-library/svelte';
-import { afterEach, describe, it } from 'vitest';
+import { render, waitFor } from '@testing-library/svelte';
+import { describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
 import Marker from '../Map/mapbox/marker.svelte';
@@ -72,7 +65,7 @@ describe('SidebarItem', async () => {
 		});
 	});
 
-	it.only('thickens the border on hover', async ({ expect }) => {
+	it('thickens the border on hover', async ({ expect }) => {
 		const user: UserEvent = userEvent.setup();
 		const marker = new Marker({
 			id: 1,
@@ -87,12 +80,8 @@ describe('SidebarItem', async () => {
 		});
 		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
 
+		expect(sidebarItem).not.toHaveClass('outline-4');
 		await user.hover(sidebarItem);
-
-		console.log(sidebarItem.style);
-		console.log(getComputedStyle(sidebarItem));
-		console.log(sidebarItem.classList);
-
-		expect(sidebarItem).toHaveStyle('border-width: 4px');
+		expect(sidebarItem).toHaveClass('outline-4');
 	});
 });
