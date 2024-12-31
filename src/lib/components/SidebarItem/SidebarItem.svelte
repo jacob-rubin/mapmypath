@@ -8,27 +8,38 @@
 	}
 
 	let { marker }: Props = $props();
+
+	let isHovering: boolean = $state(false);
 </script>
 
 <div
-	data-testid="sidebar-item-{marker.id}"
-	class="m-2 flex flex-col rounded border-2 border-black p-2 hover:border-4"
+	class="flex flex-row items-center"
+	onmouseenter={() => (isHovering = true)}
+	onmouseleave={() => (isHovering = false)}
 	role="menuitem"
-	transition:fade
+	tabindex={marker.id}
 >
-	<input
-		type="text"
-		bind:value={marker.name}
-		class="input w-full max-w-xs"
-	/>
-	<div class="flex h-8 items-center gap-1 pt-2">
-		<MdiLocationRadius class="size-4 shrink-0" />
-		<div data-testid="geocode">
-			{#await marker.getGeocodeName() then geocodeName}
-				<div class="overflow-none text-xs" transition:fade>
-					{geocodeName}
-				</div>
-			{/await}
+	<div
+		data-testid="sidebar-item-{marker.id}"
+		class={`m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
+	>
+		<input
+			type="text"
+			bind:value={marker.name}
+			class="input w-full max-w-xs"
+		/>
+		<div class="flex h-8 items-center gap-1 pt-2">
+			<MdiLocationRadius class="size-4 shrink-0" />
+			<div data-testid="geocode">
+				{#await marker.getGeocodeName() then geocodeName}
+					<div class="overflow-none text-xs" transition:fade>
+						{geocodeName}
+					</div>
+				{/await}
+			</div>
 		</div>
 	</div>
+	{#if isHovering}
+		<button class="btn btn-circle">X</button>
+	{/if}
 </div>

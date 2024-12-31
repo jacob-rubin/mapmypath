@@ -10,7 +10,9 @@ import { afterEach, describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
 import Marker from '../Map/mapbox/marker.svelte';
-import userEvent from '@testing-library/user-event';
+import userEvent, {
+	type UserEvent
+} from '@testing-library/user-event';
 
 describe('SidebarItem', async () => {
 	// afterEach(() => {
@@ -70,7 +72,8 @@ describe('SidebarItem', async () => {
 		});
 	});
 
-	it.only('darkens the border on hover', async ({ expect }) => {
+	it.only('thickens the border on hover', async ({ expect }) => {
+		const user: UserEvent = userEvent.setup();
 		const marker = new Marker({
 			id: 1,
 			lngLat: new mapboxgl.LngLat(
@@ -82,14 +85,14 @@ describe('SidebarItem', async () => {
 		const screen = render(SidebarItem, {
 			marker
 		});
-		const sidebarItem: HTMLElement =
-			screen.getByTestId('sidebar-item-1');
+		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
 
-		// wait 5 seconds
-		console.log('about to hover');
-		await fireEvent.mouseOver(sidebarItem).then(() => {
-			console.log('hovered');
-		});
-		console.log('hover done');
+		await user.hover(sidebarItem);
+
+		console.log(sidebarItem.style);
+		console.log(getComputedStyle(sidebarItem));
+		console.log(sidebarItem.classList);
+
+		expect(sidebarItem).toHaveStyle('border-width: 4px');
 	});
 });
