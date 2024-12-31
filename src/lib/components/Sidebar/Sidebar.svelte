@@ -22,7 +22,7 @@
 
 {#if sidebarTransitionState.isVisible()}
 	<div
-		class="inline-flex h-screen items-center py-2"
+		class="flex h-screen items-center py-2"
 		transition:fly={{
 			x: '-20rem',
 			opacity: 100,
