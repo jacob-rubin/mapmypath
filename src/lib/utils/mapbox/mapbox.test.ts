@@ -10,7 +10,7 @@ import Mapbox from './mapbox';
 import { LngLat } from 'mapbox-gl';
 import { getByLabelText } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import Marker from './marker.svelte';
+import Marker from '../marker/marker.svelte';
 
 describe('Mapbox', async () => {
 	let element: HTMLElement;

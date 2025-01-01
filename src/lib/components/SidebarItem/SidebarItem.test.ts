@@ -7,10 +7,10 @@ import {
 import { describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
-import Marker from '../Map/mapbox/marker.svelte';
 import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
+import Marker from '$lib/utils/marker/marker.svelte';
 
 describe('SidebarItem', async () => {
 	// afterEach(() => {

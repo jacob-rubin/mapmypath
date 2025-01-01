@@ -3,9 +3,9 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
-	import Mapbox from './mapbox/mapbox';
-	import Marker from './mapbox/marker.svelte';
-	import type { MarkerData } from './mapbox/marker.svelte';
+	import Mapbox from '../../utils/mapbox/mapbox';
+	import Marker from '$lib/utils/marker/marker.svelte';
+	import type { MarkerData } from '$lib/utils/marker/marker.svelte';
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
@@ -23,7 +23,7 @@
 
 		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 			const marker: Marker = new Marker({
-				id: mapState.getMarkers().length,
+				id: mapState.getMarkers().length, //TODO: This causes bug bc
 				lngLat: e.lngLat,
 				name: `Stop ${mapState.getMarkers().length + 1}`
 			});

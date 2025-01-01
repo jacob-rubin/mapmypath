@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import type Marker from '../Map/mapbox/marker.svelte';
 	import MdiDelete from '~icons/mdi/delete';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
 	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import type Marker from '$lib/utils/marker/marker.svelte';
 
 	interface Props {
 		marker: Marker;

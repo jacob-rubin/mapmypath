@@ -5,9 +5,9 @@ import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
 import { mapState } from '$lib/shared/mapState/mapState.svelte';
-import Marker from '../Map/mapbox/marker.svelte';
 import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
+import Marker from '$lib/utils/marker/marker.svelte';
 
 describe('Sidebar', async () => {
 	afterEach(() => {
