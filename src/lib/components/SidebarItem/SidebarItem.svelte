@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import type Marker from '../Map/mapbox/marker.svelte';
+	import MdiDelete from '~icons/mdi/delete';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
 
 	interface Props {
@@ -18,8 +19,13 @@
 	role="menuitem"
 	tabindex={marker.id}
 	data-testid="sidebar-item-{marker.id}"
-	class={`m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
+	class={`relative m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
 >
+	{#if isHovering}
+		<button class="btn btn-square btn-sm absolute right-0 top-0">
+			<MdiDelete class="size-4" />
+		</button>
+	{/if}
 	<input
 		type="text"
 		bind:value={marker.name}

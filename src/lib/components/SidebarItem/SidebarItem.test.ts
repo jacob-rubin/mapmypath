@@ -1,4 +1,9 @@
-import { render, waitFor } from '@testing-library/svelte';
+import {
+	getByRole,
+	queryByRole,
+	render,
+	waitFor
+} from '@testing-library/svelte';
 import { describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
@@ -83,5 +88,25 @@ describe('SidebarItem', async () => {
 		expect(sidebarItem).not.toHaveClass('outline-4');
 		await user.hover(sidebarItem);
 		expect(sidebarItem).toHaveClass('outline-4');
+	});
+
+	it('shows the delete button when hovered', async ({ expect }) => {
+		const user: UserEvent = userEvent.setup();
+		const marker = new Marker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(
+				-77.03654979172663,
+				38.89763503472804
+			)
+		});
+
+		const screen = render(SidebarItem, {
+			marker
+		});
+		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
+
+		expect(queryByRole(sidebarItem, 'button')).toBeNull();
+		await user.hover(sidebarItem);
+		expect(getByRole(sidebarItem, 'button')).toBeVisible();
 	});
 });
