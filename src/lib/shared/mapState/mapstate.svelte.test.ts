@@ -23,7 +23,9 @@ describe('MapState', async () => {
 		mapState.addMarker(
 			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
 		);
-		expect(mapState.getMarker(1)).toEqual(mapState.getMarkers()[0]);
+		expect(mapState.getMarkerById(1)).toEqual(
+			mapState.getMarkers()[0]
+		);
 	});
 
 	it('updates a marker', async () => {
@@ -42,8 +44,17 @@ describe('MapState', async () => {
 	});
 
 	it('throws an error when getting a marker that does not exist', async () => {
-		expect(() => mapState.getMarker(1)).toThrow(
+		expect(() => mapState.getMarkerById(1)).toThrow(
 			'Marker with id 1 not found'
 		);
+	});
+
+	it('deletes a marker', async () => {
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+		expect(mapState.getMarkers()).toHaveLength(1);
+		mapState.deleteMarker(1);
+		expect(mapState.getMarkers()).toHaveLength(0);
 	});
 });

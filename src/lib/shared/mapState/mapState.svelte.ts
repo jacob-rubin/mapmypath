@@ -13,6 +13,7 @@ class MapState {
 	}
 
 	updateMarker(markerData: MarkerData) {
+		//TODO: Can I remove this usage of MarkerData and replace with marker?
 		const marker: Marker | undefined = this.#markers.find(
 			(marker) => marker.id === markerData.id
 		);
@@ -28,7 +29,7 @@ class MapState {
 		return this.#markers;
 	}
 
-	getMarker(id: number): Marker {
+	getMarkerById(id: number): Marker {
 		const marker: Marker | undefined = this.#markers.find(
 			(marker) => marker.id === id
 		);
@@ -42,6 +43,22 @@ class MapState {
 
 	clear() {
 		this.#markers = [];
+	}
+
+	deleteMarker(id: number) {
+		const marker: Marker | undefined = this.#markers.find(
+			(marker) => marker.id === id
+		);
+
+		if (!marker) {
+			throw new Error(`Marker with id ${id} not found`);
+		}
+
+		this.#markers = this.#markers.filter(
+			(marker) => marker.id !== id
+		);
+
+		return marker;
 	}
 }
 

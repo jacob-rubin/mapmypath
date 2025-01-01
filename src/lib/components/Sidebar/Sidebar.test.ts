@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import Sidebar from './Sidebar.svelte';
-import { cleanup, render } from '@testing-library/svelte';
-import userEvent from '@testing-library/user-event';
+import { cleanup, getByRole, render } from '@testing-library/svelte';
+import userEvent, {
+	type UserEvent
+} from '@testing-library/user-event';
 import { mapState } from '$lib/shared/mapState/mapState.svelte';
 import Marker from '../Map/mapbox/marker.svelte';
 import mapboxgl from 'mapbox-gl';
@@ -122,5 +124,33 @@ describe('Sidebar', async () => {
 		await tick();
 		expect(screen.queryByTestId('collapse')).toBeInTheDocument();
 		expect(screen.queryByTestId('expand')).not.toBeInTheDocument();
+	});
+
+	it('removes the sidebar item from the sidebar when the delete button is clicked', async ({
+		expect
+	}) => {
+		const user: UserEvent = userEvent.setup();
+		const marker = new Marker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(
+				-77.03654979172663,
+				38.89763503472804
+			)
+		});
+
+		const screen = render(Sidebar);
+		mapState.addMarker(marker);
+		await tick();
+
+		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
+		await user.hover(sidebarItem);
+		const deleteButton: HTMLElement = getByRole(
+			sidebarItem,
+			'button'
+		);
+
+		expect(screen.queryByRole('menuitem')).not.toBeNull();
+		await user.click(deleteButton);
+		expect(screen.queryByRole('menuitem')).toBeNull();
 	});
 });

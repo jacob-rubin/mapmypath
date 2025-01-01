@@ -3,6 +3,7 @@
 	import type Marker from '../Map/mapbox/marker.svelte';
 	import MdiDelete from '~icons/mdi/delete';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
+	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 
 	interface Props {
 		marker: Marker;
@@ -11,6 +12,10 @@
 	let { marker }: Props = $props();
 
 	let isHovering: boolean = $state(false);
+
+	function remove() {
+		mapState.deleteMarker(marker.id);
+	}
 </script>
 
 <div
@@ -22,7 +27,10 @@
 	class={`relative m-2 flex flex-col rounded p-2 outline outline-offset-2 ${isHovering ? 'outline-4' : 'outline-2'}`}
 >
 	{#if isHovering}
-		<button class="btn btn-square btn-sm absolute right-0 top-0">
+		<button
+			class="btn btn-square btn-sm absolute right-0 top-0"
+			onclick={remove}
+		>
 			<MdiDelete class="size-4" />
 		</button>
 	{/if}
