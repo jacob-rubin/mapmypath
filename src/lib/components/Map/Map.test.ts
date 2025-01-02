@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Map from './Map.svelte';
-import { mapState } from '$lib/shared/mapState/mapState.svelte';
+import { mapController } from '$lib/shared/mapController/mapController.svelte';
 import { type Locator } from '@vitest/browser/context';
 import userEvent from '@testing-library/user-event';
 
 describe('Map', async () => {
 	beforeEach(() => {
-		mapState.clear();
+		mapController.clear();
 	});
 
 	it('renders the map', async () => {
@@ -47,16 +47,16 @@ describe('Map', async () => {
 		expect(marker).toBeDefined();
 	});
 
-	it('adds a marker to the mapState when the map is clicked', async () => {
+	it('adds a marker to the mapController when the map is clicked', async () => {
 		const screen = render(Map);
 		const map: Locator = screen.getByTestId('map');
 
-		expect(mapState.getMarkers()).toHaveLength(0);
+		expect(mapController.getMarkers()).toHaveLength(0);
 		await map.click();
-		expect(mapState.getMarkers()).toHaveLength(1);
+		expect(mapController.getMarkers()).toHaveLength(1);
 	});
 
-	it('updates the mapState with a new LngLat when a marker is dragged', async () => {
+	it('updates the mapController with a new LngLat when a marker is dragged', async () => {
 		const user = userEvent.setup();
 
 		const screen = render(Map);
@@ -68,10 +68,10 @@ describe('Map', async () => {
 			exact: true
 		});
 		expect(marker).toBeDefined();
-		expect(mapState.getMarkers()).toHaveLength(1);
+		expect(mapController.getMarkers()).toHaveLength(1);
 
 		const initialMarkerLngLat: mapboxgl.LngLat =
-			mapState.getMarkers()[0].lngLat;
+			mapController.getMarkers()[0].lngLat;
 
 		await user.pointer([
 			{
@@ -84,7 +84,7 @@ describe('Map', async () => {
 			{ keys: '[/MouseLeft]' }
 		]);
 
-		expect(mapState.getMarkers()[0].lngLat).not.toEqual(
+		expect(mapController.getMarkers()[0].lngLat).not.toEqual(
 			initialMarkerLngLat
 		);
 	});
@@ -96,7 +96,7 @@ describe('Map', async () => {
 		await map.click();
 		await map.click();
 
-		const markers = mapState.getMarkers();
+		const markers = mapController.getMarkers();
 
 		expect(markers[0].name).toBe('Stop 1');
 		expect(markers[1].name).toBe('Stop 2');

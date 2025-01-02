@@ -4,7 +4,7 @@ import { cleanup, getByRole, render } from '@testing-library/svelte';
 import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
-import { mapState } from '$lib/shared/mapState/mapState.svelte';
+import { mapController } from '$lib/shared/mapController/mapController.svelte';
 import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
 import Marker from '$lib/utils/marker/marker.svelte';
@@ -12,7 +12,7 @@ import Marker from '$lib/utils/marker/marker.svelte';
 describe('Sidebar', async () => {
 	afterEach(() => {
 		cleanup();
-		mapState.clear();
+		mapController.clear();
 	});
 
 	it('matches the snapshot', async ({ expect }) => {
@@ -78,14 +78,14 @@ describe('Sidebar', async () => {
 		expect(sidebarHeight).toBe(window.innerHeight - 16);
 	});
 
-	it('adds a sidebar item when mapstate changes', async () => {
+	it('adds a sidebar item when mapController changes', async () => {
 		const marker: Marker = new Marker({
 			id: 0,
 			lngLat: new mapboxgl.LngLat(0, 0)
 		});
 
 		const screen = render(Sidebar);
-		mapState.addMarker(marker);
+		mapController.addMarker(marker);
 		await tick();
 		const sidebarItem = screen.getByRole('menuitem');
 
@@ -96,7 +96,7 @@ describe('Sidebar', async () => {
 		const screen = render(Sidebar);
 
 		for (let i = 0; i < 10; i++) {
-			mapState.addMarker(
+			mapController.addMarker(
 				new Marker({ id: i, lngLat: new mapboxgl.LngLat(i, i) })
 			);
 			await tick();
@@ -139,7 +139,7 @@ describe('Sidebar', async () => {
 		});
 
 		const screen = render(Sidebar);
-		mapState.addMarker(marker);
+		mapController.addMarker(marker);
 		await tick();
 
 		const sidebarItem: HTMLElement = screen.getByRole('menuitem');

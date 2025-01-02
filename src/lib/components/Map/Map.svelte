@@ -1,7 +1,7 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy } from 'svelte';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { mapController } from '$lib/shared/mapController/mapController.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from '../../utils/mapbox/mapbox';
 	import Marker from '$lib/utils/marker/marker.svelte';
@@ -23,21 +23,23 @@
 
 		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 			const marker: Marker = new Marker({
-				id: mapState.getMarkers().length, //TODO: This causes bug bc
+				id: mapController.getMarkers().length, //TODO: This causes bug bc
 				lngLat: e.lngLat,
-				name: `Stop ${mapState.getMarkers().length + 1}`
+				name: `Stop ${mapController.getMarkers().length + 1}`
 			});
 
 			map.addMarker(marker);
-			mapState.addMarker(marker);
-			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+			mapController.addMarker(marker);
+			map.renderPath(mapController.getMarkers().map((m) => m.lngLat));
 
 			marker.addDragListener((markerData: MarkerData) => {
-				mapState.updateMarker({
+				mapController.updateMarker({
 					id: markerData.id,
 					lngLat: markerData.lngLat
 				});
-				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+				map.renderPath(
+					mapController.getMarkers().map((m) => m.lngLat)
+				);
 			});
 		});
 	});

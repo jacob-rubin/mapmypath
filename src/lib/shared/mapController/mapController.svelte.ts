@@ -1,7 +1,7 @@
 import type Marker from '$lib/utils/marker/marker.svelte';
 import type { MarkerData } from '$lib/utils/marker/marker.svelte';
 
-class MapState {
+class MapController {
 	#markers: Marker[] = $state([]); //TODO: consider making this collection instead of a list
 
 	constructor() {
@@ -62,4 +62,4 @@ class MapState {
 	}
 }
 
-export const mapState = new MapState();
+export const mapController = new MapController();

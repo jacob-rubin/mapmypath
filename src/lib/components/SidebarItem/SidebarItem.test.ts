@@ -1,10 +1,11 @@
 import {
+	cleanup,
 	getByRole,
 	queryByRole,
 	render,
 	waitFor
 } from '@testing-library/svelte';
-import { describe, it } from 'vitest';
+import { afterEach, describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
 import userEvent, {
@@ -13,9 +14,9 @@ import userEvent, {
 import Marker from '$lib/utils/marker/marker.svelte';
 
 describe('SidebarItem', async () => {
-	// afterEach(() => {
-	// 	cleanup();
-	// });
+	afterEach(() => {
+		cleanup();
+	});
 
 	it('matches the snapshot', async ({ expect }) => {
 		const screen = render(SidebarItem, {
