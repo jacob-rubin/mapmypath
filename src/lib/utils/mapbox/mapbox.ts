@@ -80,8 +80,10 @@ class Mapbox {
 
 	addMarker(marker: Marker) {
 		marker.addToMap(this.#map);
+	}
 
-		return marker;
+	deleteMarker(marker: Marker) {
+		marker.removeFromMap();
 	}
 
 	getLayer(id: string): mapboxgl.LayerSpecification {

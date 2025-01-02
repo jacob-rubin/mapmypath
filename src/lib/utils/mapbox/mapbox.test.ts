@@ -8,7 +8,10 @@ import {
 } from 'vitest';
 import Mapbox from './mapbox';
 import { LngLat } from 'mapbox-gl';
-import { getByLabelText } from '@testing-library/svelte';
+import {
+	getByLabelText,
+	queryByLabelText
+} from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import Marker from '../marker/marker.svelte';
 
@@ -87,6 +90,19 @@ describe('Mapbox', async () => {
 		expect(getByLabelText(element, 'Map marker')).toBeDefined();
 	});
 
+	it('removes a marker from the map', async () => {
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0)
+		});
+
+		mapbox.addMarker(marker);
+		expect(getByLabelText(element, 'Map marker')).toBeDefined();
+
+		mapbox.deleteMarker(marker);
+		expect(queryByLabelText(element, 'Map marker')).toBeNull();
+	});
+
 	it('drags a marker when it is clicked and dragged', async () => {
 		const user = userEvent.setup();
 		mapbox.addMarker(new Marker({ id: 0, lngLat: new LngLat(0, 0) }));
@@ -112,9 +128,12 @@ describe('Mapbox', async () => {
 		const onDrag = vi.fn();
 		const user = userEvent.setup();
 
-		const marker: Marker = mapbox.addMarker(
-			new Marker({ id: 0, lngLat: new LngLat(0, 0) })
-		);
+		const marker: Marker = new Marker({
+			id: 0,
+			lngLat: new LngLat(0, 0)
+		});
+
+		mapbox.addMarker(marker);
 		marker.addDragListener(onDrag);
 
 		const mapMarker = getByLabelText(element, 'Map marker');

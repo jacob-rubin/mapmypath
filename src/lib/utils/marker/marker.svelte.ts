@@ -53,6 +53,10 @@ class Marker {
 		this.#marker.addTo(map);
 	}
 
+	removeFromMap(): void {
+		this.#marker.remove();
+	}
+
 	addDragListener(callback: (markerData: MarkerData) => void): void {
 		this.#marker.on('drag', () => {
 			const markerData: MarkerData = {
