@@ -1,13 +1,16 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-import { render } from 'vitest-browser-svelte';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Map from './Map.svelte';
-import { mapState } from '$lib/shared/mapState/mapState.svelte';
-import { type Locator } from '@vitest/browser/context';
+import { mapState } from '$lib/state/mapState/mapState.svelte';
 import userEvent from '@testing-library/user-event';
+import { cleanup, getByRole, render } from '@testing-library/svelte';
 
 describe('Map', async () => {
 	beforeEach(() => {
 		mapState.clear();
+	});
+
+	afterEach(() => {
+		cleanup();
 	});
 
 	it('renders the map', async () => {
@@ -19,10 +22,8 @@ describe('Map', async () => {
 	it('fills the whole height of the screen', async () => {
 		const screen = render(Map);
 
-		const map: Locator = screen.getByTestId('map');
-		const height: number = map
-			.element()
-			.getBoundingClientRect().height;
+		const map: HTMLElement = screen.getByTestId('map');
+		const height: number = map.getBoundingClientRect().height;
 
 		expect(height).toBe(window.innerHeight);
 	});
@@ -30,17 +31,26 @@ describe('Map', async () => {
 	it('fills the whole width of the screen', async () => {
 		const screen = render(Map);
 
-		const map: Locator = screen.getByTestId('map');
-		const width: number = map.element().getBoundingClientRect().width;
+		const map: HTMLElement = screen.getByTestId('map');
+		const width: number = map.getBoundingClientRect().width;
 
 		expect(width).toBe(window.innerWidth);
 	});
 
 	it('adds a marker when the map is clicked', async () => {
 		const screen = render(Map);
-		const map: Locator = screen.getByTestId('map');
-		await map.click();
-		const marker: Locator = screen.getByLabelText('Map marker', {
+
+		// TODO: Fix waiting for map to load
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
+		const mapRegion: HTMLElement = getByRole(
+			screen.baseElement,
+			'region'
+		);
+
+		mapRegion.click();
+
+		const marker: HTMLElement = screen.getByLabelText('Map marker', {
 			exact: true
 		});
 
@@ -49,22 +59,32 @@ describe('Map', async () => {
 
 	it('adds a marker to the mapState when the map is clicked', async () => {
 		const screen = render(Map);
-		const map: Locator = screen.getByTestId('map');
+
+		const mapRegion: HTMLElement = getByRole(
+			screen.baseElement,
+			'region'
+		);
+
+		await new Promise((resolve) => setTimeout(resolve, 2000));
 
 		expect(mapState.getMarkers()).toHaveLength(0);
-		await map.click();
+		mapRegion.click();
 		expect(mapState.getMarkers()).toHaveLength(1);
 	});
 
 	it('updates the mapState with a new LngLat when a marker is dragged', async () => {
 		const user = userEvent.setup();
-
 		const screen = render(Map);
-		const map: Locator = screen.getByTestId('map');
 
-		await map.click();
+		await new Promise((resolve) => setTimeout(resolve, 2000));
 
-		const marker: Locator = screen.getByLabelText('Map marker', {
+		const mapRegion: HTMLElement = getByRole(
+			screen.baseElement,
+			'region'
+		);
+		mapRegion.click();
+
+		const marker: HTMLElement = screen.getByLabelText('Map marker', {
 			exact: true
 		});
 		expect(marker).toBeDefined();
@@ -76,7 +96,7 @@ describe('Map', async () => {
 		await user.pointer([
 			{
 				keys: '[MouseLeft>]',
-				target: marker.element()
+				target: marker
 			},
 			{
 				coords: { x: 100, y: 100 }
@@ -91,10 +111,15 @@ describe('Map', async () => {
 
 	it('Gives first markers names of step 1 and step 2', async () => {
 		const screen = render(Map);
-		const map: Locator = screen.getByTestId('map');
+		const mapRegion: HTMLElement = getByRole(
+			screen.baseElement,
+			'region'
+		);
 
-		await map.click();
-		await map.click();
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
+		mapRegion.click();
+		mapRegion.click();
 
 		const markers = mapState.getMarkers();
 

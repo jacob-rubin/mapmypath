@@ -1,13 +1,17 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy, type Snippet } from 'svelte';
 	import { mapState } from '$lib/state/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
 	import Marker from './mapbox/marker.svelte';
 	import type { MarkerData } from './mapbox/marker.svelte';
-	import Sidebar from '../Sidebar/Sidebar.svelte';
-	import SearchBox from '../SearchBox/SearchBox.svelte';
+
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
@@ -57,9 +61,6 @@
 	bind:this={container}
 ></div>
 
-<div class="absolute left-0 top-0">
-	<Sidebar />
-</div>
-<div class="absolute right-0 top-0 p-2">
-	<SearchBox />
-</div>
+{#if children}
+	{@render children()}
+{/if}
