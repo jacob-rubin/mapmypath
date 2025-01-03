@@ -1,11 +1,15 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy, type Snippet } from 'svelte';
-	import { mapState } from '$lib/state/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
 	import Marker from './mapbox/marker.svelte';
 	import type { MarkerData } from './mapbox/marker.svelte';
+	import {
+		getMapStateContext,
+		setMapStateContext
+	} from './mapStateContext';
+	import { MapState } from '$lib/state/mapState/mapState.svelte';
 
 	interface Props {
 		children?: Snippet;
@@ -15,8 +19,11 @@
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
+	setMapStateContext(new MapState());
 
 	onMount(async () => {
+		const mapState: MapState = getMapStateContext();
+
 		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
 			-71.224518,
 			42.213995

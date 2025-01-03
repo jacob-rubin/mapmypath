@@ -1,15 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Map from './Map.svelte';
-import { mapState } from '$lib/state/mapState/mapState.svelte';
 import userEvent from '@testing-library/user-event';
 import { cleanup, getByRole, render } from '@testing-library/svelte';
+import { MapState } from '$lib/state/mapState/mapState.svelte';
 
 describe('Map', async () => {
+	let mapState: MapState;
+
 	beforeEach(() => {
-		mapState.clear();
+		mapState = new MapState();
 	});
 
 	afterEach(() => {
+		mapState.clear();
 		cleanup();
 	});
 
