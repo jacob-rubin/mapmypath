@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { mapState } from '$lib/state/mapState/mapState.svelte';
 	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy } from 'svelte';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
+	import { mapState } from '$lib/state/mapState/mapState.svelte';
 	import mapboxgl from 'mapbox-gl';
 	import Mapbox from './mapbox/mapbox';
 	import Marker from './mapbox/marker.svelte';

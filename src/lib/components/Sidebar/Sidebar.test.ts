@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import Sidebar from './Sidebar.svelte';
 import { cleanup, render } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import { mapState } from '$lib/shared/mapState/mapState.svelte';
+import { mapState } from '$lib/state/mapState/mapState.svelte';
 import Marker from '../Map/mapbox/marker.svelte';
 import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
