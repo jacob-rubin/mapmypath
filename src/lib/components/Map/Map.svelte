@@ -6,6 +6,8 @@
 	import Mapbox from './mapbox/mapbox';
 	import Marker from './mapbox/marker.svelte';
 	import type { MarkerData } from './mapbox/marker.svelte';
+	import Sidebar from '../Sidebar/Sidebar.svelte';
+	import SearchBox from '../SearchBox/SearchBox.svelte';
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
@@ -54,3 +56,10 @@
 	class="h-screen w-screen"
 	bind:this={container}
 ></div>
+
+<div class="absolute left-0 top-0">
+	<Sidebar />
+</div>
+<div class="absolute right-0 top-0 p-2">
+	<SearchBox />
+</div>

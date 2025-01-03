@@ -18,13 +18,6 @@
 			});
 		}
 	});
-
-	$effect(() => {
-		console.log(
-			'sidebarTransitionState',
-			sidebarTransitionState.state
-		);
-	});
 </script>
 
 {#if sidebarTransitionState.isVisible()}
