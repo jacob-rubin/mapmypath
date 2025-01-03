@@ -33,6 +33,9 @@ class Marker {
 	}
 
 	set lngLat(value: mapboxgl.LngLat) {
+		console.log('setting marker');
+		//TODO: Is this necessary? Since we only change lnglat on drag, so why do we also set it here?
+		// Can test this when map is not erroring. Can check if setLngLat is being called multiple times per drag tick.
 		this.#marker.setLngLat(value);
 		this.#geocode.reverse(value);
 	}
