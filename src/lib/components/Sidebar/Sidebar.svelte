@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import SidebarItem from '../SidebarItem/SidebarItem.svelte';
-	import { mapState } from '$lib/shared/mapState/mapState.svelte';
 	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
+	import type { MapState } from '$lib/state/mapState/mapState.svelte';
+	import { getMapStateContext } from '../Map/mapStateContext';
+
+	const mapState: MapState = getMapStateContext();
 
 	let sidebar: HTMLDivElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
@@ -17,13 +20,6 @@
 				top: sidebar.scrollHeight
 			});
 		}
-	});
-
-	$effect(() => {
-		console.log(
-			'sidebarTransitionState',
-			sidebarTransitionState.state
-		);
 	});
 </script>
 

@@ -12,7 +12,7 @@ class Marker {
 	#name: string = $state('');
 	#geocode: Geocode;
 
-	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker());
+	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker()); // TODO: Does this need to be stateful?
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
@@ -33,7 +33,7 @@ class Marker {
 	}
 
 	set lngLat(value: mapboxgl.LngLat) {
-		this.#marker.setLngLat(value);
+		this.#marker.setLngLat(value); // TODO: Do we need this secondary setLngLat, since the drag should take care of this?
 		this.#geocode.reverse(value);
 	}
 
