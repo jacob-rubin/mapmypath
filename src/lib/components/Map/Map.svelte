@@ -19,21 +19,11 @@
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
+
 	setMapStateContext(new MapState());
+	const mapState: MapState = getMapStateContext();
 
-	onMount(async () => {
-		const mapState: MapState = getMapStateContext();
-
-		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-71.224518,
-			42.213995
-		);
-		let zoom: number = 9;
-
-		map = new Mapbox(container, center, zoom);
-		await map.awaitLoad();
-		map.initializeStyles();
-
+	function addMapClickListener(map: Mapbox) {
 		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 			const marker: Marker = new Marker({
 				id: mapState.getMarkers().length,
@@ -44,15 +34,33 @@
 			map.addMarker(marker);
 			mapState.addMarker(marker);
 			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-
-			marker.addDragListener((markerData: MarkerData) => {
-				mapState.updateMarker({
-					id: markerData.id,
-					lngLat: markerData.lngLat
-				});
-				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			});
+			addMarkerDragListener(marker);
 		});
+	}
+
+	function addMarkerDragListener(marker: Marker) {
+		marker.addDragListener((markerData: MarkerData) => {
+			mapState.updateMarker({
+				id: markerData.id,
+				lngLat: markerData.lngLat
+			});
+			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+			console.log($state.snapshot(mapState));
+		});
+	}
+
+	onMount(async () => {
+		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
+			-71.224518,
+			42.213995
+		);
+		let zoom: number = 9;
+
+		map = new Mapbox(container, center, zoom);
+		await map.awaitLoad();
+		map.initializeStyles();
+
+		addMapClickListener(map);
 	});
 
 	onDestroy(() => {

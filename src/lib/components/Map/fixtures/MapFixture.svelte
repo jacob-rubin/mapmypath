@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Sidebar from '../Sidebar.svelte';
+	import Map from '../Map.svelte';
 	import Fragment from '$lib/components/Fragment/Fragment.svelte';
 
 	interface Props {
@@ -10,5 +10,5 @@
 </script>
 
 <Fragment {context}>
-	<Sidebar></Sidebar>
+	<Map></Map>
 </Fragment>
