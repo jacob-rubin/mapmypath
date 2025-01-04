@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/svelte';
 import FragmentWithTextChild from './fixtures/textContext/FragmentWithTextChild.svelte';
 import FragmentWithObjectChild from './fixtures/objectContext/FragmentWithObjectChild.svelte';
+import FragmentWithContextProp from './fixtures/contextProp/FragmentWithContextProp.svelte';
 
 describe('Fragment', async () => {
 	it('Renders a child with text from getContext', async () => {
@@ -17,5 +18,19 @@ describe('Fragment', async () => {
 		expect(screen.baseElement.innerHTML).toContain(
 			'Text: Hello World!'
 		);
+	});
+
+	it('renders a child when context passed as a prop', async () => {
+		const context: Record<string, string> = {
+			text: 'Hello World!'
+		};
+
+		const screen = render(FragmentWithContextProp, {
+			props: {
+				context: context
+			}
+		});
+
+		expect(screen.baseElement.innerHTML).toContain('Hello World!');
 	});
 });
