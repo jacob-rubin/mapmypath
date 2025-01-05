@@ -61,5 +61,3 @@ export class MapState {
 		return marker;
 	}
 }
-
-export const mapState: MapState = new MapState();

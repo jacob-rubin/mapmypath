@@ -20,13 +20,15 @@ describe('SidebarItem', async () => {
 
 	it('matches the snapshot', async ({ expect }) => {
 		const screen = render(SidebarItem, {
-			marker: new Marker({
-				id: 1,
-				lngLat: new mapboxgl.LngLat(
-					-77.03654979172663,
-					38.89763503472804
-				)
-			})
+			props: {
+				marker: new Marker({
+					id: 1,
+					lngLat: new mapboxgl.LngLat(
+						-77.03654979172663,
+						38.89763503472804
+					)
+				})
+			}
 		});
 		expect(screen.container.innerHTML).toMatchSnapshot();
 	});
@@ -39,7 +41,9 @@ describe('SidebarItem', async () => {
 		});
 
 		const screen = render(SidebarItem, {
-			marker
+			props: {
+				marker: marker
+			}
 		});
 
 		const input = screen.getByRole('textbox');
@@ -60,7 +64,9 @@ describe('SidebarItem', async () => {
 		});
 
 		const screen = render(SidebarItem, {
-			marker
+			props: {
+				marker: marker
+			}
 		});
 
 		const geocode = screen.getByTestId('geocode');

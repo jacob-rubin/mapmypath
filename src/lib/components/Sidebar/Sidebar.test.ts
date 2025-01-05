@@ -1,35 +1,55 @@
-import { afterEach, describe, expect, it } from 'vitest';
-import Sidebar from './Sidebar.svelte';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, getByRole, render } from '@testing-library/svelte';
 import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
-import { mapState } from '$lib/state/mapState/mapState.svelte';
+import { MapState } from '$lib/state/mapState/mapState.svelte';
 import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
+import SidebarFixture from './fixtures/SidebarFixture.svelte';
 import Marker from '$lib/utils/marker/marker.svelte';
 
-describe('Sidebar', async () => {
+describe('SidebarFixture', async () => {
+	let mapState: MapState;
+	let mapContext: Record<string, unknown>;
+
+	beforeEach(() => {
+		mapState = new MapState();
+		mapContext = { mapState: mapState };
+	});
+
 	afterEach(() => {
 		cleanup();
 		mapState.clear();
 	});
 
 	it('matches the snapshot', async ({ expect }) => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 
 		expect(screen.container.innerHTML).toMatchSnapshot();
 	});
 
 	it('is expanded by default', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		const sidebar: Element | null = screen.getByTestId('sidebar');
 
 		expect(sidebar).not.toBeNull();
 	});
 
 	it('shows the collapse button when expanded', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 
 		expect(screen.getByTestId('collapse')).toBeTruthy();
 	});
@@ -37,7 +57,11 @@ describe('Sidebar', async () => {
 	it('shows a tooltip when the collapse button is hovered', async () => {
 		const user = userEvent.setup();
 
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		const button = screen.getByRole('button');
 		await user.hover(button);
 
@@ -46,7 +70,11 @@ describe('Sidebar', async () => {
 
 	it('is removed from the dom when collapse button clicked', async () => {
 		const TRANSITION_DURATION = 500;
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		screen.getByRole('button').click();
 
 		await new Promise((resolve) =>
@@ -59,7 +87,11 @@ describe('Sidebar', async () => {
 	});
 
 	it('reexpands when the button is clicked while collapsed', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		const button: HTMLElement = screen.getByRole('button');
 		button.click();
 		button.click();
@@ -69,7 +101,11 @@ describe('Sidebar', async () => {
 	});
 
 	it('spans the height of the screen', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 
 		const sidebar: HTMLElement = screen.getByTestId('sidebar');
 		const sidebarHeight: number =
@@ -84,7 +120,11 @@ describe('Sidebar', async () => {
 			lngLat: new mapboxgl.LngLat(0, 0)
 		});
 
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		mapState.addMarker(marker);
 		await tick();
 		const sidebarItem = screen.getByRole('menuitem');
@@ -93,7 +133,11 @@ describe('Sidebar', async () => {
 	});
 
 	it('scrolls to the bottom when a new item is added and the sidebar overflow', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 
 		for (let i = 0; i < 10; i++) {
 			mapState.addMarker(
@@ -117,7 +161,11 @@ describe('Sidebar', async () => {
 	});
 
 	it('does not duplicate the button during the transition', async () => {
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		const button: HTMLElement = screen.getByRole('button');
 		button.click();
 
@@ -138,7 +186,7 @@ describe('Sidebar', async () => {
 			)
 		});
 
-		const screen = render(Sidebar);
+		const screen = render(SidebarFixture);
 		mapState.addMarker(marker);
 		await tick();
 

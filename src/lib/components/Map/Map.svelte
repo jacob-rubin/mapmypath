@@ -1,14 +1,53 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
-	import { onMount, onDestroy } from 'svelte';
-	import { mapState } from '$lib/state/mapState/mapState.svelte';
+	import { onMount, onDestroy, type Snippet } from 'svelte';
 	import mapboxgl from 'mapbox-gl';
-	import Mapbox from '../../utils/mapbox/mapbox';
+	import type { MarkerData } from './mapbox/marker.svelte';
+	import {
+		getMapStateContext,
+		setMapStateContext
+	} from './mapStateContext';
+	import { MapState } from '$lib/state/mapState/mapState.svelte';
 	import Marker from '$lib/utils/marker/marker.svelte';
-	import type { MarkerData } from '$lib/utils/marker/marker.svelte';
+	import Mapbox from '$lib/utils/mapbox/mapbox';
+
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
+
+	setMapStateContext(new MapState());
+	const mapState: MapState = getMapStateContext();
+
+	function addMapClickListener(map: Mapbox) {
+		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
+			const marker: Marker = new Marker({
+				id: mapState.getMarkers().length,
+				lngLat: e.lngLat,
+				name: `Stop ${mapState.getMarkers().length + 1}`
+			});
+
+			map.addMarker(marker);
+			mapState.addMarker(marker);
+			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+			addMarkerDragListener(marker);
+		});
+	}
+
+	function addMarkerDragListener(marker: Marker) {
+		marker.addDragListener((markerData: MarkerData) => {
+			mapState.updateMarker({
+				id: markerData.id,
+				lngLat: markerData.lngLat
+			});
+			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+			console.log($state.snapshot(mapState));
+		});
+	}
 
 	onMount(async () => {
 		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
@@ -21,25 +60,7 @@
 		await map.awaitLoad();
 		map.initializeStyles();
 
-		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
-			const marker: Marker = new Marker({
-				id: mapState.getMarkers().length, //TODO: This causes bug bc
-				lngLat: e.lngLat,
-				name: `Stop ${mapState.getMarkers().length + 1}`
-			});
-
-			map.addMarker(marker);
-			mapState.addMarker(marker);
-			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-
-			marker.addDragListener((markerData: MarkerData) => {
-				mapState.updateMarker({
-					id: markerData.id,
-					lngLat: markerData.lngLat
-				});
-				map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			});
-		});
+		addMapClickListener(map);
 	});
 
 	onDestroy(() => {
@@ -54,3 +75,7 @@
 	class="h-screen w-screen"
 	bind:this={container}
 ></div>
+
+{#if children}
+	{@render children()}
+{/if}

@@ -4,7 +4,10 @@
 	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
-	import { mapState } from '$lib/state/mapState/mapState.svelte';
+	import type { MapState } from '$lib/state/mapState/mapState.svelte';
+	import { getMapStateContext } from '../Map/mapStateContext';
+
+	const mapState: MapState = getMapStateContext();
 
 	let sidebar: HTMLDivElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
