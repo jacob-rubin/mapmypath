@@ -20,6 +20,7 @@ export function addMapListeners(map: Mapbox, mapState: MapState) {
 		map.addMarker(marker);
 		mapState.addMarker(marker);
 		map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
+
 		addMarkerDragListener(map, marker, mapState);
 	});
 }

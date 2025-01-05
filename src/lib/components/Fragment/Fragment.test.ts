@@ -52,10 +52,4 @@ describe('Fragment', async () => {
 
 		expect(screen.baseElement.innerHTML).toContain('Hello World!');
 	});
-
-	it.skip('renders a child when context is stateful', async () => {
-		const screen = render(FragmentWithStatefulChild);
-
-		expect(screen.baseElement.innerHTML).toContain('Count: 1');
-	});
 });
