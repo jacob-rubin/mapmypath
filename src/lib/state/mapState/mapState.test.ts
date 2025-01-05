@@ -2,12 +2,27 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import mapboxgl from 'mapbox-gl';
 import Marker from '$lib/utils/marker/marker.svelte';
 import { MapState } from './mapState.svelte';
+import Mapbox from '$lib/utils/mapbox/mapbox';
+import {
+	getByLabelText,
+	queryByLabelText
+} from '@testing-library/svelte';
 
 describe('Map State', async () => {
+	let element: HTMLElement;
+	let map: Mapbox;
 	let mapState: MapState;
 
 	beforeEach(async () => {
-		mapState = new MapState();
+		element = document.createElement('div');
+		element.innerHTML = `<div id="map" class="h-80 w-80"></div`;
+		document.body.appendChild(element);
+
+		map = new Mapbox(element);
+		await map.awaitLoad();
+		await map.initializeStyles();
+
+		mapState = new MapState(map);
 	});
 
 	it('gets the markers', async () => {
@@ -45,5 +60,41 @@ describe('Map State', async () => {
 		expect(mapState.getMarkers()).toHaveLength(0);
 	});
 
-	it.todo('updates a marker', () => {});
+	it('updates a marker', () => {
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+
+		expect(mapState.getMarkers()[0].lngLat).toEqual(
+			new mapboxgl.LngLat(0, 0)
+		);
+		mapState.updateMarker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(1, 1)
+		});
+		expect(mapState.getMarkers()[0].lngLat).toEqual(
+			new mapboxgl.LngLat(1, 1)
+		);
+	});
+
+	it('adds a marker from the map and the mapstate', async () => {
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+		expect(mapState.getMarkers()).toHaveLength(1);
+		expect(getByLabelText(element, 'Map marker')).toBeDefined();
+	});
+
+	it('removes a marker from the map and the mapstate', async () => {
+		mapState.addMarker(
+			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
+		);
+		expect(mapState.getMarkers()).toHaveLength(1);
+		expect(getByLabelText(element, 'Map marker')).toBeDefined();
+
+		mapState.deleteMarker(1);
+
+		expect(mapState.getMarkers()).toHaveLength(0);
+		expect(queryByLabelText(element, 'Map marker')).toBeNull();
+	});
 });

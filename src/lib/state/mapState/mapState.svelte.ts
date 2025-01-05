@@ -1,15 +1,23 @@
+import type Mapbox from '$lib/utils/mapbox/mapbox';
 import type Marker from '$lib/utils/marker/marker.svelte';
 import type { MarkerData } from '$lib/utils/marker/marker.svelte';
 
 export class MapState {
+	#map: Mapbox;
 	#markers: Marker[] = $state([]); //TODO: consider making this collection instead of a list
 
-	constructor() {
+	constructor(map: Mapbox) {
+		this.#map = map;
 		this.#markers = [];
+	}
+
+	get map() {
+		return this.#map;
 	}
 
 	addMarker(marker: Marker) {
 		this.#markers.push(marker);
+		this.#map.addMarker(marker);
 	}
 
 	updateMarker(markerData: MarkerData) {
@@ -57,6 +65,7 @@ export class MapState {
 		this.#markers = this.#markers.filter(
 			(marker) => marker.id !== id
 		);
+		this.#map.deleteMarker(marker);
 
 		return marker;
 	}
