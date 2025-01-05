@@ -186,7 +186,11 @@ describe('SidebarFixture', async () => {
 			)
 		});
 
-		const screen = render(SidebarFixture);
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
 		mapState.addMarker(marker);
 		await tick();
 
