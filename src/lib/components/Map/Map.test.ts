@@ -1,38 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { cleanup, getByRole, render } from '@testing-library/svelte';
-import { MapState } from '$lib/state/mapState/mapState.svelte';
 import MapFixture from './fixtures/MapFixture.svelte';
+import Map from './Map.svelte';
 
 describe('Map', async () => {
-	let mapState: MapState;
-	let mapContext: Record<string, unknown>;
-
-	beforeEach(() => {
-		mapState = new MapState();
-		mapContext = { mapState: mapState };
-	});
-
 	afterEach(() => {
 		cleanup();
 	});
 
 	it('renders the map', async () => {
-		const screen = render(MapFixture, {
-			props: {
-				context: mapContext
-			}
-		});
+		const screen = render(Map);
 
 		expect(screen.getByTestId('map')).toBeDefined();
 	});
 
 	it('fills the whole height of the screen', async () => {
-		const screen = render(MapFixture, {
-			props: {
-				context: mapContext
-			}
-		});
+		const screen = render(Map);
 
 		const map: HTMLElement = screen.getByTestId('map');
 		const height: number = map.getBoundingClientRect().height;
@@ -41,11 +25,7 @@ describe('Map', async () => {
 	});
 
 	it('fills the whole width of the screen', async () => {
-		const screen = render(MapFixture, {
-			props: {
-				context: mapContext
-			}
-		});
+		const screen = render(Map);
 
 		const map: HTMLElement = screen.getByTestId('map');
 		const width: number = map.getBoundingClientRect().width;
@@ -54,11 +34,7 @@ describe('Map', async () => {
 	});
 
 	it('adds a marker when the map is clicked', async () => {
-		const screen = render(MapFixture, {
-			props: {
-				context: mapContext
-			}
-		});
+		const screen = render(Map);
 
 		// TODO: Fix waiting for map to load
 		await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -139,11 +115,7 @@ describe('Map', async () => {
 	});
 
 	it.skip('Gives first markers names of step 1 and step 2', async () => {
-		const screen = render(MapFixture, {
-			props: {
-				context: mapContext
-			}
-		});
+		const screen = render(Map);
 		const mapRegion: HTMLElement = getByRole(
 			screen.baseElement,
 			'region'

@@ -2,13 +2,14 @@
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy, type Snippet } from 'svelte';
 	import mapboxgl from 'mapbox-gl';
-	import {
-		getMapStateContext,
-		setMapStateContext
-	} from './utils/mapStateContext';
+	import { setMapStateContext } from './utils/mapStateContext';
 	import { MapState } from '$lib/state/mapState/mapState.svelte';
 	import Mapbox from '$lib/utils/mapbox/mapbox';
-	import { addMapListeners } from './utils/mapHelpers';
+	import {
+		addMapListeners,
+		initializeStyles
+	} from './utils/mapHelpers';
+	import { CENTER, ZOOM } from './utils/constants';
 
 	interface Props {
 		children?: Snippet;
@@ -18,22 +19,21 @@
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
+	let isMapLoaded: boolean = $state(false);
 
-	setMapStateContext(new MapState());
-	const mapState: MapState = getMapStateContext();
+	function initializeLoad(map: Mapbox, mapState: MapState) {
+		addMapListeners(map, mapState);
+		isMapLoaded = true;
+	}
 
 	onMount(async () => {
-		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-71.224518,
-			42.213995
-		);
-		let zoom: number = 9;
+		map = new Mapbox(container, CENTER, ZOOM);
+		const mapState = new MapState(map);
 
-		map = new Mapbox(container, center, zoom);
-		await map.awaitLoad();
-		map.initializeStyles();
+		setMapStateContext(mapState);
+		initializeLoad(map, mapState);
 
-		addMapListeners(map, mapState);
+		await initializeStyles(map);
 	});
 
 	onDestroy(() => {
@@ -49,6 +49,6 @@
 	bind:this={container}
 ></div>
 
-{#if children}
+{#if isMapLoaded && children}
 	{@render children()}
 {/if}

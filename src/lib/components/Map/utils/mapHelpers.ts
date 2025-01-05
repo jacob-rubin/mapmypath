@@ -4,6 +4,11 @@ import Marker, {
 	type MarkerData
 } from '$lib/utils/marker/marker.svelte';
 
+export async function initializeStyles(map: Mapbox) {
+	await map.awaitLoad();
+	map.initializeStyles();
+}
+
 export function addMapListeners(map: Mapbox, mapState: MapState) {
 	map.addClickListener((e: mapboxgl.MapMouseEvent) => {
 		const marker: Marker = new Marker({
