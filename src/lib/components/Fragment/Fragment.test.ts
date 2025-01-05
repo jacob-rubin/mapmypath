@@ -3,7 +3,6 @@ import { cleanup, render } from '@testing-library/svelte';
 import FragmentWithTextChild from './fixtures/textContext/FragmentWithTextChild.svelte';
 import FragmentWithObjectChild from './fixtures/objectContext/FragmentWithObjectChild.svelte';
 import FragmentWithContextProp from './fixtures/contextProp/FragmentWithContextProp.svelte';
-import FragmentWithStatefulChild from './fixtures/statefulContext/FragmentWithStatefulChild.svelte';
 
 describe('Fragment', async () => {
 	afterEach(() => {
