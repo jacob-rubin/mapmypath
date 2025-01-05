@@ -3,7 +3,7 @@
 	import MdiDelete from '~icons/mdi/delete';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
 	import type Marker from '$lib/utils/marker/marker.svelte';
-	import { mapController } from '$lib/shared/mapController/mapController.svelte';
+	import { mapState } from '$lib/state/mapState/mapState.svelte';
 
 	interface Props {
 		marker: Marker;
@@ -14,7 +14,7 @@
 	let isHovering: boolean = $state(false);
 
 	function remove() {
-		mapController.deleteMarker(marker.id);
+		mapState.deleteMarker(marker.id);
 	}
 </script>
 

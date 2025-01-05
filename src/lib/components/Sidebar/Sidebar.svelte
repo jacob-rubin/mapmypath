@@ -4,11 +4,12 @@
 	import { linear } from 'svelte/easing';
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
+	import { mapState } from '$lib/state/mapState/mapState.svelte';
 
 	let sidebar: HTMLDivElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
 		new SidebarTransitionState();
-	let mapSize: number = $derived(mapController.getMarkers().length);
+	let mapSize: number = $derived(mapState.getMarkers().length);
 
 	$effect(() => {
 		if (sidebar && mapSize > 0) {
@@ -38,7 +39,7 @@
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
 		>
-			{#each mapController.getMarkers() as marker (marker.id)}
+			{#each mapState.getMarkers() as marker (marker.id)}
 				<SidebarItem {marker} />
 			{/each}
 		</div>
