@@ -5,7 +5,7 @@
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
-	import { getMapStateContext } from '../Map/mapStateContext';
+	import { getMapStateContext } from '../Map/utils/mapStateContext';
 
 	const mapState: MapState = getMapStateContext();
 
