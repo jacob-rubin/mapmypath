@@ -45,7 +45,6 @@
 				lngLat: markerData.lngLat
 			});
 			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			console.log($state.snapshot(mapState));
 		});
 	}
 

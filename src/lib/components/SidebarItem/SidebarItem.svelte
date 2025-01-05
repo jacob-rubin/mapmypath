@@ -3,15 +3,16 @@
 	import MdiDelete from '~icons/mdi/delete';
 	import MdiLocationRadius from '~icons/mdi/location-radius';
 	import type Marker from '$lib/utils/marker/marker.svelte';
-	import { mapState } from '$lib/state/mapState/mapState.svelte';
+	import type { MapState } from '$lib/state/mapState/mapState.svelte';
+	import { getMapStateContext } from '../Map/mapStateContext';
 
 	interface Props {
 		marker: Marker;
 	}
 
 	let { marker }: Props = $props();
-
 	let isHovering: boolean = $state(false);
+	let mapState: MapState = getMapStateContext();
 
 	function remove() {
 		mapState.deleteMarker(marker.id);

@@ -14,19 +14,11 @@ describe('Map State', async () => {
 		expect(mapState.getMarkers()).toHaveLength(0);
 	});
 
-	it('adds a marker to the map and the marker list', async () => {
+	it('adds a marker', async () => {
 		mapState.addMarker(
 			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
 		);
 		expect(mapState.getMarkers()).toHaveLength(1);
-	});
-
-	it('deletes a marker from the map and the marker list', async () => {
-		mapState.addMarker(
-			new Marker({ id: 1, lngLat: new mapboxgl.LngLat(0, 0) })
-		);
-		expect(mapState.getMarkers()).toHaveLength(1);
-		mapState.deleteMarker(1);
 	});
 
 	it('Gets a marker', async () => {
@@ -52,4 +44,6 @@ describe('Map State', async () => {
 		mapState.deleteMarker(1);
 		expect(mapState.getMarkers()).toHaveLength(0);
 	});
+
+	it.todo('updates a marker', () => {});
 });
