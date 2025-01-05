@@ -2,13 +2,14 @@
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy, type Snippet } from 'svelte';
 	import mapboxgl from 'mapbox-gl';
-	import type { MarkerData } from './mapbox/marker.svelte';
 	import {
 		getMapStateContext,
 		setMapStateContext
 	} from './mapStateContext';
 	import { MapState } from '$lib/state/mapState/mapState.svelte';
-	import Marker from '$lib/utils/marker/marker.svelte';
+	import Marker, {
+		type MarkerData
+	} from '$lib/utils/marker/marker.svelte';
 	import Mapbox from '$lib/utils/mapbox/mapbox';
 
 	interface Props {
