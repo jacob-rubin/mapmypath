@@ -12,7 +12,7 @@ class Marker {
 	#name: string = $state('');
 	#geocode: Geocode;
 
-	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker()); // TODO: Does this need to be stateful?
+	#marker: mapboxgl.Marker = new mapboxgl.Marker();
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
