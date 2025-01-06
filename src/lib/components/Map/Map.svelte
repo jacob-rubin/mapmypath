@@ -29,10 +29,9 @@
 	onMount(async () => {
 		map = new Mapbox(container, CENTER, ZOOM);
 		const mapState = new MapState(map);
-
 		setMapStateContext(mapState);
-		initializeLoad(map, mapState);
 
+		initializeLoad(map, mapState);
 		await initializeStyles(map);
 	});
 

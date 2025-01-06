@@ -134,6 +134,9 @@ describe('Map', async () => {
 		expect(markers[0].name).toBe('Stop 1');
 		expect(markers[1].name).toBe('Stop 2');
 	});
+
+	it.todo('rerenders a path when a marker is added');
+	it.todo('rerenders a path when a marker is removed');
 });
 
 // TODO: Get snapshot testing work
