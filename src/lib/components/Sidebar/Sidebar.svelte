@@ -6,10 +6,11 @@
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
 	import { getMapStateContext } from '../Map/utils/mapStateContext';
+	import { flip } from 'svelte/animate';
 
 	const mapState: MapState = getMapStateContext();
 
-	let sidebar: HTMLDivElement | null = $state(null);
+	let sidebar: HTMLElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
 		new SidebarTransitionState();
 	let mapSize: number = $derived(mapState.getMarkers().length);
@@ -37,15 +38,17 @@
 		onoutrostart={() => sidebarTransitionState.onOutroStart()}
 		onoutroend={() => sidebarTransitionState.onOutroEnd()}
 	>
-		<div
+		<ul
 			bind:this={sidebar}
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
 		>
 			{#each mapState.getMarkers() as marker (marker.id)}
-				<SidebarItem {marker} />
+				<li animate:flip={{ duration: 300 }}>
+					<SidebarItem {marker} />
+				</li>
 			{/each}
-		</div>
+		</ul>
 		<SidebarButton
 			isOpen={true}
 			onClick={() => sidebarTransitionState.onOutroStart()}

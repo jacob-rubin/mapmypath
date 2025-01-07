@@ -5,6 +5,7 @@
 	import type Marker from '$lib/utils/marker/marker.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
 	import { getMapStateContext } from '../Map/utils/mapStateContext';
+	import { flip } from 'svelte/animate';
 
 	interface Props {
 		marker: Marker;
