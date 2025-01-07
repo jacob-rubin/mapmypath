@@ -37,6 +37,7 @@
 		</button>
 	{/if}
 	<input
+		id={`sidebarinput${marker.id}`}
 		type="text"
 		bind:value={marker.name}
 		class="input w-full max-w-xs"
