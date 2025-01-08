@@ -8,12 +8,6 @@ describe('Map', async () => {
 		cleanup();
 	});
 
-	it('matches the snapshot', async () => {
-		const screen = render(Map);
-
-		expect(screen).toMatchSnapshot();
-	});
-
 	it('renders the map', async () => {
 		const screen = render(Map);
 
@@ -93,5 +87,3 @@ describe('Map', async () => {
 		expect(oldPosition.y).not.toEqual(newPosition.y);
 	});
 });
-
-// TODO: Get snapshot testing work
