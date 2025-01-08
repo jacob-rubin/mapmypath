@@ -209,7 +209,7 @@ describe('Mapbox', async () => {
 
 		mapbox.renderPath(lngLats);
 
-		expect(mapbox.getSource(SOURCE_ID)).toMatchObject({
+		expect(mapbox.getSource(SOURCE_ID)).toEqual({
 			data: {
 				geometry: {
 					coordinates: lngLats.map((lngLat) => lngLat.toArray()),
@@ -224,7 +224,7 @@ describe('Mapbox', async () => {
 
 		mapbox.renderPath(lngLats);
 
-		expect(mapbox.getSource(SOURCE_ID)).toMatchObject({
+		expect(mapbox.getSource(SOURCE_ID)).toEqual({
 			data: {
 				geometry: {
 					coordinates: lngLats.map((lngLat) => lngLat.toArray()),

@@ -6,6 +6,7 @@ import Mapbox from '$lib/utils/mapbox/mapbox';
 import {
 	cleanup,
 	getByLabelText,
+	queryAllByLabelText,
 	queryByLabelText
 } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
@@ -18,6 +19,8 @@ describe('Map State', async () => {
 	let mapElement: HTMLElement;
 	let map: Mapbox;
 	let mapState: MapState;
+
+	const SOURCE_ID = 'source';
 
 	beforeEach(async () => {
 		mapElement = document.createElement('div');
@@ -177,9 +180,138 @@ describe('Map State', async () => {
 		expect(marker.lngLat).not.toEqual(new mapboxgl.LngLat(0, 0));
 	});
 
-	it.todo('rerenders a path when a marker is added', async () => {});
-	it.todo(
-		'rerenders a path when a marker is removed',
-		async () => {}
-	);
+	it('rerenders a path when a marker is added', async () => {
+		mapState.addMarker(new mapboxgl.LngLat(0, 0));
+		mapState.addMarker(new mapboxgl.LngLat(1, 1));
+
+		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[1, 1]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+
+		mapState.addMarker(new mapboxgl.LngLat(2, 2));
+
+		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[1, 1],
+						[2, 2]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+
+		mapState.addMarker(new mapboxgl.LngLat(2, 2));
+	});
+
+	it('rerenders a path when a marker is removed', async () => {
+		mapState.addMarker(new mapboxgl.LngLat(0, 0));
+		const markerToDelete: Marker = mapState.addMarker(
+			new mapboxgl.LngLat(1, 1)
+		);
+		mapState.addMarker(new mapboxgl.LngLat(2, 2));
+
+		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[1, 1],
+						[2, 2]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+
+		mapState.deleteMarker(markerToDelete.id);
+
+		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[2, 2]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
+
+	it.skip('renders the path when the marker is dragged', async () => {
+		// add 2 markers marker
+		const user = userEvent.setup();
+		mapState.addMarker(new mapboxgl.LngLat(0, 0));
+		mapState.addMarker(new mapboxgl.LngLat(10, 10));
+
+		// Expect path to be normal
+		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[10, 10]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+
+		const markerElement: HTMLElement = queryAllByLabelText(
+			mapElement,
+			'Map marker'
+		)[0];
+
+		await user.pointer([
+			{
+				keys: '[MouseLeft>]',
+				target: markerElement
+			},
+			{
+				coords: { x: 0, y: 50 }
+			},
+			{ keys: '[/MouseLeft]' }
+		]);
+
+		expect(mapState.map.getSource(SOURCE_ID)).not.toEqual({
+			data: {
+				geometry: {
+					coordinates: [
+						[0, 0],
+						[1, 1]
+					],
+					type: 'LineString'
+				},
+				properties: {},
+				type: 'Feature'
+			},
+			type: 'geojson'
+		});
+	});
 });
