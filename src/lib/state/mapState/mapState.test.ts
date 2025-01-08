@@ -10,6 +10,7 @@ import {
 	queryByLabelText
 } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
+import { tick } from 'svelte';
 
 function isArrayUnique<T>(array: T[]): boolean {
 	return new Set(array).size === array.length;
@@ -261,13 +262,11 @@ describe('Map State', async () => {
 		});
 	});
 
-	it.skip('renders the path when the marker is dragged', async () => {
-		// add 2 markers marker
+	it('renders the path when the marker is dragged', async () => {
 		const user = userEvent.setup();
 		mapState.addMarker(new mapboxgl.LngLat(0, 0));
 		mapState.addMarker(new mapboxgl.LngLat(10, 10));
 
-		// Expect path to be normal
 		expect(mapState.map.getSource(SOURCE_ID)).toEqual({
 			data: {
 				geometry: {
@@ -298,6 +297,8 @@ describe('Map State', async () => {
 			},
 			{ keys: '[/MouseLeft]' }
 		]);
+
+		await tick();
 
 		expect(mapState.map.getSource(SOURCE_ID)).not.toEqual({
 			data: {
