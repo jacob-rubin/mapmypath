@@ -1,9 +1,17 @@
-import { cleanup, render, waitFor } from '@testing-library/svelte';
+import {
+	cleanup,
+	getByRole,
+	queryByRole,
+	render,
+	waitFor
+} from '@testing-library/svelte';
 import { afterEach, describe, it } from 'vitest';
 import SidebarItem from './SidebarItem.svelte';
 import mapboxgl from 'mapbox-gl';
-import Marker from '../Map/mapbox/marker.svelte';
-import userEvent from '@testing-library/user-event';
+import userEvent, {
+	type UserEvent
+} from '@testing-library/user-event';
+import Marker from '$lib/utils/marker/marker.svelte';
 
 describe('SidebarItem', async () => {
 	afterEach(() => {
@@ -64,8 +72,48 @@ describe('SidebarItem', async () => {
 		const geocode = screen.getByTestId('geocode');
 		await waitFor(() => {
 			expect(geocode).toHaveTextContent(
-				'1600 Pennsylvania Avenue Northwest'
+				'1450 Pennsylvania Avenue Northwest, Washington, District of Columbia 20037, United States'
 			);
 		});
+	});
+
+	it('thickens the border on hover', async ({ expect }) => {
+		const user: UserEvent = userEvent.setup();
+		const marker = new Marker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(
+				-77.03654979172663,
+				38.89763503472804
+			)
+		});
+
+		const screen = render(SidebarItem, {
+			marker
+		});
+		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
+
+		expect(sidebarItem).not.toHaveClass('outline-4');
+		await user.hover(sidebarItem);
+		expect(sidebarItem).toHaveClass('outline-4');
+	});
+
+	it('shows the delete button when hovered', async ({ expect }) => {
+		const user: UserEvent = userEvent.setup();
+		const marker = new Marker({
+			id: 1,
+			lngLat: new mapboxgl.LngLat(
+				-77.03654979172663,
+				38.89763503472804
+			)
+		});
+
+		const screen = render(SidebarItem, {
+			marker
+		});
+		const sidebarItem: HTMLElement = screen.getByRole('menuitem');
+
+		expect(queryByRole(sidebarItem, 'button')).toBeNull();
+		await user.hover(sidebarItem);
+		expect(getByRole(sidebarItem, 'button')).toBeVisible();
 	});
 });

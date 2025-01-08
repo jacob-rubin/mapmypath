@@ -12,7 +12,7 @@ class Marker {
 	#name: string = $state('');
 	#geocode: Geocode;
 
-	#marker: mapboxgl.Marker = $state(new mapboxgl.Marker()); // TODO: Does this need to be stateful?
+	#marker: mapboxgl.Marker = new mapboxgl.Marker();
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;
@@ -33,7 +33,9 @@ class Marker {
 	}
 
 	set lngLat(value: mapboxgl.LngLat) {
-		this.#marker.setLngLat(value); // TODO: Do we need this secondary setLngLat, since the drag should take care of this?
+		//TODO: Is this necessary? Since we only change lnglat on drag, so why do we also set it here?
+		// Can test this when map is not erroring. Can check if setLngLat is being called multiple times per drag tick.
+		this.#marker.setLngLat(value);
 		this.#geocode.reverse(value);
 	}
 
@@ -51,6 +53,10 @@ class Marker {
 
 	addToMap(map: mapboxgl.Map): void {
 		this.#marker.addTo(map);
+	}
+
+	removeFromMap(): void {
+		this.#marker.remove();
 	}
 
 	addDragListener(callback: (markerData: MarkerData) => void): void {

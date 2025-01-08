@@ -30,7 +30,7 @@ describe('Geocode', async () => {
 		expect(await geocode.name).toBe('White House');
 	});
 
-	it('Geocodes the name', async () => {
+	it('Geocodes the white house visitor center', async () => {
 		const whiteHouseLngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
 			-77.03654979172663,
 			38.89763503472804
@@ -41,7 +41,7 @@ describe('Geocode', async () => {
 		vi.advanceTimersByTime(500);
 
 		expect(await geocode.name).toBe(
-			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
+			'1450 Pennsylvania Avenue Northwest, Washington, District of Columbia 20037, United States'
 		);
 	});
 

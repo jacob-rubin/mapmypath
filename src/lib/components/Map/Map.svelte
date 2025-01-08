@@ -1,15 +1,11 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy, type Snippet } from 'svelte';
-	import mapboxgl from 'mapbox-gl';
-	import Mapbox from './mapbox/mapbox';
-	import Marker from './mapbox/marker.svelte';
-	import type { MarkerData } from './mapbox/marker.svelte';
-	import {
-		getMapStateContext,
-		setMapStateContext
-	} from './mapStateContext';
+	import { setMapStateContext } from './utils/mapStateContext';
 	import { MapState } from '$lib/state/mapState/mapState.svelte';
+	import Mapbox from '$lib/utils/mapbox/mapbox';
+	import { CENTER, ZOOM } from './utils/constants';
+	import { addMapListeners } from '$lib/state/mapState/utils';
 
 	interface Props {
 		children?: Snippet;
@@ -19,48 +15,20 @@
 
 	let map: Mapbox;
 	let container: HTMLDivElement;
+	let isMapLoaded: boolean = $state(false);
 
-	setMapStateContext(new MapState());
-	const mapState: MapState = getMapStateContext();
-
-	function addMapClickListener(map: Mapbox) {
-		map.addClickListener((e: mapboxgl.MapMouseEvent) => {
-			const marker: Marker = new Marker({
-				id: mapState.getMarkers().length,
-				lngLat: e.lngLat,
-				name: `Stop ${mapState.getMarkers().length + 1}`
-			});
-
-			map.addMarker(marker);
-			mapState.addMarker(marker);
-			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			addMarkerDragListener(marker);
-		});
-	}
-
-	function addMarkerDragListener(marker: Marker) {
-		marker.addDragListener((markerData: MarkerData) => {
-			mapState.updateMarker({
-				id: markerData.id,
-				lngLat: markerData.lngLat
-			});
-			map.renderPath(mapState.getMarkers().map((m) => m.lngLat));
-			console.log($state.snapshot(mapState));
-		});
+	async function initializeStyles(map: Mapbox) {
+		await map.awaitLoad();
+		map.initializeStyles();
 	}
 
 	onMount(async () => {
-		let center: mapboxgl.LngLat = new mapboxgl.LngLat(
-			-71.224518,
-			42.213995
-		);
-		let zoom: number = 9;
+		map = new Mapbox(container, CENTER, ZOOM);
+		const mapState = new MapState(map);
+		setMapStateContext(mapState);
 
-		map = new Mapbox(container, center, zoom);
-		await map.awaitLoad();
-		map.initializeStyles();
-
-		addMapClickListener(map);
+		isMapLoaded = true;
+		await initializeStyles(map);
 	});
 
 	onDestroy(() => {
@@ -76,6 +44,6 @@
 	bind:this={container}
 ></div>
 
-{#if children}
+{#if isMapLoaded && children}
 	{@render children()}
 {/if}

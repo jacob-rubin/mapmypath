@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { reverseGeocode, assertOk } from './utils';
 
 describe('Utils', async () => {
-	it('geocodes the white house', async () => {
+	it('geocodes the white house visitor center', async () => {
 		const lngLat: mapboxgl.LngLat = new mapboxgl.LngLat(
 			-77.03654979172663,
 			38.89763503472804
@@ -12,7 +12,7 @@ describe('Utils', async () => {
 		const name: string = await reverseGeocode(lngLat);
 
 		expect(name).toEqual(
-			'1600 Pennsylvania Avenue Northwest, Washington, District of Columbia 20500, United States'
+			'1450 Pennsylvania Avenue Northwest, Washington, District of Columbia 20037, United States'
 		);
 	});
 

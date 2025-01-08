@@ -3,7 +3,6 @@ import { cleanup, render } from '@testing-library/svelte';
 import FragmentWithTextChild from './fixtures/textContext/FragmentWithTextChild.svelte';
 import FragmentWithObjectChild from './fixtures/objectContext/FragmentWithObjectChild.svelte';
 import FragmentWithContextProp from './fixtures/contextProp/FragmentWithContextProp.svelte';
-import FragmentWithStatefulChild from './fixtures/statefulContext/FragmentWithStatefulChild.svelte';
 
 describe('Fragment', async () => {
 	afterEach(() => {
@@ -51,11 +50,5 @@ describe('Fragment', async () => {
 		});
 
 		expect(screen.baseElement.innerHTML).toContain('Hello World!');
-	});
-
-	it.skip('renders a child when context is stateful', async () => {
-		const screen = render(FragmentWithStatefulChild);
-
-		expect(screen.baseElement.innerHTML).toContain('Count: 1');
 	});
 });

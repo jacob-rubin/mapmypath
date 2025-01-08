@@ -5,14 +5,15 @@
 	import SidebarButton from './SidebarButton/SidebarButton.svelte';
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
-	import { getMapStateContext } from '../Map/mapStateContext';
+	import { getMapStateContext } from '../Map/utils/mapStateContext';
+	import { flip } from 'svelte/animate';
 
 	const mapState: MapState = getMapStateContext();
 
-	let sidebar: HTMLDivElement | null = $state(null);
+	let sidebar: HTMLElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
 		new SidebarTransitionState();
-	let mapSize: number = $derived(mapState.getMarkers().length);
+	let mapSize: number = $derived(mapState.markers.length);
 
 	$effect(() => {
 		if (sidebar && mapSize > 0) {
@@ -25,7 +26,7 @@
 
 {#if sidebarTransitionState.isVisible()}
 	<div
-		class="inline-flex h-screen items-center py-2"
+		class="flex h-screen items-center py-2"
 		transition:fly={{
 			x: '-20rem',
 			opacity: 100,
@@ -37,15 +38,17 @@
 		onoutrostart={() => sidebarTransitionState.onOutroStart()}
 		onoutroend={() => sidebarTransitionState.onOutroEnd()}
 	>
-		<div
+		<ul
 			bind:this={sidebar}
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
 		>
-			{#each mapState.getMarkers() as marker (marker.id)}
-				<SidebarItem {marker} />
+			{#each mapState.markers as marker (marker.id)}
+				<li animate:flip={{ duration: 300 }}>
+					<SidebarItem {marker} />
+				</li>
 			{/each}
-		</div>
+		</ul>
 		<SidebarButton
 			isOpen={true}
 			onClick={() => sidebarTransitionState.onOutroStart()}
