@@ -1,15 +1,11 @@
 <script lang="ts">
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { onMount, onDestroy, type Snippet } from 'svelte';
-	import mapboxgl from 'mapbox-gl';
 	import { setMapStateContext } from './utils/mapStateContext';
 	import { MapState } from '$lib/state/mapState/mapState.svelte';
 	import Mapbox from '$lib/utils/mapbox/mapbox';
-	import {
-		addMapListeners,
-		initializeStyles
-	} from './utils/mapHelpers';
 	import { CENTER, ZOOM } from './utils/constants';
+	import { addMapListeners } from '$lib/state/mapState/utils';
 
 	interface Props {
 		children?: Snippet;
@@ -21,9 +17,9 @@
 	let container: HTMLDivElement;
 	let isMapLoaded: boolean = $state(false);
 
-	function initializeLoad(map: Mapbox, mapState: MapState) {
-		addMapListeners(map, mapState);
-		isMapLoaded = true;
+	async function initializeStyles(map: Mapbox) {
+		await map.awaitLoad();
+		map.initializeStyles();
 	}
 
 	onMount(async () => {
@@ -31,7 +27,7 @@
 		const mapState = new MapState(map);
 		setMapStateContext(mapState);
 
-		initializeLoad(map, mapState);
+		isMapLoaded = true;
 		await initializeStyles(map);
 	});
 

@@ -13,7 +13,7 @@
 	let sidebar: HTMLElement | null = $state(null);
 	let sidebarTransitionState: SidebarTransitionState =
 		new SidebarTransitionState();
-	let mapSize: number = $derived(mapState.getMarkers().length);
+	let mapSize: number = $derived(mapState.markers.length);
 
 	$effect(() => {
 		if (sidebar && mapSize > 0) {
@@ -43,7 +43,7 @@
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
 		>
-			{#each mapState.getMarkers() as marker (marker.id)}
+			{#each mapState.markers as marker (marker.id)}
 				<li animate:flip={{ duration: 300 }}>
 					<SidebarItem {marker} />
 				</li>

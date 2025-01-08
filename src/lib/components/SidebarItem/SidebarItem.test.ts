@@ -72,7 +72,7 @@ describe('SidebarItem', async () => {
 		const geocode = screen.getByTestId('geocode');
 		await waitFor(() => {
 			expect(geocode).toHaveTextContent(
-				'1600 Pennsylvania Avenue Northwest'
+				'1450 Pennsylvania Avenue Northwest, Washington, District of Columbia 20037, United States'
 			);
 		});
 	});

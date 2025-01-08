@@ -10,7 +10,7 @@ describe('SearchBox', async () => {
 		expect(screen.container.innerHTML).toMatchSnapshot();
 	});
 
-	it('has the placeholder`Search`', async () => {
+	it('has the placeholder `Search`', async () => {
 		const screen = render(SearchBox);
 		const input: Locator = screen.getByTestId('search-box');
 		const placeholder: Element | null = input
