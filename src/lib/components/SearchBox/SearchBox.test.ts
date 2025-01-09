@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { render } from 'vitest-browser-svelte';
 import SearchBox from './SearchBox.svelte';
-import type { Locator } from '@vitest/browser/context';
+import {
+	queryByPlaceholderText,
+	render
+} from '@testing-library/svelte';
 
 describe('SearchBox', async () => {
 	it('matches the snapshot', async ({ expect }) => {
@@ -12,11 +14,19 @@ describe('SearchBox', async () => {
 
 	it('has the placeholder `Search`', async () => {
 		const screen = render(SearchBox);
-		const input: Locator = screen.getByTestId('search-box');
-		const placeholder: Element | null = input
-			.getByPlaceholder('Search')
-			.query();
+		const input: HTMLElement = screen.getByTestId('search-box');
+		const placeholder: Element | null = queryByPlaceholderText(
+			input,
+			'Search'
+		);
 
 		expect(placeholder).toBeDefined();
+	});
+
+	it('displays a box of search results', async () => {
+		const screen = render(SearchBox);
+		const results: HTMLElement = screen.getByTestId('search-results');
+
+		expect(results).toBeDefined();
 	});
 });

@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@mapbox/search-js-web':
+      '@mapbox/search-js-core':
         specifier: 1.0.0-beta.24
-        version: 1.0.0-beta.24(mapbox-gl@3.9.2)
+        version: 1.0.0-beta.24
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -330,12 +330,6 @@ packages:
     resolution: {integrity: sha512-zSkKow6H5Kdm0ZUQUB2kV5JIXqoG0+uH5YADhaEHswm664N9Db8dXSi0nMJpacpMf+MyyglF1vnZohpEg5yUtg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@floating-ui/core@0.7.3':
-    resolution: {integrity: sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==}
-
-  '@floating-ui/dom@0.5.4':
-    resolution: {integrity: sha512-419BMceRLq0RrmTSDxn8hf9R3VCJv2K9PUfugh5JyEFmdjzDo+e8U5EdR8nzKq8Yj1htzLm3b6eQEEam3/rrtg==}
-
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
     engines: {node: '>=18.18.0'}
@@ -420,16 +414,6 @@ packages:
   '@mapbox/search-js-core@1.0.0-beta.24':
     resolution: {integrity: sha512-m4PROVVsO+lWXcUwPpwxH41bDL3hNbT4I1YBFaT++c+UM6pXH2ER1MRiH4/FOtrLjWNSFTCZMYoTRzs2Amo8xQ==}
     engines: {node: '>=12.20.1'}
-
-  '@mapbox/search-js-web@1.0.0-beta.24':
-    resolution: {integrity: sha512-JZzT52LtNpTVgwjLoiFcLk2YTDHhiXmw8Nu9gaJXEJK2CWJ+53wPm3Wdi3X2mHCNMGZsXvtLWAsk6rG7SA4MTQ==}
-    engines: {node: '>=12.20.1'}
-    peerDependencies:
-      mapbox-gl: '>=2.7.0'
-
-  '@mapbox/sphericalmercator@1.2.0':
-    resolution: {integrity: sha512-ZTOuuwGuMOJN+HEmG/68bSEw15HHaMWmQ5gdTsWdWsjDe56K1kGvLOK6bOSC8gWgIvEO0w6un/2Gvv1q5hJSkQ==}
-    hasBin: true
 
   '@mapbox/tiny-sdf@2.0.6':
     resolution: {integrity: sha512-qMqa27TLw+ZQz5Jk+RcwZGH7BQf5G/TrutJhspsca/3SHwmgKQ1iq+d3Jxz5oysPVYTGP6aXxCo5Lk9Er6YBAA==}
@@ -1216,9 +1200,6 @@ packages:
   flatted@3.3.2:
     resolution: {integrity: sha512-AiwGJM8YcNOaobumgtng+6NHuOqC3A7MixFeDafM3X9cIUM+xUXoS5Vfgf+OihAYe20fxqNM9yPBXJzRtZ/4eA==}
 
-  focus-trap@6.9.4:
-    resolution: {integrity: sha512-v2NTsZe2FF59Y+sDykKY+XjqZ0cPfhq/hikWVL88BqLivnNiEffAsac6rP6H45ff9wG9LL5ToiDqrLEP9GX9mw==}
-
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
@@ -1551,9 +1532,6 @@ packages:
 
   nise@6.1.1:
     resolution: {integrity: sha512-aMSAzLVY7LyeM60gvBS423nBmIPP+Wy7St7hsb+8/fc1HmeoHJfLO8CKse4u3BtOZvQLJghYPI2i/1WZrEj5/g==}
-
-  no-scroll@2.1.1:
-    resolution: {integrity: sha512-YTzGAJOo/B6hkodeT5SKKHpOhAzjMfkUCCXjLJwjWk2F4/InIg+HbdH9kmT7bKpleDuqLZDTRy2OdNtAj0IVyQ==}
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
@@ -1968,9 +1946,6 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  subtag@0.5.0:
-    resolution: {integrity: sha512-CaIBcTSb/nyk4xiiSOtZYz1B+F12ZxW8NEp54CdT+84vmh/h4sUnHGC6+KQXUfED8u22PQjCYWfZny8d2ELXwg==}
-
   sucrase@3.35.0:
     resolution: {integrity: sha512-8EbVDiu9iN/nESwxeSxDKe0dunta1GOlHufmSSXxMD2z2/tMZpDMpvXQGsc+ajGo8y2uYUmixaSRUc/QPoQ0GA==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -2010,9 +1985,6 @@ packages:
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
-
-  tabbable@5.3.3:
-    resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
 
   tailwindcss@3.4.17:
     resolution: {integrity: sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==}
@@ -2508,12 +2480,6 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
-  '@floating-ui/core@0.7.3': {}
-
-  '@floating-ui/dom@0.5.4':
-    dependencies:
-      '@floating-ui/core': 0.7.3
-
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.6':
@@ -2607,18 +2573,6 @@ snapshots:
   '@mapbox/search-js-core@1.0.0-beta.24':
     dependencies:
       '@types/geojson': 7946.0.15
-
-  '@mapbox/search-js-web@1.0.0-beta.24(mapbox-gl@3.9.2)':
-    dependencies:
-      '@floating-ui/dom': 0.5.4
-      '@mapbox/search-js-core': 1.0.0-beta.24
-      '@mapbox/sphericalmercator': 1.2.0
-      focus-trap: 6.9.4
-      mapbox-gl: 3.9.2
-      no-scroll: 2.1.1
-      subtag: 0.5.0
-
-  '@mapbox/sphericalmercator@1.2.0': {}
 
   '@mapbox/tiny-sdf@2.0.6': {}
 
@@ -3438,10 +3392,6 @@ snapshots:
 
   flatted@3.3.2: {}
 
-  focus-trap@6.9.4:
-    dependencies:
-      tabbable: 5.3.3
-
   foreground-child@3.3.0:
     dependencies:
       cross-spawn: 7.0.6
@@ -3789,8 +3739,6 @@ snapshots:
       just-extend: 6.2.0
       path-to-regexp: 8.2.0
 
-  no-scroll@2.1.1: {}
-
   node-releases@2.0.19: {}
 
   normalize-path@3.0.0: {}
@@ -4114,8 +4062,6 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  subtag@0.5.0: {}
-
   sucrase@3.35.0:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.8
@@ -4176,8 +4122,6 @@ snapshots:
       zimmerframe: 1.1.2
 
   symbol-tree@3.2.4: {}
-
-  tabbable@5.3.3: {}
 
   tailwindcss@3.4.17:
     dependencies:
