@@ -23,9 +23,9 @@ describe('SearchBox', async () => {
 		expect(placeholder).toBeDefined();
 	});
 
-	it('displays a box of search results', async () => {
+	it('displays the autocomplete', async () => {
 		const screen = render(SearchBox);
-		const results: HTMLElement = screen.getByTestId('search-results');
+		const results: HTMLElement = screen.getByTestId('autocomplete');
 
 		expect(results).toBeDefined();
 	});

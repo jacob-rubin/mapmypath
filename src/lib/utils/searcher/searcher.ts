@@ -16,7 +16,7 @@ class Searcher {
 	>;
 
 	constructor() {
-		const search = new SearchBoxCore({
+		const search: SearchBoxCore = new SearchBoxCore({
 			accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
 			limit: 5
 		});
