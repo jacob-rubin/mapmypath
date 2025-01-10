@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@mapbox/search-js-core':
-        specifier: 1.0.0-beta.24
-        version: 1.0.0-beta.24
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -29,6 +26,9 @@ importers:
       sinon:
         specifier: ^19.0.2
         version: 19.0.2
+      uuid:
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@iconify-json/mdi':
         specifier: ^1.2.2
@@ -410,10 +410,6 @@ packages:
 
   '@mapbox/point-geometry@0.1.0':
     resolution: {integrity: sha512-6j56HdLTwWGO0fJPlrZtdU/B13q8Uwmo18Ck2GnGgN9PCFyKTZ3UbXeEdRFh18i9XQ92eH2VdtpJHpBD3aripQ==}
-
-  '@mapbox/search-js-core@1.0.0-beta.24':
-    resolution: {integrity: sha512-m4PROVVsO+lWXcUwPpwxH41bDL3hNbT4I1YBFaT++c+UM6pXH2ER1MRiH4/FOtrLjWNSFTCZMYoTRzs2Amo8xQ==}
-    engines: {node: '>=12.20.1'}
 
   '@mapbox/tiny-sdf@2.0.6':
     resolution: {integrity: sha512-qMqa27TLw+ZQz5Jk+RcwZGH7BQf5G/TrutJhspsca/3SHwmgKQ1iq+d3Jxz5oysPVYTGP6aXxCo5Lk9Er6YBAA==}
@@ -2142,6 +2138,10 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  uuid@11.0.5:
+    resolution: {integrity: sha512-508e6IcKLrhxKdBbcA2b4KQZlLVp2+J5UwQ6F7Drckkc5N9ZJwFa4TgWtsww9UG8fGHbm6gbV19TdM5pQ4GaIA==}
+    hasBin: true
+
   vite-node@2.1.8:
     resolution: {integrity: sha512-uPAwSr57kYjAUux+8E2j0q0Fxpn8M9VoyfGiRI8Kfktz9NcYMCenwY5RnZxnF1WTu3TGiYipirIzacLL3VVGFg==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -2569,10 +2569,6 @@ snapshots:
   '@mapbox/mapbox-gl-supported@3.0.0': {}
 
   '@mapbox/point-geometry@0.1.0': {}
-
-  '@mapbox/search-js-core@1.0.0-beta.24':
-    dependencies:
-      '@types/geojson': 7946.0.15
 
   '@mapbox/tiny-sdf@2.0.6': {}
 
@@ -4273,6 +4269,8 @@ snapshots:
       requires-port: 1.0.0
 
   util-deprecate@1.0.2: {}
+
+  uuid@11.0.5: {}
 
   vite-node@2.1.8(@types/node@22.10.5):
     dependencies:

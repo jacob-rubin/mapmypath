@@ -1,4 +1,4 @@
-import type { GeocodeResponse } from './geocodeResponseInterface';
+import type { GeocodeResponse } from '../types/types';
 
 function assertOk(res: Response) {
 	if (!res.ok) {

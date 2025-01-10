@@ -20,6 +20,6 @@
 		class="input input-bordered"
 		id="search"
 	/>
-	<Autocomplete suggestions={mockSearchBoxSuggestionResponse}
-	></Autocomplete>
+	<!-- <Autocomplete suggestions={mockSearchBoxSuggestionResponse}
+	></Autocomplete> -->
 </div>

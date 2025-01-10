@@ -1,7 +1,7 @@
 import { LngLat } from 'mapbox-gl';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Marker from './marker.svelte';
-import { successJSON } from '$lib/utils/geocode/mockJSON';
+import { successJSON } from '$lib/utils/geocode/mocks/mockJSON';
 
 describe('Marker', async () => {
 	afterEach(() => {

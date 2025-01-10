@@ -1,5 +1,5 @@
 import debounce from '../debounce/debounce';
-import { reverseGeocode } from './utils';
+import { reverseGeocode } from './utils/utils';
 
 class Geocode {
 	#name: Promise<string> = $state(Promise.resolve(''));

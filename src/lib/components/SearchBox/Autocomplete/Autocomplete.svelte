@@ -1,7 +1,4 @@
 <script lang="ts">
-	import type { SearchBoxSuggestionResponse } from '@mapbox/search-js-core';
-	import Suggestion from './Suggestion/Suggestion.svelte';
-
 	interface Props {
 		suggestions: SearchBoxSuggestionResponse;
 	}

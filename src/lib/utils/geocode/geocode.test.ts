@@ -8,7 +8,7 @@ import {
 } from 'vitest';
 import Geocode from './geocode.svelte';
 import mapboxgl from 'mapbox-gl';
-import { successJSON } from './mockJSON';
+import { successJSON } from './mocks/mockJSON';
 
 describe('Geocode', async () => {
 	beforeEach(() => {
