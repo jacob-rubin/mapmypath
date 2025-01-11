@@ -1,6 +1,6 @@
 import type { SuggestionResponse } from '../types/types';
 
-export const mockAutocompleteSuggestions: SuggestionResponse = {
+export const mockSuggestions: SuggestionResponse = {
 	suggestions: [
 		{
 			name: 'Michigan Stadium',
