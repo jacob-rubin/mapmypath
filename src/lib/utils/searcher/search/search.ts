@@ -24,7 +24,9 @@ class Search {
 		);
 
 		if (!response.ok) {
-			throw new Error(`Failed to fetch: ${response.status}`);
+			throw new Error(
+				`Failed to fetch: ${response.status} ${response.statusText}`
+			);
 		}
 
 		return response.json();
@@ -41,7 +43,9 @@ class Search {
 		);
 
 		if (!response.ok) {
-			throw new Error('Failed to fetch');
+			throw new Error(
+				`Failed to fetch: ${response.status} ${response.statusText}`
+			);
 		}
 
 		return response.json();

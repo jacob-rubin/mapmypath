@@ -1,5 +1,3 @@
-// TODO: Add all types from mapbox documentation
-
 export type FeatureResponse = {
 	type: 'FeatureCollection';
 	features: Array<Feature>;
