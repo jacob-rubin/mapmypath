@@ -47,7 +47,7 @@ type Feature = {
 };
 
 // FeatureProperties is the same as Suggestion, except the language field is optional
-type FeatureProperties = Exclude<Suggestion, 'language'> & {
+type FeatureProperties = Omit<Suggestion, 'language'> & {
 	language?: string;
 };
 
