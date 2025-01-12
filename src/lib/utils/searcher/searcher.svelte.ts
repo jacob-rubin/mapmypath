@@ -1,6 +1,10 @@
 import debounce from '../debounce/debounce';
 import Search from './search/search';
-import type { SuggestionResponse } from './types/types';
+import type {
+	FeatureResponse,
+	Suggestion,
+	SuggestionResponse
+} from './types/types';
 
 class Searcher {
 	#text: string = $state('');
@@ -31,6 +35,10 @@ class Searcher {
 
 	get suggestions() {
 		return this.#suggestions;
+	}
+
+	async retrieve(suggestion: Suggestion): Promise<FeatureResponse> {
+		return await this.#search.retrieve(suggestion);
 	}
 }
 

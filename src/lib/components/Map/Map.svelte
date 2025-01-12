@@ -5,7 +5,7 @@
 	import { MapState } from '$lib/state/mapState/mapState.svelte';
 	import Mapbox from '$lib/utils/mapbox/mapbox';
 	import { CENTER, ZOOM } from './utils/constants';
-	import { addMapListeners } from '$lib/state/mapState/utils';
+	import { addMapClickListeners } from '$lib/state/mapState/utils';
 
 	interface Props {
 		children?: Snippet;

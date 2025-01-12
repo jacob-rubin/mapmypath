@@ -1,5 +1,13 @@
 <script lang="ts">
-	import type { Suggestion } from '$lib/utils/searcher/types/types';
+	import { getMapStateContext } from '$lib/components/Map/utils/mapStateContext';
+	import type { MapState } from '$lib/state/mapState/mapState.svelte';
+	import type Searcher from '$lib/utils/searcher/searcher.svelte';
+	import type {
+		FeatureResponse,
+		Suggestion
+	} from '$lib/utils/searcher/types/types';
+	import mapboxgl from 'mapbox-gl';
+	import { getSearcherContext } from '../../context/searcherContext';
 
 	interface Props {
 		suggestion: Suggestion;
@@ -8,14 +16,34 @@
 	let { suggestion }: Props = $props();
 	let isHovering: boolean = $state(false);
 
+	const searcher: Searcher = getSearcherContext();
+	const mapState: MapState = getMapStateContext();
+
 	const setHover = (hover: boolean) => () => {
 		isHovering = hover;
 	};
+
+	async function getFeatureCoordinates(): Promise<mapboxgl.LngLat> {
+		const feature: FeatureResponse =
+			await searcher.retrieve(suggestion);
+
+		return mapboxgl.LngLat.convert(
+			feature.features[0].geometry.coordinates
+		);
+	}
+
+	async function retreiveFeature() {
+		const featureCoordinates: mapboxgl.LngLat =
+			await getFeatureCoordinates();
+
+		mapState.map.flyTo(featureCoordinates);
+		mapState.addMarker(featureCoordinates);
+	}
 </script>
 
 <li>
 	<button
-		onclick={() => console.log('retrieve')}
+		onclick={retreiveFeature}
 		onmouseenter={setHover(true)}
 		onmouseleave={setHover(false)}
 		class="flex w-full flex-col justify-start justify-items-start rounded-btn p-2"

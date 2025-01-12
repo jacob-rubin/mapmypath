@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { getMapStateContext } from '../Map/utils/mapStateContext';
-	import type { MapState } from '$lib/state/mapState/mapState.svelte';
 	import Autocomplete from './Autocomplete/Autocomplete.svelte';
 	import Searcher from '$lib/utils/searcher/searcher.svelte';
+	import { setSearcherContext } from './context/searcherContext';
 
 	const searcher: Searcher = new Searcher();
+	setSearcherContext(searcher);
 </script>
 
 <div class="flex w-72 flex-col gap-2">
@@ -16,8 +16,6 @@
 		class="input input-bordered"
 		id="search"
 	/>
-	{#if searcher.text != ''}
-		<Autocomplete suggestionResponse={searcher.suggestions}
-		></Autocomplete>
-	{/if}
+	<Autocomplete suggestionResponse={searcher.suggestions}
+	></Autocomplete>
 </div>

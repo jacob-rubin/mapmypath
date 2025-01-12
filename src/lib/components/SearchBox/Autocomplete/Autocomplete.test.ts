@@ -11,7 +11,7 @@ describe('Autocomplete', async () => {
 	it('displays 5 suggestions', async () => {
 		const screen = render(Autocomplete, {
 			props: {
-				suggestionResponse: Promise.resolve(mockMultiSuggestions)
+				suggestionResponse: mockMultiSuggestions
 			}
 		});
 

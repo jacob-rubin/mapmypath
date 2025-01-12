@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Searcher from './searcher.svelte';
-import type { SuggestionResponse } from './types/types';
+import type {
+	FeatureResponse,
+	Suggestion,
+	SuggestionResponse
+} from './types/types';
 import { mockSuggestions } from './mocks/mockSuggestions';
+import { mockMultiSuggestions } from './mocks/mockMultiSuggestions';
 
 describe('Searcher', () => {
 	let searcher: Searcher;
@@ -47,5 +52,17 @@ describe('Searcher', () => {
 		expect(mockFetch).toHaveBeenCalledOnce();
 
 		vi.unstubAllGlobals();
+	});
+
+	it('retrieves a suggestion', async () => {
+		const suggestion: Suggestion =
+			mockMultiSuggestions.suggestions[0];
+		const feature: FeatureResponse =
+			await searcher.retrieve(suggestion);
+
+		expect(feature).toBeDefined();
+		expect(feature.features[0].properties.name).toBe(
+			'Viking Park Iceland'
+		);
 	});
 });
