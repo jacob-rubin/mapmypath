@@ -10,12 +10,14 @@
 <div class="flex w-full max-w-xs flex-col gap-2">
 	<input
 		bind:value={searcher.text}
-		data-testid="search-box"
+		data-testid="searchbox"
 		type="text"
 		placeholder="Search"
 		class="input input-bordered"
 		id="search"
 	/>
-	<Autocomplete suggestionResponse={searcher.suggestions}
-	></Autocomplete>
+	{#if searcher.text != ''}
+		<Autocomplete suggestionResponse={searcher.suggestions}
+		></Autocomplete>
+	{/if}
 </div>

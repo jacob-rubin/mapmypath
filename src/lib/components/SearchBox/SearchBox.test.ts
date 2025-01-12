@@ -23,10 +23,10 @@ describe('SearchBox', async () => {
 		expect(placeholder).toBeDefined();
 	});
 
-	it('displays the autocomplete', async () => {
+	it('does not display the autocomplete when the search text is empty', async () => {
 		const screen = render(SearchBox);
-		const results: HTMLElement = screen.getByTestId('autocomplete');
 
-		expect(results).toBeDefined();
+		expect(screen.getByRole('textbox')).toHaveValue('');
+		expect(screen.queryByTestId('autocomplete')).toBeNull();
 	});
 });
