@@ -6,6 +6,13 @@ class Searcher {
 	#text: string = $state('');
 	#suggestions: Promise<SuggestionResponse> = $derived.by(
 		async () => {
+			if (this.#text.length == 0) {
+				return Promise.resolve({
+					suggestions: [],
+					attribution: ''
+				});
+			}
+
 			return this.#search.suggest(this.#text);
 		}
 	);
@@ -20,7 +27,6 @@ class Searcher {
 
 	set text(value: string) {
 		this.#text = value;
-		this.#search.suggest(this.#text);
 	}
 
 	get suggestions() {

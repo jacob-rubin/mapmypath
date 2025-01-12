@@ -7,6 +7,7 @@ export type FeatureResponse = {
 export type SuggestionResponse = {
 	suggestions: Array<Suggestion>;
 	attribution: string;
+	response_id?: string;
 };
 
 export type Suggestion = {
@@ -44,7 +45,7 @@ type Feature = {
 	properties: FeatureProperties & Coordinates;
 };
 
-// FeatureProperties is the same as Suggestion, except the language field is optional
+// type FeatureProperties is the same as type Suggestion, except the language field is optional
 type FeatureProperties = Omit<Suggestion, 'language'> & {
 	language?: string;
 };

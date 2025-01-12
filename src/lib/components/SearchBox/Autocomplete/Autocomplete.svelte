@@ -1,13 +1,18 @@
 <script lang="ts">
+	import type { SuggestionResponse } from '$lib/utils/searcher/types/types';
+	import Suggestion from './Suggestion/Suggestion.svelte';
+
 	interface Props {
-		suggestions: SearchBoxSuggestionResponse;
+		suggestionResponse: Promise<SuggestionResponse>;
 	}
 
-	let { suggestions }: Props = $props();
+	let { suggestionResponse }: Props = $props();
 </script>
 
 <ul data-testid="autocomplete" class="menu rounded-btn bg-base-200">
-	{#each suggestions.suggestions as suggestion}
-		<Suggestion {suggestion} />
-	{/each}
+	{#await suggestionResponse then suggestions}
+		{#each suggestions.suggestions as suggestion}
+			<Suggestion {suggestion} />
+		{/each}
+	{/await}
 </ul>

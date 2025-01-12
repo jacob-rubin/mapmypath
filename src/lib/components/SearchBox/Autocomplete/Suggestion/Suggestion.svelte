@@ -1,17 +1,11 @@
 <script lang="ts">
-	import { getMapStateContext } from '$lib/components/Map/utils/mapStateContext';
-	import type { SearchBoxSuggestion } from '@mapbox/search-js-core';
+	import type { Suggestion } from '$lib/utils/searcher/types/types';
 
 	interface Props {
-		suggestion: SearchBoxSuggestion;
+		suggestion: Suggestion;
 	}
 
 	let { suggestion }: Props = $props();
-
-	// TODO
-	// 1) On click, retreive the coordinates from searcher
-	// 2) Fly map to coordinates
-	// 3) Place marker on map
 </script>
 
 <li>

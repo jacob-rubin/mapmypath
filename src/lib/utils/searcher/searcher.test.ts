@@ -26,4 +26,13 @@ describe('Searcher', () => {
 
 		expect(suggestions.suggestions.length).toBe(5);
 	});
+
+	it('sets suggestions as an empty array when texts is empty', async () => {
+		searcher.text = '';
+		const suggestionResponse: SuggestionResponse =
+			await searcher.suggestions;
+
+		expect(suggestionResponse.suggestions.length).toBe(0);
+		expect(suggestionResponse.attribution).toBe('');
+	});
 });
