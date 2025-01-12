@@ -1,6 +1,7 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Searcher from './searcher.svelte';
 import type { SuggestionResponse } from './types/types';
+import { mockSuggestions } from './mocks/mockSuggestions';
 
 describe('Searcher', () => {
 	let searcher: Searcher;
@@ -20,19 +21,31 @@ describe('Searcher', () => {
 
 	it('get suggestions when the text is changed', async () => {
 		searcher.text = 'test';
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		const suggestions: SuggestionResponse =
-			await searcher.suggestions;
+		const suggestions: SuggestionResponse = searcher.suggestions;
 
 		expect(suggestions.suggestions.length).toBe(5);
 	});
 
-	it('sets suggestions as an empty array when texts is empty', async () => {
-		searcher.text = '';
-		const suggestionResponse: SuggestionResponse =
-			await searcher.suggestions;
+	it('debounces the suggest method', async () => {
+		const mockFetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify(mockSuggestions), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' }
+			})
+		);
 
-		expect(suggestionResponse.suggestions.length).toBe(0);
-		expect(suggestionResponse.attribution).toBe('');
+		vi.stubGlobal('fetch', mockFetch);
+
+		searcher.text = 'v';
+		searcher.text = 'vi';
+		searcher.text = 'vik';
+
+		await new Promise((resolve) => setTimeout(resolve, 400));
+
+		expect(mockFetch).toHaveBeenCalledOnce();
+
+		vi.unstubAllGlobals();
 	});
 });

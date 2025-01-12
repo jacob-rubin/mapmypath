@@ -13,6 +13,10 @@ class Search {
 	}
 
 	async suggest(query: string): Promise<SuggestionResponse> {
+		if (query.length === 0) {
+			return Promise.resolve({ suggestions: [], attribution: '' });
+		}
+
 		const params: URLSearchParams = new URLSearchParams({
 			q: query,
 			access_token: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,

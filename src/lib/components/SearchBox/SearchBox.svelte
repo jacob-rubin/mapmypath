@@ -7,7 +7,7 @@
 	const searcher: Searcher = new Searcher();
 </script>
 
-<div class="flex w-full max-w-xs flex-col gap-2">
+<div class="flex w-72 flex-col gap-2">
 	<input
 		bind:value={searcher.text}
 		data-testid="searchbox"

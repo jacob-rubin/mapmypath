@@ -6,9 +6,26 @@
 	}
 
 	let { suggestion }: Props = $props();
+	let isHovering: boolean = $state(false);
+
+	const setHover = (hover: boolean) => () => {
+		isHovering = hover;
+	};
 </script>
 
 <li>
-	<!-- svelte-ignore a11y_missing_attribute -->
-	<a>{suggestion.name}</a>
+	<button
+		onclick={() => console.log('retrieve')}
+		onmouseenter={setHover(true)}
+		onmouseleave={setHover(false)}
+		class="flex w-full flex-col justify-start justify-items-start rounded-btn p-2"
+		class:bg-gray-300={isHovering}
+	>
+		<p class="text-ellipsis text-base">
+			{suggestion.name}
+		</p>
+		<p class="text-ellipsis text-xs">
+			{suggestion.place_formatted}
+		</p>
+	</button>
 </li>

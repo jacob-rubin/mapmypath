@@ -1,24 +1,23 @@
+import debounce from '../debounce/debounce';
 import Search from './search/search';
 import type { SuggestionResponse } from './types/types';
 
 class Searcher {
-	#search: Search; // TODO: How to handle when session token expires?
 	#text: string = $state('');
-	#suggestions: Promise<SuggestionResponse> = $derived.by(
-		async () => {
-			if (this.#text.length == 0) {
-				return Promise.resolve({
-					suggestions: [],
-					attribution: ''
-				});
-			}
-
-			return this.#search.suggest(this.#text);
-		}
-	);
+	#suggestions: SuggestionResponse = $state({
+		suggestions: [],
+		attribution: ''
+	});
+	#search: Search; // TODO: How to handle when session token expires?
+	#debounce: () => void;
 
 	constructor() {
 		this.#search = new Search();
+		this.#debounce = debounce(() => this.#suggest(), 200);
+	}
+
+	async #suggest(): Promise<void> {
+		this.#suggestions = await this.#search.suggest(this.#text);
 	}
 
 	get text() {
@@ -27,6 +26,7 @@ class Searcher {
 
 	set text(value: string) {
 		this.#text = value;
+		this.#debounce();
 	}
 
 	get suggestions() {
