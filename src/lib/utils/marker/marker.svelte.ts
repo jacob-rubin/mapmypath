@@ -11,8 +11,7 @@ class Marker {
 	#id: number;
 	#name: string = $state('');
 	#geocode: Geocode;
-
-	#marker: mapboxgl.Marker = new mapboxgl.Marker();
+	#marker: mapboxgl.Marker;
 
 	constructor(markerData: MarkerData) {
 		this.#id = markerData.id;

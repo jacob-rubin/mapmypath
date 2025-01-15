@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { cleanup, render } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Suggestion from './Suggestion.svelte';
@@ -8,6 +7,7 @@ import userEvent, {
 } from '@testing-library/user-event';
 import Mapbox from '$lib/utils/mapbox/mapbox';
 import { MapState } from '$lib/state/mapState/mapState.svelte';
+import Searcher from '$lib/utils/searcher/searcher.svelte';
 
 function renderMap(): Mapbox {
 	const mapElement: HTMLElement = document.createElement('div');
@@ -21,15 +21,14 @@ function renderMap(): Mapbox {
 describe('Suggestion', async () => {
 	let map: Mapbox;
 	let mapState: MapState;
-	let mapContext: Record<string, unknown>;
+	let searcher: Searcher;
 
 	beforeEach(async () => {
 		map = renderMap();
 		mapState = new MapState(map);
+		searcher = new Searcher();
 		await map.awaitLoad();
 		await map.initializeStyles();
-
-		mapContext = { mapState: mapState };
 	});
 
 	afterEach(() => {
@@ -68,7 +67,16 @@ describe('Suggestion', async () => {
 		expect(suggestion).toHaveClass('bg-gray-300');
 	});
 
-	it.only('flys to the location when clicked', async () => {});
+	it.todo(
+		'sends a retrieve request when the suggestion is clicked',
+		async () => {}
+	);
 
-	it.todo('adds marker when clicked', async () => {});
+	it('flys to the location when suggestion is clicked', async () => {
+		// todo: check that mapcontext.map.center is the new location
+	});
+
+	it.todo('adds marker when suggestion is clicked', async () => {
+		//todo: check that mapstate.markers > 0
+	});
 });
