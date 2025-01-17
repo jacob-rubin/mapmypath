@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import SearchBox from './SearchBox.svelte';
 import {
+	cleanup,
 	queryByPlaceholderText,
 	render
 } from '@testing-library/svelte';
@@ -8,6 +9,10 @@ import userEvent from '@testing-library/user-event';
 import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
 
 describe('SearchBox', async () => {
+	afterEach(() => {
+		cleanup();
+	});
+
 	it('matches the snapshot', async ({ expect }) => {
 		const screen = render(SearchBox);
 
@@ -16,7 +21,7 @@ describe('SearchBox', async () => {
 
 	it('has the placeholder `Search`', async () => {
 		const screen = render(SearchBox);
-		const input: HTMLElement = screen.getByTestId('search-box');
+		const input: HTMLElement = screen.getByRole('textbox');
 		const placeholder: Element | null = queryByPlaceholderText(
 			input,
 			'Search'
