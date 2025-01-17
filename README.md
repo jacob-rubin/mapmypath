@@ -1,38 +1,31 @@
-# sv
+# MapMyPath
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A travel planner built with [Svelte](https://svelte.dev) and [Test Driven Development](https://www.oreilly.com/library/view/test-driven-development/0321146530/) practices
 
-## Creating a project
+## Mapbox Access Token
 
-If you're seeing this, you've probably already done this step. Congrats!
+This project uses [Mapbox](https://www.mapbox.com) for the interactive map. An access token is required to run the map locally.
 
-```bash
-# create a new project in the current directory
-npx sv create
+Follow the instructions [here](https://docs.mapbox.com/help/getting-started/access-tokens/) to generate an access token.
 
-# create a new project in my-app
-npx sv create my-app
-```
+Afterwards, create a `.env` file using the included `.env.example` as a template. Then in `.env`, replace `your_mapbox_access_token_here` with the access token.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've installed dependencies with `pnpm install`, start a development server:
 
 ```bash
-npm run dev
+pnpm run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm run dev -- --open
 ```
 
-## Building
+## Testing
 
-To create a production version of your app:
+The component tests are written using [Vitest](https://vitest.dev) and [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/intro/)
 
 ```bash
-npm run build
+#Run the component tests
+pnpm test:unit
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
