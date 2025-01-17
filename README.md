@@ -20,3 +20,12 @@ pnpm run dev
 # or start the server and open the app in a new browser tab
 pnpm run dev -- --open
 ```
+
+## Testing
+
+The component tests are written using [Vitest](https://vitest.dev) and [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/intro/)
+
+```bash
+#Run the component tests
+pnpm test:unit
+```
