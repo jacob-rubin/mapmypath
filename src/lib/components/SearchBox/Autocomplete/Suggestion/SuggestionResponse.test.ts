@@ -1,10 +1,9 @@
 import { MapState } from '$lib/state/mapState/mapState.svelte';
-import { mockGeocodeSuccessJSON } from '$lib/utils/geocode/mocks/mockJSON';
 import Mapbox from '$lib/utils/mapbox/mapbox';
 import { mockFeature } from '$lib/utils/searcher/mocks/mockFeature';
 import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
 import Searcher from '$lib/utils/searcher/searcher.svelte';
-import { cleanup, render } from '@testing-library/svelte';
+import { cleanup, getByRole, render } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import {
 	afterEach,
@@ -14,7 +13,6 @@ import {
 	it,
 	vi
 } from 'vitest';
-import createFetchMock from 'vitest-fetch-mock';
 import SuggestionFixture from '../../fixtures/SuggestionFixture.svelte';
 import mapboxgl from 'mapbox-gl';
 
@@ -28,44 +26,11 @@ function renderMap(): Mapbox {
 }
 
 describe('Suggestion Response', () => {
-	const fetchMocker = createFetchMock(vi);
 	let map: Mapbox;
 	let mapState: MapState;
 	let searcher: Searcher;
 
 	beforeEach(async () => {
-		fetchMocker.doMockIf(
-			/^https?:\/\/api.mapbox.com\/search\/searchbox\/v1\/retrieve.*$/,
-			(req) => {
-				console.log(`req: ${req}`);
-				return {
-					status: 200,
-					json: mockFeature,
-					body: JSON.stringify(mockFeature),
-					headers: {
-						'content-type': 'application/x-www-form-urlencoded'
-					}
-				};
-			}
-		);
-
-		fetchMocker.doMockIf(
-			/^https?:\/\/api.mapbox.com\/search\/geocode\/v6\/reverse.*$/,
-			(req) => {
-				console.log(`req: ${req}`);
-				return {
-					status: 200,
-					json: mockGeocodeSuccessJSON,
-					body: JSON.stringify(mockGeocodeSuccessJSON),
-					headers: {
-						'content-type': 'application/x-www-form-urlencoded'
-					}
-				};
-			}
-		);
-
-		fetchMocker.enableMocks();
-
 		map = renderMap();
 		mapState = new MapState(map);
 		searcher = new Searcher();
@@ -74,63 +39,20 @@ describe('Suggestion Response', () => {
 	});
 
 	afterEach(() => {
-		fetchMocker.disableMocks();
-		map.remove();
 		cleanup();
+		map.remove();
 	});
 
-	it.todo(
-		'sends a retrieve request when the suggestion is clicked',
-		async () => {
-			const user = userEvent.setup();
+	it('sends a retrieve request when the suggestion is clicked', async () => {
+		const mockFetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify(mockFeature), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' }
+			})
+		);
 
-			const screen = render(SuggestionFixture, {
-				props: {
-					suggestion: mockSuggestions.suggestions[0],
-					context: {
-						mapState: mapState,
-						searcher: searcher
-					}
-				}
-			});
+		vi.stubGlobal('fetch', mockFetch);
 
-			await user.click(screen.getByRole('button'));
-
-			const requests: Request[] = fetchMocker.requests();
-
-			expect(requests[0].url).toMatch(
-				/^https?:\/\/api.mapbox.com\/search\/searchbox\/v1\/retrieve.*$/
-			);
-		}
-	);
-
-	it.todo(
-		'flys to the location when suggestion is clicked',
-		async () => {
-			const user = userEvent.setup();
-
-			const screen = render(SuggestionFixture, {
-				props: {
-					suggestion: mockSuggestions.suggestions[0],
-					context: {
-						mapState: mapState,
-						searcher: searcher
-					}
-				}
-			});
-
-			await user.click(screen.getByRole('button'));
-			await new Promise((resolve) => setTimeout(resolve, 10000));
-
-			const featureCoordinates: mapboxgl.LngLat =
-				mapboxgl.LngLat.convert(
-					mockFeature.features[0].geometry.coordinates
-				);
-			expect(featureCoordinates).toEqual(mapState.map.getCenter());
-		}
-	);
-
-	it.todo('adds marker when suggestion is clicked', async () => {
 		const user = userEvent.setup();
 
 		const screen = render(SuggestionFixture, {
@@ -143,7 +65,69 @@ describe('Suggestion Response', () => {
 			}
 		});
 
-		await user.click(screen.getByRole('button'));
+		const listitem = getByRole(screen.baseElement, 'listitem');
+		const button = getByRole(listitem, 'button');
+
+		await user.click(button);
+		expect(mockFetch).toHaveBeenCalledOnce();
+		expect(mockFetch.mock.calls[0][0]).toContain(
+			'https://api.mapbox.com/search/searchbox/v1/retrieve'
+		);
+
+		vi.unstubAllGlobals();
+	});
+
+	it('flys to the location when suggestion is clicked', async () => {
+		const user = userEvent.setup();
+
+		const screen = render(SuggestionFixture, {
+			props: {
+				suggestion: mockSuggestions.suggestions[0],
+				context: {
+					mapState: mapState,
+					searcher: searcher
+				}
+			}
+		});
+
+		const listitem = getByRole(screen.baseElement, 'listitem');
+		const button = getByRole(listitem, 'button');
+
+		await user.click(button);
+		await new Promise((resolve) => setTimeout(resolve, 10000));
+
+		const featureCoordinates: mapboxgl.LngLat =
+			mapboxgl.LngLat.convert(
+				mockFeature.features[0].geometry.coordinates
+			);
+		expect(featureCoordinates.lng).toBeCloseTo(
+			mapState.map.getCenter().lng,
+			4
+		);
+		expect(featureCoordinates.lat).toBeCloseTo(
+			mapState.map.getCenter().lat,
+			4
+		);
+	});
+
+	it('adds marker when suggestion is clicked', async () => {
+		const user = userEvent.setup();
+
+		const screen = render(SuggestionFixture, {
+			props: {
+				suggestion: mockSuggestions.suggestions[0],
+				context: {
+					mapState: mapState,
+					searcher: searcher
+				}
+			}
+		});
+
+		const listitem = getByRole(screen.baseElement, 'listitem');
+		const button = getByRole(listitem, 'button');
+
+		await user.click(button);
+		await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for retreive request to be sent
 
 		expect(mapState.markers).toHaveLength(1);
 	});

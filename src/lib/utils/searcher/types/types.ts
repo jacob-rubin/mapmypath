@@ -37,6 +37,7 @@ export type Suggestion = {
 	brand_id?: Array<string>;
 	external_ids?: object;
 	metadata?: object;
+	operational_status?: string;
 };
 
 type Feature = {

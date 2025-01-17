@@ -4,16 +4,16 @@ export const mockSuggestions: SuggestionResponse = {
 	suggestions: [
 		{
 			name: 'Michigan Stadium',
-			mapbox_id: 'Example ID',
+			mapbox_id:
+				'dXJuOm1ieHBvaTpjYjUyYTZkYy03ZjNkLTRhZjctYTJhMi02NTIyMzk3YjczZmM',
 			feature_type: 'poi',
 			address: '1201 S Main St',
 			full_address:
-				'1201 S Main St, Ann Arbor, Michigan 48104, United States of America',
-			place_formatted:
-				'Ann Arbor, Michigan 48104, United States of America',
+				'1201 S Main St, Ann Arbor, Michigan 48104, United States',
+			place_formatted: 'Ann Arbor, Michigan 48104, United States',
 			context: {
 				country: {
-					name: 'United States of America',
+					name: 'United States',
 					country_code: 'US',
 					country_code_alpha_3: 'USA'
 				},
@@ -22,20 +22,28 @@ export const mockSuggestions: SuggestionResponse = {
 					region_code: 'MI',
 					region_code_full: 'US-MI'
 				},
-				postcode: { name: '48104' },
-				place: { name: 'Ann Arbor' },
-				neighborhood: { name: 'South Main' },
+				postcode: { id: 'dXJuOm1ieHBsYzpDYlpPN0E', name: '48104' },
+				place: { id: 'dXJuOm1ieHBsYzpoQ2pz', name: 'Ann Arbor' },
+				neighborhood: {
+					id: 'dXJuOm1ieHBsYzpJODBNN0E',
+					name: 'South Main'
+				},
+				address: {
+					name: '1201 S Main St',
+					address_number: '1201',
+					street_name: 's main st'
+				},
 				street: { name: 's main st' }
 			},
 			language: 'en',
 			maki: 'marker',
-			poi_category: ['track', 'sports'],
-			poi_category_ids: ['track', 'sports'],
+			poi_category: ['sports', 'stadium'],
+			poi_category_ids: ['sports', 'stadium'],
 			external_ids: {
-				safegraph: 'Example ID',
-				foursquare: 'Example ID'
+				dataplor: '1e086643-5035-430f-875e-e6eaedc6dbd6'
 			},
-			metadata: {}
+			metadata: {},
+			operational_status: 'active'
 		}
 	],
 	attribution:
