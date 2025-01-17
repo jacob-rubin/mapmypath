@@ -34,7 +34,7 @@ describe('SearchBox', async () => {
 		).toHaveLength(0);
 	});
 
-	it.only('sends a fetch request when typing', async () => {
+	it('sends a fetch request when typing', async () => {
 		const mockFetch = vi.fn().mockResolvedValue(
 			new Response(JSON.stringify(mockSuggestions), {
 				status: 200,
