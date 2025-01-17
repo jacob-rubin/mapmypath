@@ -1,4 +1,4 @@
-import { addMapListeners } from '$lib/state/mapState/utils';
+import { addMapClickListeners } from '$lib/state/mapState/utils';
 import type Mapbox from '$lib/utils/mapbox/mapbox';
 import Marker from '$lib/utils/marker/marker.svelte';
 import type { MarkerData } from '$lib/utils/marker/marker.svelte';
@@ -13,7 +13,7 @@ export class MapState {
 		this.#map = map;
 		this.#markers = [];
 
-		addMapListeners(this.#map, this);
+		addMapClickListeners(this.#map, this);
 	}
 
 	get markers(): Marker[] {
@@ -37,10 +37,19 @@ export class MapState {
 	}
 
 	addMarker(lngLat: mapboxgl.LngLat): Marker {
+		// TODO: How can I make this method smaller?
 		const marker: Marker = new Marker({
 			id: this.#counter++,
 			lngLat,
 			name: `Stop ${this.#markers.length + 1}`
+		});
+
+		marker.addDragListener((markerData: MarkerData) => {
+			this.updateMarker({
+				id: markerData.id,
+				lngLat: markerData.lngLat
+			});
+			this.#map.renderPath(this.#markers.map((m) => m.lngLat));
 		});
 
 		this.#markers.push(marker);

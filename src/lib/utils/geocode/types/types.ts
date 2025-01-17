@@ -1,22 +1,22 @@
-export interface GeocodeResponse {
+export type GeocodeResponse = {
 	type: string;
 	features: Array<Feature>;
 	attribution: string;
-}
+};
 
-interface Feature {
+type Feature = {
 	type: string;
 	id: string;
 	geometry: Geometry;
 	properties: Properties;
-}
+};
 
-interface Geometry {
+type Geometry = {
 	type: string;
 	coordinates: Array<number>;
-}
+};
 
-interface Properties {
+type Properties = {
 	mapbox_id: string;
 	feature_type: 'address';
 	full_address: string;
@@ -25,9 +25,9 @@ interface Properties {
 	coordinates: Coordinates;
 	place_formatted: string;
 	context: Context;
-}
+};
 
-interface Context {
+type Context = {
 	address: AddressContext | null;
 	street: StreetContext | null;
 	neighborhood: NeighborhoodContext | null;
@@ -36,67 +36,67 @@ interface Context {
 	district: DistrictContext | null;
 	region: RegionContext | null;
 	country: CountryContext;
-}
+};
 
-interface AddressContext {
+type AddressContext = {
 	mapbox_id: string;
 	address_number: string;
 	street_name: string;
 	name: string;
-}
+};
 
-interface StreetContext {
+type StreetContext = {
 	mapbox_id: string;
 	name: string;
-}
+};
 
-interface NeighborhoodContext {
+type NeighborhoodContext = {
 	mapbox_id: string;
 	name: string;
-}
+};
 
-interface PostcodeContext {
+type PostcodeContext = {
 	mapbox_id: string;
 	name: string;
-}
+};
 
-interface PlaceContext {
-	mapbox_id: string;
-	name: string;
-	wikidata_id: string;
-}
-
-interface DistrictContext {
+type PlaceContext = {
 	mapbox_id: string;
 	name: string;
 	wikidata_id: string;
-}
+};
 
-interface RegionContext {
+type DistrictContext = {
+	mapbox_id: string;
+	name: string;
+	wikidata_id: string;
+};
+
+type RegionContext = {
 	mapbox_id: string;
 	name: string;
 	wikidata_id: string;
 	region_code: string;
 	region_code_full: string;
-}
+};
 
-interface CountryContext {
+type CountryContext = {
 	mapbox_id: string;
 	name: string;
 	wikidata_id: string;
 	country_code: string;
 	country_code_alpha_3: string;
-}
+};
 
-interface Coordinates {
+type Coordinates = {
 	longitude: number;
 	latitude: number;
 	accuracy: string;
 	routable_points: Array<RoutablePoint>;
-}
+};
 
-interface RoutablePoint {
+type RoutablePoint = {
 	name: string;
 	latitude: number;
 	longitude: number;
-}
+};

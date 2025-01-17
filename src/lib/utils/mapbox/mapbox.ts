@@ -114,6 +114,17 @@ class Mapbox {
 			}
 		});
 	}
+
+	flyTo(lngLat: mapboxgl.LngLat) {
+		this.#map.flyTo({
+			center: lngLat.toArray(),
+			zoom: 16
+		});
+	}
+
+	getCenter(): mapboxgl.LngLat {
+		return this.#map.getCenter();
+	}
 }
 
 export default Mapbox;

@@ -8,7 +8,7 @@ import {
 } from 'vitest';
 import Geocode from './geocode.svelte';
 import mapboxgl from 'mapbox-gl';
-import { successJSON } from './mockJSON';
+import { mockGeocodeSuccessJSON } from './mocks/mockJSON';
 
 describe('Geocode', async () => {
 	beforeEach(() => {
@@ -47,7 +47,7 @@ describe('Geocode', async () => {
 
 	it('Debounces the geocode when called multiple times', async () => {
 		const mockFetch = vi.fn().mockResolvedValue(
-			new Response(JSON.stringify(successJSON), {
+			new Response(JSON.stringify(mockGeocodeSuccessJSON), {
 				status: 200,
 				headers: { 'Content-Type': 'application/json' }
 			})
@@ -68,7 +68,7 @@ describe('Geocode', async () => {
 		vi.advanceTimersByTime(500);
 
 		expect(await geocode.name).toBe(
-			successJSON.features[0].properties.full_address
+			mockGeocodeSuccessJSON.features[0].properties.full_address
 		);
 		expect(mockFetch).toHaveBeenCalledOnce();
 

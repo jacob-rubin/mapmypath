@@ -1,7 +1,7 @@
 import { LngLat } from 'mapbox-gl';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Marker from './marker.svelte';
-import { successJSON } from '$lib/utils/geocode/mockJSON';
+import { mockGeocodeSuccessJSON } from '$lib/utils/geocode/mocks/mockJSON';
 
 describe('Marker', async () => {
 	afterEach(() => {
@@ -80,7 +80,7 @@ describe('Marker', async () => {
 		vi.useFakeTimers();
 
 		const mockFetch = vi.fn().mockResolvedValue(
-			new Response(JSON.stringify(successJSON), {
+			new Response(JSON.stringify(mockGeocodeSuccessJSON), {
 				status: 200,
 				headers: { 'Content-Type': 'application/json' }
 			})
@@ -102,7 +102,7 @@ describe('Marker', async () => {
 
 		expect(mockFetch).toHaveBeenCalledTimes(1);
 		expect(await marker.getGeocodeName()).toBe(
-			successJSON.features[0].properties.full_address
+			mockGeocodeSuccessJSON.features[0].properties.full_address
 		);
 
 		vi.clearAllTimers();

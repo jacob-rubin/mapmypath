@@ -4,16 +4,26 @@ import Marker, {
 	type MarkerData
 } from '$lib/utils/marker/marker.svelte';
 
-export function addMapListeners(map: Mapbox, mapState: MapState) {
+export function addMapClickListeners(
+	map: Mapbox,
+	mapState: MapState
+) {
 	map.addClickListener((e: mapboxgl.MapMouseEvent) => {
-		const marker: Marker = mapState.addMarker(e.lngLat);
+		mapState.addMarker(e.lngLat);
+	});
+}
 
-		marker.addDragListener((markerData: MarkerData) => {
-			mapState.updateMarker({
-				id: markerData.id,
-				lngLat: markerData.lngLat
-			});
-			map.renderPath(mapState.markers.map((m) => m.lngLat));
+// TODO: Clean this up, since don't like having function with 3 inputs
+export function addMarkerDragListeners(
+	marker: Marker,
+	mapState: MapState,
+	map: Mapbox
+) {
+	marker.addDragListener((markerData: MarkerData) => {
+		mapState.updateMarker({
+			id: markerData.id,
+			lngLat: markerData.lngLat
 		});
+		map.renderPath(mapState.markers.map((m) => m.lngLat));
 	});
 }

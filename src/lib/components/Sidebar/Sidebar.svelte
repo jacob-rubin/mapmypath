@@ -41,7 +41,7 @@
 		<ul
 			bind:this={sidebar}
 			data-testid={'sidebar'}
-			class="card card-normal h-full w-80 overflow-auto bg-neutral-content p-2"
+			class="card card-normal h-full w-80 overflow-auto rounded-btn bg-neutral-content p-2"
 		>
 			{#each mapState.markers as marker (marker.id)}
 				<li animate:flip={{ duration: 300 }}>

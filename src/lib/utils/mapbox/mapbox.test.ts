@@ -236,4 +236,14 @@ describe('Mapbox', async () => {
 			type: 'geojson'
 		});
 	});
+
+	it('flys to a location', async () => {
+		mapbox.flyTo(new LngLat(10, 10));
+
+		// wait 5 seconds for the map to move
+		await new Promise((resolve) => setTimeout(resolve, 5000));
+
+		expect(mapbox.getCenter().lng).toBeCloseTo(10, 2);
+		expect(mapbox.getCenter().lat).toBeCloseTo(10, 2);
+	});
 });
