@@ -61,13 +61,15 @@ class Mapbox {
 			id: LAYER_ID,
 			source: SOURCE_ID,
 			type: 'line',
+			// add a dashed line
 			layout: {
-				'line-join': 'round',
-				'line-cap': 'round'
+				'line-cap': 'round',
+				'line-join': 'round'
 			},
 			paint: {
 				'line-color': '#888',
-				'line-width': 8
+				'line-width': 8,
+				'line-dasharray': [1, 2]
 			}
 		});
 	}
