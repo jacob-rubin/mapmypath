@@ -29,6 +29,9 @@ importers:
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
+      vitest-fetch-mock:
+        specifier: ^0.4.3
+        version: 0.4.3(vitest@2.1.8(@types/node@22.10.5)(@vitest/browser@2.1.8)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2)))
     devDependencies:
       '@iconify-json/mdi':
         specifier: ^1.2.2
@@ -2194,6 +2197,12 @@ packages:
       svelte: '>3.0.0'
       vitest: ^2.1.0-beta.4
 
+  vitest-fetch-mock@0.4.3:
+    resolution: {integrity: sha512-PhuEh+9HCsXFMRPUJilDL7yVDFufoxqk7ze+CNks64UGlfFXaJTn1bLABiNlEc0u25RERXQGj0Tm+M9i6UY9HQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      vitest: '>=2.0.0'
+
   vitest@2.1.8:
     resolution: {integrity: sha512-1vBKTZskHw/aosXqQUlVWWlGUxSJR8YtiyZDJAFeW2kPAeX6S3Sool0mjspO+kXLuxVWlEDDowBAeqeAQefqLQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -4307,6 +4316,10 @@ snapshots:
     dependencies:
       '@vitest/browser': 2.1.8(@types/node@22.10.5)(playwright@1.49.1)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.5))(vitest@2.1.8)
       svelte: 5.17.0
+      vitest: 2.1.8(@types/node@22.10.5)(@vitest/browser@2.1.8)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
+
+  vitest-fetch-mock@0.4.3(vitest@2.1.8(@types/node@22.10.5)(@vitest/browser@2.1.8)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))):
+    dependencies:
       vitest: 2.1.8(@types/node@22.10.5)(@vitest/browser@2.1.8)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   vitest@2.1.8(@types/node@22.10.5)(@vitest/browser@2.1.8)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2)):

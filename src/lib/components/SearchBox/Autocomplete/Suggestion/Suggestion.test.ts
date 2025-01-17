@@ -1,6 +1,5 @@
 import { cleanup, render } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import Suggestion from './Suggestion.svelte';
 import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
 import userEvent, {
 	type UserEvent
@@ -8,6 +7,7 @@ import userEvent, {
 import Mapbox from '$lib/utils/mapbox/mapbox';
 import { MapState } from '$lib/state/mapState/mapState.svelte';
 import Searcher from '$lib/utils/searcher/searcher.svelte';
+import SuggestionFixture from '../../fixtures/SuggestionFixture.svelte';
 
 function renderMap(): Mapbox {
 	const mapElement: HTMLElement = document.createElement('div');
@@ -32,12 +32,17 @@ describe('Suggestion', async () => {
 	});
 
 	afterEach(() => {
+		map.remove();
 		cleanup();
 	});
 
 	it('displays the name and location of the search result', async () => {
-		const screen = render(Suggestion, {
+		const screen = render(SuggestionFixture, {
 			props: {
+				context: {
+					mapState: mapState,
+					searcher: searcher
+				},
 				suggestion: mockSuggestions.suggestions[0]
 			}
 		});
@@ -53,8 +58,12 @@ describe('Suggestion', async () => {
 	it('darkens the background when the suggestion is hovered', async () => {
 		const user: UserEvent = userEvent.setup();
 
-		const screen = render(Suggestion, {
+		const screen = render(SuggestionFixture, {
 			props: {
+				context: {
+					mapState: mapState,
+					searcher: searcher
+				},
 				suggestion: mockSuggestions.suggestions[0]
 			}
 		});
@@ -65,18 +74,5 @@ describe('Suggestion', async () => {
 		expect(suggestion).not.toHaveClass('bg-gray-300');
 		await user.hover(suggestion);
 		expect(suggestion).toHaveClass('bg-gray-300');
-	});
-
-	it.todo(
-		'sends a retrieve request when the suggestion is clicked',
-		async () => {}
-	);
-
-	it('flys to the location when suggestion is clicked', async () => {
-		// todo: check that mapcontext.map.center is the new location
-	});
-
-	it.todo('adds marker when suggestion is clicked', async () => {
-		//todo: check that mapstate.markers > 0
 	});
 });

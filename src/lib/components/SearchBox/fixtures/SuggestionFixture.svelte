@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Fragment from '$lib/components/Fragment/Fragment.svelte';
-	import { mockMultiSuggestions } from '$lib/utils/searcher/mocks/mockMultiSuggestions';
 	import Suggestion from '../Autocomplete/Suggestion/Suggestion.svelte';
 	import type { Suggestion as SuggestionType } from '$lib/utils/searcher/types/types';
 
