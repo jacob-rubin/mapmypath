@@ -127,7 +127,7 @@ describe('Suggestion Response', () => {
 		const button = getByRole(listitem, 'button');
 
 		await user.click(button);
-		await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for retreive request to be sent
+		await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for retrieve request to be sent
 
 		expect(mapState.markers).toHaveLength(1);
 	});
