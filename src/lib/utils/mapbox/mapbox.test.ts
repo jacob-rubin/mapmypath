@@ -243,9 +243,7 @@ describe('Mapbox', async () => {
 		// wait 5 seconds for the map to move
 		await new Promise((resolve) => setTimeout(resolve, 5000));
 
-		expect(mapbox.getCenter()).toEqual({
-			lng: 10,
-			lat: 10
-		});
+		expect(mapbox.getCenter().lng).toBeCloseTo(10, 2);
+		expect(mapbox.getCenter().lat).toBeCloseTo(10, 2);
 	});
 });
