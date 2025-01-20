@@ -8,23 +8,19 @@ export interface MarkerData {
 }
 
 class Marker {
-	#id: number;
+	readonly id: number;
 	#name: string = $state('');
 	#geocode: Geocode;
 	#marker: mapboxgl.Marker;
 
 	constructor(markerData: MarkerData) {
-		this.#id = markerData.id;
+		this.id = markerData.id;
 		this.#marker = new mapboxgl.Marker({ draggable: true }).setLngLat(
 			markerData.lngLat
 		);
 		this.#name = markerData.name || 'Location';
 		this.#geocode = new Geocode();
 		this.#geocode.reverse(markerData.lngLat);
-	}
-
-	get id(): number {
-		return this.#id;
 	}
 
 	get lngLat(): mapboxgl.LngLat {
@@ -61,7 +57,7 @@ class Marker {
 	addDragListener(callback: (markerData: MarkerData) => void): void {
 		this.#marker.on('drag', () => {
 			const markerData: MarkerData = {
-				id: this.#id,
+				id: this.id,
 				lngLat: this.lngLat
 			};
 
