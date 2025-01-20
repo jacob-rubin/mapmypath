@@ -20,6 +20,10 @@ export class MapState {
 		return this.#markers;
 	}
 
+	set markers(value: Marker[]) {
+		this.#markers = value;
+	}
+
 	get map(): Mapbox {
 		return this.#map;
 	}

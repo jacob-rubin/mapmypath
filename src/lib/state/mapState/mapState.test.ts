@@ -44,6 +44,17 @@ describe('Map State', async () => {
 		expect(mapState.markers).toHaveLength(0);
 	});
 
+	it('sets the markers', async () => {
+		mapState.markers = [
+			new Marker({
+				id: 0,
+				lngLat: new mapboxgl.LngLat(0, 0)
+			})
+		];
+
+		expect(mapState.markers).toHaveLength(1);
+	});
+
 	it('adds a marker', async () => {
 		mapState.addMarker(new mapboxgl.LngLat(0, 0));
 		expect(mapState.markers).toHaveLength(1);
