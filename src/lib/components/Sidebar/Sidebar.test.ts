@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { cleanup, getByRole, render } from '@testing-library/svelte';
+import {
+	cleanup,
+	getAllByRole,
+	getByRole,
+	getByTestId,
+	render
+} from '@testing-library/svelte';
 import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
@@ -8,6 +14,7 @@ import mapboxgl from 'mapbox-gl';
 import { tick } from 'svelte';
 import SidebarFixture from './fixtures/SidebarFixture.svelte';
 import Mapbox from '$lib/utils/mapbox/mapbox';
+import Marker from '$lib/utils/marker/marker.svelte';
 
 function renderMap(): Mapbox {
 	const mapElement: HTMLElement = document.createElement('div');
@@ -206,5 +213,49 @@ describe('SidebarFixture', async () => {
 		expect(screen.queryByRole('menuitem')).not.toBeNull();
 		await user.click(deleteButton);
 		expect(screen.queryByRole('menuitem')).toBeNull();
+	});
+
+	it.only('drags a sidebar item', async () => {
+		const user: UserEvent = userEvent.setup();
+
+		const marker1: Marker = mapState.addMarker(
+			new mapboxgl.LngLat(0, 0)
+		);
+		const marker2: Marker = mapState.addMarker(
+			new mapboxgl.LngLat(1, 1)
+		);
+		const marker3: Marker = mapState.addMarker(
+			new mapboxgl.LngLat(2, 2)
+		);
+
+		const screen = render(SidebarFixture, {
+			props: {
+				context: mapContext
+			}
+		});
+
+		// Drag the last sidebar item to the top
+		const sidebar: HTMLElement = getByTestId(
+			screen.container,
+			'sidebar'
+		);
+		const listItems: HTMLElement[] = getAllByRole(
+			sidebar,
+			'listitem'
+		);
+
+		await user.pointer([
+			{
+				keys: '[MouseLeft]',
+				target: listItems[2]
+			},
+			{
+				pointerName: 'MouseLeft',
+				target: listItems[0]
+			},
+			{
+				keys: '[/MouseLeft]'
+			}
+		]);
 	});
 });

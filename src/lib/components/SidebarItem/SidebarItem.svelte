@@ -5,7 +5,6 @@
 	import type Marker from '$lib/utils/marker/marker.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
 	import { getMapStateContext } from '../Map/utils/mapStateContext';
-	import { flip } from 'svelte/animate';
 
 	interface Props {
 		marker: Marker;
@@ -45,11 +44,14 @@
 	<div class="flex h-8 items-center gap-1 pt-2">
 		<MdiLocationRadius class="size-4 shrink-0" />
 		<div data-testid="geocode">
-			{#await marker.getGeocodeName() then geocodeName}
-				<div class="overflow-none text-xs" transition:fade>
-					{geocodeName}
-				</div>
-			{/await}
+			<!-- Check the the method getGeocodeName exists, because it doesn't when item is dragged -->
+			{#if 'getGeocodeName' in marker}
+				{#await marker.getGeocodeName() then geocodeName}
+					<div class="overflow-none text-xs" transition:fade>
+						{geocodeName}
+					</div>
+				{/await}
+			{/if}
 		</div>
 	</div>
 </div>

@@ -6,7 +6,11 @@
 	import { SidebarTransitionState } from './SidebarTransition/sidebarTransitionState.svelte';
 	import type { MapState } from '$lib/state/mapState/mapState.svelte';
 	import { getMapStateContext } from '../Map/utils/mapStateContext';
+	import { dndzone, type DndEvent } from 'svelte-dnd-action';
+	import type Marker from '$lib/utils/marker/marker.svelte';
 	import { flip } from 'svelte/animate';
+
+	const FLIP_DURATION = 100;
 
 	const mapState: MapState = getMapStateContext();
 
@@ -22,6 +26,14 @@
 			});
 		}
 	});
+
+	const onconsider = (event: CustomEvent<DndEvent<Marker>>) => {
+		mapState.markers = event.detail.items;
+	};
+	const onfinalize = (event: CustomEvent<DndEvent<Marker>>) => {
+		mapState.markers = event.detail.items;
+		mapState.map.renderPath(mapState.markers.map((m) => m.lngLat));
+	};
 </script>
 
 {#if sidebarTransitionState.isVisible()}
@@ -38,17 +50,23 @@
 		onoutrostart={() => sidebarTransitionState.onOutroStart()}
 		onoutroend={() => sidebarTransitionState.onOutroEnd()}
 	>
-		<ul
+		<section
 			bind:this={sidebar}
 			data-testid={'sidebar'}
 			class="card card-normal h-full w-80 overflow-auto rounded-btn bg-neutral-content p-2"
+			use:dndzone={{
+				items: mapState.markers,
+				flipDurationMs: FLIP_DURATION
+			}}
+			{onconsider}
+			{onfinalize}
 		>
 			{#each mapState.markers as marker (marker.id)}
-				<li animate:flip={{ duration: 300 }}>
+				<div animate:flip={{ duration: FLIP_DURATION }}>
 					<SidebarItem {marker} />
-				</li>
+				</div>
 			{/each}
-		</ul>
+		</section>
 		<SidebarButton
 			isOpen={true}
 			onClick={() => sidebarTransitionState.onOutroStart()}
