@@ -36,9 +36,7 @@ describe('SearchBox', async () => {
 		const screen = render(SearchBox);
 
 		expect(screen.getByRole('textbox')).toHaveValue('');
-		expect(
-			screen.queryByTestId('autocomplete')?.children
-		).toHaveLength(0);
+		expect(screen.queryByTestId('autocomplete')).toBeNull();
 	});
 
 	it('sends a fetch request when typing', async () => {
