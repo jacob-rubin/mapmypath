@@ -66,7 +66,7 @@ describe('SearchBox', async () => {
 		vi.unstubAllGlobals();
 	});
 
-	it('hides the autocompete when searchbox not focused', async () => {
+	it('hides the autocomplete when searchbox not focused', async () => {
 		const user = userEvent.setup();
 		const mockFetch = vi.fn().mockResolvedValue({
 			json: vi.fn().mockResolvedValue(mockSuggestion),
