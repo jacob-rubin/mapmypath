@@ -118,7 +118,7 @@ describe('SearchBox', async () => {
 		).not.toBeInTheDocument();
 	});
 
-	it.only('pastes the suggestion name into the searchbox when clicked', async () => {
+	it('pastes the suggestion name into the searchbox when clicked', async () => {
 		const user = userEvent.setup();
 		const mockSuggestFetch = vi.fn().mockResolvedValue({
 			json: vi.fn().mockResolvedValue(mockSuggestion),
