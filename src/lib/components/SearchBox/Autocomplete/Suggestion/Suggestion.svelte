@@ -23,13 +23,10 @@
 		isHovering = hover;
 	};
 
-	async function getFeatureCoordinates(): Promise<mapboxgl.LngLat> {
-		const feature: FeatureResponse =
-			await searcher.retrieve(suggestion);
-
-		return mapboxgl.LngLat.convert(
-			feature.features[0].geometry.coordinates
-		);
+	async function handleClick() {
+		console.log('clicked');
+		searcher.text = suggestion.name;
+		await retreiveFeature();
 	}
 
 	async function retreiveFeature() {
@@ -39,11 +36,20 @@
 		mapState.map.flyTo(featureCoordinates);
 		mapState.addMarker(featureCoordinates);
 	}
+
+	async function getFeatureCoordinates(): Promise<mapboxgl.LngLat> {
+		const feature: FeatureResponse =
+			await searcher.retrieve(suggestion);
+
+		return mapboxgl.LngLat.convert(
+			feature.features[0].geometry.coordinates
+		);
+	}
 </script>
 
 <li>
 	<button
-		onclick={retreiveFeature}
+		onmousedown={handleClick}
 		onmouseenter={setHover(true)}
 		onmouseleave={setHover(false)}
 		class="flex w-full flex-col justify-start justify-items-start rounded-btn p-2"

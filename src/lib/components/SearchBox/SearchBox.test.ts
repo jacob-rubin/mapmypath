@@ -3,10 +3,12 @@ import SearchBox from './SearchBox.svelte';
 import {
 	cleanup,
 	queryByPlaceholderText,
-	render
+	render,
+	within
 } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
+import { mockSuggestion } from '$lib/utils/searcher/mocks/mockSuggestion';
+import { tick } from 'svelte';
 
 describe('SearchBox', async () => {
 	afterEach(() => {
@@ -41,7 +43,7 @@ describe('SearchBox', async () => {
 
 	it('sends a fetch request when typing', async () => {
 		const mockFetch = vi.fn().mockResolvedValue(
-			new Response(JSON.stringify(mockSuggestions), {
+			new Response(JSON.stringify(mockSuggestion), {
 				status: 200,
 				headers: { 'Content-Type': 'application/json' }
 			})
@@ -64,5 +66,48 @@ describe('SearchBox', async () => {
 		);
 
 		vi.unstubAllGlobals();
+	});
+
+	it('hides the autocompete when searchbox not focused', async () => {
+		const user = userEvent.setup();
+		const mockFetch = vi.fn().mockResolvedValue({
+			json: vi.fn().mockResolvedValue(mockSuggestion),
+			ok: true,
+			status: 200,
+			headers: { 'Content-Type': 'application/json' }
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const screen = render(SearchBox);
+		const textbox: HTMLElement = screen.getByRole('textbox');
+		await user.type(textbox, 'Michigan Stadium');
+
+		expect(screen.getByTestId('autocomplete')).toBeDefined();
+		textbox.blur();
+		await tick();
+		expect(
+			screen.queryByTestId('autocomplete')
+		).not.toBeInTheDocument();
+	});
+
+	it('pastes the suggestion name into the searchbox when clicked', async () => {
+		const user = userEvent.setup();
+		const mockFetch = vi.fn().mockResolvedValue({
+			json: vi.fn().mockResolvedValue(mockSuggestion),
+			ok: true,
+			status: 200,
+			headers: { 'Content-Type': 'application/json' }
+		});
+		vi.stubGlobal('fetch', mockFetch);
+
+		const screen = render(SearchBox);
+		const textbox: HTMLElement = screen.getByRole('textbox');
+		await user.type(textbox, 'Mich');
+
+		const autocomplete = screen.getByTestId('autocomplete');
+		await new Promise((resolve) => setTimeout(resolve, 200)); // Await debounce
+		const suggestion = within(autocomplete).getByRole('button');
+		await user.click(suggestion);
+		await tick();
 	});
 });
