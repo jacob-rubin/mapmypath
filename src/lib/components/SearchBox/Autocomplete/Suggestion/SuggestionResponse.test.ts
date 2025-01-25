@@ -1,7 +1,7 @@
 import { MapState } from '$lib/state/mapState/mapState.svelte';
 import Mapbox from '$lib/utils/mapbox/mapbox';
 import { mockFeature } from '$lib/utils/searcher/mocks/mockFeature';
-import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
+import { mockSuggestion } from '$lib/utils/searcher/mocks/mockSuggestion';
 import Searcher from '$lib/utils/searcher/searcher.svelte';
 import { cleanup, getByRole, render } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
@@ -57,7 +57,7 @@ describe('Suggestion Response', () => {
 
 		const screen = render(SuggestionFixture, {
 			props: {
-				suggestion: mockSuggestions.suggestions[0],
+				suggestion: mockSuggestion.suggestions[0],
 				context: {
 					mapState: mapState,
 					searcher: searcher
@@ -82,7 +82,7 @@ describe('Suggestion Response', () => {
 
 		const screen = render(SuggestionFixture, {
 			props: {
-				suggestion: mockSuggestions.suggestions[0],
+				suggestion: mockSuggestion.suggestions[0],
 				context: {
 					mapState: mapState,
 					searcher: searcher
@@ -115,7 +115,7 @@ describe('Suggestion Response', () => {
 
 		const screen = render(SuggestionFixture, {
 			props: {
-				suggestion: mockSuggestions.suggestions[0],
+				suggestion: mockSuggestion.suggestions[0],
 				context: {
 					mapState: mapState,
 					searcher: searcher

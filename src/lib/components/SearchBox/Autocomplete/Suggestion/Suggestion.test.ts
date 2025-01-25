@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mockSuggestions } from '$lib/utils/searcher/mocks/mockSuggestions';
+import { mockSuggestion } from '$lib/utils/searcher/mocks/mockSuggestion';
 import userEvent, {
 	type UserEvent
 } from '@testing-library/user-event';
@@ -43,7 +43,7 @@ describe('Suggestion', async () => {
 					mapState: mapState,
 					searcher: searcher
 				},
-				suggestion: mockSuggestions.suggestions[0]
+				suggestion: mockSuggestion.suggestions[0]
 			}
 		});
 
@@ -59,13 +59,12 @@ describe('Suggestion', async () => {
 					mapState: mapState,
 					searcher: searcher
 				},
-				suggestion: mockSuggestions.suggestions[0]
+				suggestion: mockSuggestion.suggestions[0]
 			}
 		});
 
 		const suggestion = screen.getByRole('button');
 
-		console.log('suggestion: ', suggestion);
 		expect(suggestion).not.toHaveClass('bg-gray-300');
 		await user.hover(suggestion);
 		expect(suggestion).toHaveClass('bg-gray-300');

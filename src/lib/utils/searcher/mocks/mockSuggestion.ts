@@ -1,6 +1,6 @@
 import type { SuggestionResponse } from '../types/types';
 
-export const mockSuggestions: SuggestionResponse = {
+export const mockSuggestion: SuggestionResponse = {
 	suggestions: [
 		{
 			name: 'Michigan Stadium',

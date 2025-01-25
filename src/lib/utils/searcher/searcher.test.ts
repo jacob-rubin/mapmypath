@@ -5,7 +5,7 @@ import type {
 	Suggestion,
 	SuggestionResponse
 } from './types/types';
-import { mockSuggestions } from './mocks/mockSuggestions';
+import { mockSuggestion } from './mocks/mockSuggestion';
 import { mockMultiSuggestions } from './mocks/mockMultiSuggestions';
 
 describe('Searcher', () => {
@@ -35,7 +35,7 @@ describe('Searcher', () => {
 
 	it('debounces the suggest method', async () => {
 		const mockFetch = vi.fn().mockResolvedValue(
-			new Response(JSON.stringify(mockSuggestions), {
+			new Response(JSON.stringify(mockSuggestion), {
 				status: 200,
 				headers: { 'Content-Type': 'application/json' }
 			})

@@ -17,7 +17,7 @@ class Searcher {
 
 	constructor() {
 		this.#search = new Search();
-		this.#debounce = debounce(() => this.#suggest(), 200);
+		this.#debounce = debounce(() => this.#suggest(), 100);
 	}
 
 	async #suggest(): Promise<void> {
