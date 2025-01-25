@@ -156,5 +156,7 @@ describe('SearchBox', async () => {
 		await user.click(suggestion);
 		await tick();
 		expect(textbox).toHaveValue('Michigan Stadium');
+
+		vi.unstubAllGlobals();
 	});
 });
